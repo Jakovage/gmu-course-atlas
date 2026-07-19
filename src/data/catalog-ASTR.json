@@ -3,202 +3,242 @@
     {
       "id": "ASTR 103",
       "title": "Astronomy",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "ASTR 111",
       "title": "The Solar System",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "ASTR 112",
       "title": "The Solar System Lab",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "ASTR 113",
       "title": "Stars, Galaxies, and the Universe",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "ASTR 114",
       "title": "Stars, Galaxies, and the Universe Lab",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "ASTR 115",
       "title": "Finding New Worlds",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "ASTR 124",
       "title": "Introduction to Observational Astronomy",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "ASTR 210",
       "title": "Introduction to Astrophysics",
-      "prereq": "(PHYS 160 | PHYS 170:C)"
+      "prereq": "(PHYS 160:C | PHYS 170:C)",
+      "recommended": null
     },
     {
       "id": "ASTR 301",
       "title": "Astrobiology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 108 | MATH 113)"
     },
     {
       "id": "ASTR 302",
       "title": "Foundations of Cosmological Thought",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "ASTR 303",
       "title": "Black Holes",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "ASTR 328",
       "title": "Stars",
-      "prereq": "(ASTR 210 & (PHYS 260 | PHYS 270:C))"
+      "prereq": "(ASTR 210:C & (PHYS 260:C | PHYS 270:C))",
+      "recommended": null
     },
     {
       "id": "ASTR 390",
       "title": "Topics in Astronomy",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "ASTR 401",
       "title": "Computer Simulation in Astronomy",
-      "prereq": "(ASTR 210 & PHYS 251)"
+      "prereq": "(ASTR 210:C & PHYS 251:C)",
+      "recommended": null
     },
     {
       "id": "ASTR 402",
       "title": "RS: Methods of Observational Astronomy",
-      "prereq": "(ASTR 124 & ASTR 210 & ASTR 401*:C & (ASTR 328 | ASTR 403:C | ASTR 420 | ASTR 480) & (PHYS 260 | PHYS 270:C))"
+      "prereq": "((PHYS 260:C | PHYS 270:C) & ASTR 124:C & ASTR 210:C & ASTR 401*:C & (ASTR 328:C | ASTR 403:C | ASTR 420:C | ASTR 480:C))",
+      "recommended": null
     },
     {
       "id": "ASTR 403",
       "title": "Planetary Science",
-      "prereq": "(ASTR 210 & (PHYS 260 | PHYS 270:C))"
+      "prereq": "(ASTR 210:C & (PHYS 260:C | PHYS 270:C))",
+      "recommended": null
     },
     {
       "id": "ASTR 404",
       "title": "Galaxies and Cosmology",
-      "prereq": "ASTR 328"
+      "prereq": "ASTR 328:C",
+      "recommended": null
     },
     {
       "id": "ASTR 405",
       "title": "Honors Thesis in Astronomy I",
-      "prereq": "(ASTR 402 | PHYS 303 | PHYS 305 | (ASTR 210 & ASTR 328))"
+      "prereq": "(ASTR 402:C | PHYS 303:C | PHYS 305:C | (ASTR 210:C & ASTR 328:C))",
+      "recommended": null
     },
     {
       "id": "ASTR 406",
       "title": "Honors Thesis in Astronomy II",
-      "prereq": null
+      "prereq": "ASTR 405:C",
+      "recommended": null
     },
     {
       "id": "ASTR 408",
       "title": "Senior Research",
-      "prereq": "(ASTR 210 & (ASTR 328 | ASTR 402 | PHYS 303 | PHYS 305))"
+      "prereq": "(ASTR 210:C & (ASTR 328:C | ASTR 402:C | PHYS 303:C | PHYS 305:C))",
+      "recommended": null
     },
     {
       "id": "ASTR 409",
       "title": "Astronomy Internship",
-      "prereq": "(ASTR 210 & (ASTR 328 | ASTR 402 | PHYS 303 | PHYS 305))"
+      "prereq": "(ASTR 210:C & (ASTR 328:C | ASTR 402:C | PHYS 303:C | PHYS 305:C))",
+      "recommended": null
     },
     {
       "id": "ASTR 420",
       "title": "Exoplanets",
-      "prereq": "ASTR 210"
+      "prereq": "ASTR 210:C",
+      "recommended": null
     },
     {
       "id": "ASTR 480",
       "title": "The Interstellar Medium",
-      "prereq": "(ASTR 210 & (PHYS 260 | PHYS 270:C))"
+      "prereq": "(ASTR 210:C & (PHYS 260:C | PHYS 270:C))",
+      "recommended": null
     },
     {
       "id": "ASTR 590",
       "title": "Selected Topics in Astronomy and Astrophysics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Permission of instructor)"
     },
     {
       "id": "ASTR 601",
       "title": "Computer Simulation in Astronomy",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(ASTR 210 | PHYS 251)"
     },
     {
       "id": "ASTR 602",
       "title": "Methods of Observational Astronomy",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "ASTR 603",
       "title": "Planetary Sciences",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(ASTR 210 | PHYS 260)"
     },
     {
       "id": "ASTR 604",
       "title": "Galaxies and Cosmology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(ASTR 328 | MATH 214 | PHYS 308*)"
     },
     {
       "id": "ASTR 620",
       "title": "Exoplanets",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "ASTR 660",
       "title": "Plasma Physics for Space and Astrophysics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(PHYS 305)"
     },
     {
       "id": "ASTR 680",
       "title": "Physics of Interstellar Media",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(PHYS 402 | ?Permission of instructor)"
     },
     {
       "id": "ASTR 730",
       "title": "Stellar Astrophysics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 214 | PHYS 303 | PHYS 305 | PHYS 308)"
     },
     {
       "id": "ASTR 765",
       "title": "High-Energy and Accretion Astrophysics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(PHYS 502 | PHYS 513 | ?Permission of instructor)"
     },
     {
       "id": "ASTR 790",
       "title": "Topics in Astronomy and Astrophysics",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "ASTR 794",
       "title": "Astronomy Internship",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Departmental approval)"
     },
     {
       "id": "ASTR 796",
       "title": "Directed Reading and Research",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Admission to MS or PhD program | ?Permission of instructor)"
     },
     {
       "id": "ASTR 798",
       "title": "Research Project",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Nine graduate credits | ?Permission of instructor)"
     },
     {
       "id": "ASTR 799",
       "title": "Master's Thesis",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?9 graduate credits | ?Permission of instructor)"
     },
     {
       "id": "ASTR 998",
       "title": "Doctoral Dissertation Proposal",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Admission to the Physics doctoral program | ?Permission of advisor)"
     },
     {
       "id": "ASTR 999",
       "title": "Doctoral Dissertation",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Admission to doctoral candidacy in Physics PhD program | ?Permission of advisor)"
     }
   ]
 }

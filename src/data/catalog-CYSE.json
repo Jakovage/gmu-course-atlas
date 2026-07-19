@@ -1,0 +1,424 @@
+{
+  "courses": [
+    {
+      "id": "CYSE 101",
+      "title": "Introduction to Cyber Security Engineering",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 130",
+      "title": "Introduction to Computing for Digital Systems Engineering",
+      "prereq": null,
+      "recommended": "(?Passing score on the math placement test for MATH 113)"
+    },
+    {
+      "id": "CYSE 211",
+      "title": "Operating Systems and Lab",
+      "prereq": "(CS 222:C & CYSE 101:C)",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 230",
+      "title": "Computer Networking",
+      "prereq": "((CS 112:C | CS 109:C) & CYSE 101:C & (MATH 113:C | MATH 124:C))",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 304",
+      "title": "Cyber Security in Logic Design and Digital Systems",
+      "prereq": "(ECE 301:C | (ECE 231:C & ECE 232:C))",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 341",
+      "title": "Machine Learning Applied to Cyber Security Engineering",
+      "prereq": "(CYSE 101:C & CS 222:C & MATH 203:C & STAT 344:C)",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 395",
+      "title": "Cyber Security Engineering Internship",
+      "prereq": "((CS 112:C | CS 109:C) & CYSE 101:C & (MATH 113:C | MATH 124:C) & CYSE 230:C)",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 411",
+      "title": "Secure Software Engineering",
+      "prereq": "(CS 222:C & SYST 230:C & CYSE 211:C & CYSE 230:C & (COMM 101:C | HNRS 110:C) & MATH 214:C & MATH 203:C)",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 421",
+      "title": "Industrial Control Systems Security",
+      "prereq": "(CYSE 230:C & (ECE 301:C | (ECE 231:C & ECE 232:C)))",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 424",
+      "title": "Embedded and Real Time Systems",
+      "prereq": "(ECE 301:C | (ECE 231:C & ECE 232:C))",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 425",
+      "title": "Secure RF Communications",
+      "prereq": "((CS 222:C | ECE 240:C | CS 262:C) & (ECE 465:C | CYSE 230:C | CS 455:C) & (MATH 125:C | ECE 231:C))",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 430",
+      "title": "Critical Infrastructure Protection",
+      "prereq": "(SYST 205:C | CYSE 205:C)",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 442",
+      "title": "Generative AI Technologies in Cyber Security Engineering",
+      "prereq": "CYSE 341:C",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 451",
+      "title": "System Security and Resilience",
+      "prereq": "((CYSE 304:C | ECE 301:C | (ECE 231:C & ECE 232:C)) & CYSE 230:C & CYSE 211:C)",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 460",
+      "title": "Power Systems and Smart Grid Security",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 461",
+      "title": "Power Grid Security",
+      "prereq": "CYSE 460:C",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 462",
+      "title": "Mobile Devices and Network Security",
+      "prereq": "(CYSE 425:C | ECE 425:C)",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 465",
+      "title": "Transportation Systems Design",
+      "prereq": "SYST 230:C",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 466",
+      "title": "Introduction to Unmanned Aerial Systems Security",
+      "prereq": "((MATH 113:C | MATH 123:C) & MATH 124:C)",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 467",
+      "title": "GPS Security",
+      "prereq": "CYSE 425:C",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 470",
+      "title": "Human Factors and Cyber Security Engineering",
+      "prereq": "(SYST 205:C & (STAT 344:C | STAT 346:C))",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 476",
+      "title": "Cryptography Fundamentals",
+      "prereq": "(ECE 301:C | ECE 231:C | ECE 331:C)",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 477",
+      "title": "Intrusion Detection",
+      "prereq": "SYST 230:C",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 478",
+      "title": "Cyber Security Audit and Compliance",
+      "prereq": "CYSE 421:C",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 479",
+      "title": "Methods of User Authentication",
+      "prereq": "(CYSE 211:C & (CYSE 301:C | ECE 301:C | (ECE 231:C & ECE 232:C)) & CYSE 230:C & (CS 222:C | SYST 230:C))",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 480",
+      "title": "Reverse Software Engineering",
+      "prereq": "(CYSE 211:C & (ECE 301:C | (ECE 231:C & ECE 232:C)))",
+      "recommended": "(?60 credits towards BS in Cyber Security Engineering)"
+    },
+    {
+      "id": "CYSE 481",
+      "title": "Foundations of Hardware in Cyber Security Engineering",
+      "prereq": "(CYSE 476:C & CYSE 304:C)",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 491",
+      "title": "Engineering Senior Seminar",
+      "prereq": "(CYSE 411:C & CYSE 425:C & CYSE 476:C & (ENGH 302:C | HNRS 110:C) & STAT 344:C & CYSE 492*:C)",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 492",
+      "title": "Senior Advanced Design Project I",
+      "prereq": "(CYSE 411:C & CYSE 425:C & CYSE 476:C & (ENGH 302:C | HNRS 110:C) & STAT 344:C & CYSE 491*:C)",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 493",
+      "title": "Senior Advanced Design Project II",
+      "prereq": "CYSE 492:C",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 498",
+      "title": "Independent Study in Cyber Security Engineering",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 499",
+      "title": "Special Topics in Cyber Security Engineering",
+      "prereq": null,
+      "recommended": "(?60 credits towards BS in Cyber Security Engineering)"
+    },
+    {
+      "id": "CYSE 521",
+      "title": "Industrial Control Systems Security",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 550",
+      "title": "Cyber Security Engineering Fundamentals",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 570",
+      "title": "Fundamentals of Operating Systems",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 580",
+      "title": "Hardware and Cyber Physical Systems",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 587",
+      "title": "Cyber Security Systems Engineering",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 610",
+      "title": "Networks and Cyber Security",
+      "prereq": "CYSE 550:B-",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 630",
+      "title": "Cyber Risk Analysis and Advanced Tools",
+      "prereq": null,
+      "recommended": "(CYSE 587 | SYST 687 | CYSE 787)"
+    },
+    {
+      "id": "CYSE 640",
+      "title": "Wireless Network Security",
+      "prereq": null,
+      "recommended": "(CYSE 610)"
+    },
+    {
+      "id": "CYSE 650",
+      "title": "Topics in Cyber Security Engineering",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 670",
+      "title": "Secure Design of Connected and Automated Vehicles",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 680",
+      "title": "Advanced Manufacturing Automation Security",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 681",
+      "title": "Secure Energy Efficient Supply Chains",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 682",
+      "title": "Formal Methods for Cyber Physical Systems Security",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 683",
+      "title": "Reverse Engineering Industrial Automation",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 684",
+      "title": "Practical Side-Channel Exploitation and Defense",
+      "prereq": null,
+      "recommended": "(CYSE 580)"
+    },
+    {
+      "id": "CYSE 685",
+      "title": "Unmanned Aerial Systems Security",
+      "prereq": null,
+      "recommended": "(?Engineering graduate standing | ?Solid understanding of calculus | ?Solid understanding of statistics | ?Solid understanding of probability theory)"
+    },
+    {
+      "id": "CYSE 686",
+      "title": "Introduction to Federated Learning: Fundamentals and Applications",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 689",
+      "title": "Artificial Intelligence Methods for Cybersecurity",
+      "prereq": null,
+      "recommended": "(CYSE 587)"
+    },
+    {
+      "id": "CYSE 690",
+      "title": "Cyber Security Engineering Capstone Project",
+      "prereq": "((SYST 687:B- | CYSE 587:B-) & (CYSE 570:B- | CS 571:B-) & CYSE 580:B- & CYSE 610:B-)",
+      "recommended": null
+    },
+    {
+      "id": "CYSE 698",
+      "title": "Independent Study and Research",
+      "prereq": null,
+      "recommended": "(?Completion of at least 2 MS CYSE core courses)"
+    },
+    {
+      "id": "CYSE 700",
+      "title": "Research Methodology and Pedagogy in Cybersecurity",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 710",
+      "title": "Advanced Networks and Cybersecurity",
+      "prereq": null,
+      "recommended": "(?Prior exposure to computer networks)"
+    },
+    {
+      "id": "CYSE 731",
+      "title": "Graphical Models for Cybersecurity",
+      "prereq": null,
+      "recommended": "(CYSE 689 | CYSE 687)"
+    },
+    {
+      "id": "CYSE 750",
+      "title": "Advanced Topics in Cyber Security Engineering",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 757",
+      "title": "Cyber Law",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 760",
+      "title": "Human Factors in Cyber Security",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 765",
+      "title": "Quantum Information Processing and Security",
+      "prereq": "((MATH 203:B- | MATH 351:B-) & CS 367:B-)",
+      "recommended": "(?Familiarity with basic concepts of information theory)"
+    },
+    {
+      "id": "CYSE 770",
+      "title": "Fundamentals of Operating Systems",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 780",
+      "title": "Advanced Hardware and Cyber-Physical Systems Security",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 785",
+      "title": "Advanced Unmanned Aerial Systems Security",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 787",
+      "title": "Cyber Security Systems Engineering",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 788",
+      "title": "Advanced Systems Engineering for Cybersecurity",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 789",
+      "title": "Advanced Artificial Intelligence Methods for Cybersecurity",
+      "prereq": null,
+      "recommended": "(CYSE 689)"
+    },
+    {
+      "id": "CYSE 799",
+      "title": "Cyber Security Engineering Master Thesis",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 890",
+      "title": "Verification and Validation of System Security",
+      "prereq": null,
+      "recommended": "(CYSE 700 | CYSE 789)"
+    },
+    {
+      "id": "CYSE 891",
+      "title": "Formal Methods for Learning Systems Assurance",
+      "prereq": null,
+      "recommended": "(CYSE 700 | CYSE 789 | CYSE 890)"
+    },
+    {
+      "id": "CYSE 998",
+      "title": "Doctoral Dissertation Proposal",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "CYSE 999",
+      "title": "Doctoral Dissertation",
+      "prereq": null,
+      "recommended": null
+    }
+  ]
+}

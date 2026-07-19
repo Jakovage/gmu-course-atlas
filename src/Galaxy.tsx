@@ -470,7 +470,22 @@ export default function Galaxy() {
           // default gray styling (both endpoints are individually lit, just
           // via different paths), reading as a stray unexplained line. Only
           // drawing tree-membership edges shows one clean path per node.
-          let stroke = '#8a8a96', alpha = active === null ? 0.16 : 0;
+          // Global (unfocused) edges are colored by department -- a solid
+          // tint within one department, a gradient blend between the two
+          // when they cross, so you can see at a glance which fields feed
+          // into which. Focus mode's blue/amber tree coloring overrides
+          // this entirely (a different, more specific signal: direction
+          // relative to whatever's focused, not department).
+          let stroke: string | CanvasGradient =
+            deptOf(r) === deptOf(c.id)
+              ? DEPT_COLOR[deptOf(c.id)]
+              : (() => {
+                  const g = ctx.createLinearGradient(from.x, from.y, to.x, to.y);
+                  g.addColorStop(0, DEPT_COLOR[deptOf(r)]);
+                  g.addColorStop(1, DEPT_COLOR[deptOf(c.id)]);
+                  return g;
+                })();
+          let alpha = active === null ? 0.16 : 0;
           if (active !== null && down!.children.get(c.id)?.includes(r)) {
             stroke = '#6fb2e0'; alpha = depthOpacity(down!.dist.get(r)!);
           } else if (active !== null && up!.children.get(r)?.includes(c.id)) {
@@ -484,7 +499,15 @@ export default function Galaxy() {
           ctx.setLineDash(isRecommended ? [5, 4] : []);
           ctx.strokeStyle = stroke;
           ctx.globalAlpha = alpha;
-          ctx.beginPath(); ctx.moveTo(from.x, from.y); ctx.lineTo(to.x, to.y); ctx.stroke();
+          // vertical S-curve: leaves `from` and arrives at `to` moving
+          // mostly straight up/down before bending, which reads as natural
+          // "flow" given the layout's tiers are fundamentally vertical
+          // (same convention as git graphs / dependency diagrams)
+          const midY = (from.y + to.y) / 2;
+          ctx.beginPath();
+          ctx.moveTo(from.x, from.y);
+          ctx.bezierCurveTo(from.x, midY, to.x, midY, to.x, to.y);
+          ctx.stroke();
         }
       }
       ctx.setLineDash([]);

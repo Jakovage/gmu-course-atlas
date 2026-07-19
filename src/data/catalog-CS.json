@@ -3,517 +3,620 @@
     {
       "id": "CS 100",
       "title": "Principles of Computing",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "CS 105",
       "title": "Computer Ethics and Society",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "CS 108",
       "title": "Intro to Computer Programming, Part A",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "CS 109",
       "title": "Intro to Computer Programming, Part B",
-      "prereq": "(CS 108:C & (?Math Placement Aleks >= 80 | MATH 104:C | MATH 105:C | MATH 113:C | MATH 115:C | MATH 123:C))"
+      "prereq": "(CS 108:C & (?Math Placement Aleks >= 80 | MATH 104:C | MATH 105:C | MATH 113:C | MATH 115:C | MATH 123:C))",
+      "recommended": null
     },
     {
       "id": "CS 110",
       "title": "Essentials of Computer Science",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "CS 112",
       "title": "Introduction to Computer Programming",
-      "prereq": "(?Math Placement Aleks >= 80 | MATH 104 | MATH 105 | MATH 113 | MATH 115:C | MATH 123)"
+      "prereq": "(?Math Placement Aleks >= 80 | MATH 104:C | MATH 105:C | MATH 113:C | MATH 115:C | MATH 123:C)",
+      "recommended": null
     },
     {
       "id": "CS 211",
       "title": "Object-Oriented Programming",
-      "prereq": "(CS 109:C | CS 112)"
+      "prereq": "(CS 112:C | CS 109:C)",
+      "recommended": null
     },
     {
       "id": "CS 222",
       "title": "Computer Programming for Engineers",
-      "prereq": "(CS 109 | CS 112)"
+      "prereq": "(CS 112:C | CS 109:C)",
+      "recommended": null
     },
     {
       "id": "CS 262",
       "title": "Introduction to Low-Level Programming",
-      "prereq": "((CS 101* | CS 110*) & (CS 211 | CS 222))"
+      "prereq": "((CS 110*:C | CS 101*) & (CS 211:C | CS 222:C))",
+      "recommended": null
     },
     {
       "id": "CS 310",
       "title": "Data Structures",
-      "prereq": "(CS 211 & MATH 125:C & (MATH 113 | MATH 115:C | MATH 124))"
+      "prereq": "(CS 211:C & MATH 125:C & (MATH 113:C | MATH 124:C | MATH 115:C))",
+      "recommended": null
     },
     {
       "id": "CS 321",
       "title": "Software Engineering",
-      "prereq": "(CS 310 & (ENGH 302 | HNRS 260 | HNRS 261))"
+      "prereq": "(CS 310:C & (ENGH 302:C | HNRS 260:C | HNRS 261:C))",
+      "recommended": null
     },
     {
       "id": "CS 325",
       "title": "Introduction to Game Design",
-      "prereq": "CS 211"
+      "prereq": "CS 211:C",
+      "recommended": null
     },
     {
       "id": "CS 330",
       "title": "Formal Methods and Models",
-      "prereq": "(CS 211 & MATH 125)"
+      "prereq": "(CS 211:C & MATH 125:C)",
+      "recommended": null
     },
     {
       "id": "CS 351",
       "title": "Visual Computing",
-      "prereq": "(CS 262 & CS 310)"
+      "prereq": "(CS 262:C & CS 310:C)",
+      "recommended": null
     },
     {
       "id": "CS 367",
       "title": "Computer Systems and Programming",
-      "prereq": "(CS 110 & MATH 125 & (CS 222 | CS 262 | ECE 340))"
+      "prereq": "((CS 262:C | CS 222:C | ECE 340:C) & MATH 125:C & CS 110:C)",
+      "recommended": null
     },
     {
       "id": "CS 390",
       "title": "Research and Project Design Principles in Computing",
-      "prereq": "CS 262"
+      "prereq": "CS 262:C",
+      "recommended": "(CS 310 | CS 321)"
     },
     {
       "id": "CS 391",
       "title": "Advanced Programming Lab",
-      "prereq": "CS 310"
+      "prereq": "CS 310:C",
+      "recommended": null
     },
     {
       "id": "CS 395",
       "title": "Student Initiated Special Topics",
-      "prereq": "CS 211"
+      "prereq": "CS 211:C",
+      "recommended": "(?Additional prerequisites will vary by topic)"
     },
     {
       "id": "CS 399",
       "title": "Special Topics",
-      "prereq": "CS 211"
+      "prereq": "CS 211:C",
+      "recommended": "(?Additional prerequisites will vary by topic)"
     },
     {
       "id": "CS 405",
       "title": "Ethics and Law in Computing",
-      "prereq": "((CS 105 | CS 110) & (HNRS 260 | HNRS 261 | (ENGH 302 & (COMM 100 | COMM 101))))"
+      "prereq": "((CS 105:C | CS 110:C) & (HNRS 260:C | HNRS 261:C | ((COMM 100:C | COMM 101:C) & ENGH 302:C)))",
+      "recommended": "(?All required Mason Core courses)"
     },
     {
       "id": "CS 425",
       "title": "Game Programming I",
-      "prereq": "(CS 310 & CS 351)"
+      "prereq": "(CS 310:C & CS 351:C)",
+      "recommended": null
     },
     {
       "id": "CS 426",
       "title": "Game Programming II",
-      "prereq": "(CS 325 & CS 425)"
+      "prereq": "(CS 325:C & CS 425:C)",
+      "recommended": null
     },
     {
       "id": "CS 440",
       "title": "Compilers",
-      "prereq": "(CS 310 & CS 330 & CS 367)"
+      "prereq": "(CS 310:C & CS 330:C & CS 367:C)",
+      "recommended": null
     },
     {
       "id": "CS 450",
       "title": "Database Concepts",
-      "prereq": "(CS 310 & CS 330)"
+      "prereq": "(CS 310:C & CS 330:C)",
+      "recommended": null
     },
     {
       "id": "CS 451",
       "title": "Computer Graphics",
-      "prereq": "(CS 310 & CS 367 & MATH 203)"
+      "prereq": "(MATH 203:C & CS 310:C & CS 367:C)",
+      "recommended": null
     },
     {
       "id": "CS 452",
       "title": "Virtual Reality",
-      "prereq": "(CS 325 | CS 351 | CS 451)"
+      "prereq": "(CS 325:C | CS 351:C | CS 451:C)",
+      "recommended": null
     },
     {
       "id": "CS 453",
       "title": "Computational Photography",
-      "prereq": "(CS 310 & CS 330 & MATH 203)"
+      "prereq": "(MATH 203:C & CS 310:C & CS 330:C)",
+      "recommended": null
     },
     {
       "id": "CS 455",
       "title": "Computer Communications and Networking",
-      "prereq": "(CS 310 & CS 367 & (MATH 352 | STAT 344))"
+      "prereq": "(CS 310:C & CS 367:C & (STAT 344:C | MATH 352:C))",
+      "recommended": null
     },
     {
       "id": "CS 463",
       "title": "Comparative Programming Languages",
-      "prereq": "(CS 310 & CS 330 & CS 367)"
+      "prereq": "(CS 330:C & CS 367:C & CS 310:C)",
+      "recommended": null
     },
     {
       "id": "CS 465",
       "title": "Computer Systems Architecture",
-      "prereq": "CS 367"
+      "prereq": "CS 367:C",
+      "recommended": null
     },
     {
       "id": "CS 468",
       "title": "Secure Programming and Systems",
-      "prereq": "(CS 310 & CS 367)"
+      "prereq": "(CS 310:C & CS 367:C)",
+      "recommended": null
     },
     {
       "id": "CS 471",
       "title": "Operating Systems",
-      "prereq": "((CS 310 | ECE 340) & (CS 367 | ECE 445))"
+      "prereq": "((CS 310:C | ECE 340:C) & (CS 367:C | ECE 445:C))",
+      "recommended": null
     },
     {
       "id": "CS 475",
       "title": "Concurrent and Distributed Systems",
-      "prereq": "(CS 310 & CS 367)"
+      "prereq": "(CS 310:C & CS 367:C)",
+      "recommended": null
     },
     {
       "id": "CS 477",
       "title": "Mobile Application Development",
-      "prereq": "(CS 310 & CS 367)"
+      "prereq": "(CS 310:C & CS 367:C)",
+      "recommended": null
     },
     {
       "id": "CS 478",
       "title": "Natural Language Processing",
-      "prereq": "(CS 310 & CS 330)"
+      "prereq": "(CS 310:C & CS 330:C)",
+      "recommended": null
     },
     {
       "id": "CS 480",
       "title": "Introduction to Artificial Intelligence",
-      "prereq": "(CS 310 & CS 330)"
+      "prereq": "(CS 310:C & CS 330:C)",
+      "recommended": null
     },
     {
       "id": "CS 482",
       "title": "Computer Vision",
-      "prereq": "(CS 310 & MATH 203 & STAT 344)"
+      "prereq": "(CS 310:C & MATH 203:C & STAT 344:C)",
+      "recommended": null
     },
     {
       "id": "CS 483",
       "title": "Analysis of Algorithms",
-      "prereq": "(CS 310 & CS 330 & MATH 125)"
+      "prereq": "(CS 310:C & CS 330:C & MATH 125:C)",
+      "recommended": null
     },
     {
       "id": "CS 484",
       "title": "Data Mining",
-      "prereq": "(CS 310 & (STAT 334 | STAT 344 | STAT 346:C | (MATH 351:C & MATH 352:C)))"
+      "prereq": "(CS 310:C & (STAT 344:C | STAT 334:C | STAT 346:C | (MATH 351:C & MATH 352:C)))",
+      "recommended": null
     },
     {
       "id": "CS 485",
       "title": "Autonomous Robotics",
-      "prereq": "(CS 262 & CS 310 & MATH 203)"
+      "prereq": "(CS 262:C & CS 310:C & MATH 203:C)",
+      "recommended": null
     },
     {
       "id": "CS 487",
       "title": "Introduction to Cryptography",
-      "prereq": "(CS 310 & CS 330 & STAT 344)"
+      "prereq": "(CS 310:C & CS 330:C & STAT 344:C)",
+      "recommended": null
     },
     {
       "id": "CS 489",
       "title": "Deep Learning",
-      "prereq": "(MATH 203 & (CS 480 | CS 484))"
+      "prereq": "(MATH 203:C & (CS 480:C | CS 484:C))",
+      "recommended": "(MATH 213:C | STAT 344:C)"
     },
     {
       "id": "CS 491",
       "title": "Industry-Sponsored Senior Design Project",
-      "prereq": "CS 321"
+      "prereq": "CS 321:C",
+      "recommended": "(CS 367* | CS 483*)"
     },
     {
       "id": "CS 498",
       "title": "Independent Study in Computer Science",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?60 credits | ?CS major | ?Permission of instructor)"
     },
     {
       "id": "CS 499",
       "title": "Special Topics in Computer Science",
-      "prereq": "(CS 310 & CS 330)"
+      "prereq": "(CS 310:C & CS 330:C)",
+      "recommended": "(?60 credits | ?Additional prerequisites may vary with nature of topic)"
     },
     {
       "id": "CS 500",
       "title": "Special Topics",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "CS 504",
       "title": "Principles of Data Management and Mining",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "CS 530",
       "title": "Mathematical Foundations of Computer Science",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 125 | STAT 344)"
     },
     {
       "id": "CS 531",
       "title": "Computer Systems and Fundamentals of Systems Programming",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CS 310 | CS 367 | ?Equivalent course)"
     },
     {
       "id": "CS 540",
       "title": "Compilers",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CS 310 | CS 330 | CS 367)"
     },
     {
       "id": "CS 550",
       "title": "Database Systems",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CS 310 | INFS 519 | CS 330)"
     },
     {
       "id": "CS 551",
       "title": "Computer Graphics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CS 310 | CS 367)"
     },
     {
       "id": "CS 555",
       "title": "Computer Communications and Networking",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CS 310 | CS 367 | STAT 344)"
     },
     {
       "id": "CS 571",
       "title": "Operating Systems",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CS 310 | CS 367 | ECE 445)"
     },
     {
       "id": "CS 580",
       "title": "Introduction to Artificial Intelligence",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CS 310 | CS 330)"
     },
     {
       "id": "CS 583",
       "title": "Analysis of Algorithms",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CS 310 | CS 330 | MATH 125)"
     },
     {
       "id": "CS 584",
       "title": "Theory and Applications of Data Mining",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CS 310 | STAT 344)"
     },
     {
       "id": "CS 587",
       "title": "Introduction to Cryptography",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CS 330)"
     },
     {
       "id": "CS 595",
       "title": "Basic Topics in Computer Science",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "CS 600",
       "title": "Theory of Computation",
-      "prereq": "CS 583"
+      "prereq": "CS 583:B-",
+      "recommended": null
     },
     {
       "id": "CS 630",
       "title": "Advanced Algorithms",
-      "prereq": "CS 583"
+      "prereq": "CS 583:B-",
+      "recommended": null
     },
     {
       "id": "CS 635",
       "title": "Foundations of Parallel Computation",
-      "prereq": "(CS 571 & CS 583)"
+      "prereq": "(CS 583:B- & CS 571:B-)",
+      "recommended": "(?Proficiency in C programming language)"
     },
     {
       "id": "CS 650",
       "title": "Advanced Database Management",
-      "prereq": "(CS 550 | INFS 614)"
+      "prereq": "(CS 550:B- | INFS 614:B-)",
+      "recommended": null
     },
     {
       "id": "CS 653",
       "title": "Computational Photography",
-      "prereq": "(CS 583 & (CS 580 | CS 584))"
+      "prereq": "((CS 580:B- | CS 584:B-) & CS 583:B-)",
+      "recommended": null
     },
     {
       "id": "CS 655",
       "title": "Wireless and Mobile Computing",
-      "prereq": "CS 555"
+      "prereq": "CS 555:B-",
+      "recommended": null
     },
     {
       "id": "CS 657",
       "title": "Mining Massive Datasets with MapReduce",
-      "prereq": "CS 584"
+      "prereq": "CS 584:B-",
+      "recommended": null
     },
     {
       "id": "CS 661",
       "title": "Decision-Making & Reinforcement Learning",
-      "prereq": "CS 580"
+      "prereq": "CS 580:B-",
+      "recommended": "(CS 583)"
     },
     {
       "id": "CS 662",
       "title": "Computer Graphics Game Technologies",
-      "prereq": "CS 551"
+      "prereq": "CS 551:B-",
+      "recommended": null
     },
     {
       "id": "CS 663",
       "title": "Computational Design",
-      "prereq": "CS 583"
+      "prereq": "CS 583:B-",
+      "recommended": null
     },
     {
       "id": "CS 665",
       "title": "Modern Computer Architecture",
-      "prereq": "CS 571"
+      "prereq": "CS 571:B-",
+      "recommended": null
     },
     {
       "id": "CS 672",
       "title": "Computer System Performance Evaluation",
-      "prereq": "CS 571"
+      "prereq": "CS 571:B-",
+      "recommended": null
     },
     {
       "id": "CS 675",
       "title": "Distributed Systems",
-      "prereq": "CS 571"
+      "prereq": "CS 571:B-",
+      "recommended": null
     },
     {
       "id": "CS 677",
       "title": "Operating System Internals",
-      "prereq": "CS 571"
+      "prereq": "CS 571:B-",
+      "recommended": "(?Good understanding of data structures and algorithms | ?Comfortable writing programs from scratch in C and Java | ?Comfortable in a command-line Unix development environment | ?Basic knowledge of assembly languages such as x86)"
     },
     {
       "id": "CS 678",
       "title": "Advanced Natural Language Processing",
-      "prereq": "(CS 580 | CS 584)"
+      "prereq": "(CS 580:B- | CS 584:B-)",
+      "recommended": "(STAT 344 | ?Undergraduate statistics course)"
     },
     {
       "id": "CS 682",
       "title": "Computer Vision",
-      "prereq": "(CS 583 & (CS 580 | CS 584))"
+      "prereq": "((CS 580:B- | CS 584:B-) & CS 583:B-)",
+      "recommended": null
     },
     {
       "id": "CS 683",
       "title": "Parallel Algorithms",
-      "prereq": "CS 583"
+      "prereq": "CS 583:B-",
+      "recommended": null
     },
     {
       "id": "CS 684",
       "title": "Graph Algorithms",
-      "prereq": "CS 583"
+      "prereq": "CS 583:B-",
+      "recommended": null
     },
     {
       "id": "CS 685",
       "title": "Autonomous Robotics",
-      "prereq": "CS 580"
+      "prereq": "CS 580:B-",
+      "recommended": null
     },
     {
       "id": "CS 687",
       "title": "Advanced Artificial Intelligence",
-      "prereq": "CS 580"
+      "prereq": "CS 580:B-",
+      "recommended": null
     },
     {
       "id": "CS 688",
       "title": "Machine Learning",
-      "prereq": "(CS 580 | CS 584)"
+      "prereq": "(CS 580:B- | CS 584:B-)",
+      "recommended": null
     },
     {
       "id": "CS 690",
       "title": "Special Topics in Artificial Intelligence and Databases",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Completion of at least two core courses | ?Permission of instructor)"
     },
     {
       "id": "CS 691",
       "title": "Special Topics in Programming Languages and Software Engineering",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Completion of at least two core courses | ?Permission of instructor)"
     },
     {
       "id": "CS 692",
       "title": "Special Topics in Systems and Networks",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Completion of at least two core courses | ?Permission of instructor)"
     },
     {
       "id": "CS 693",
       "title": "Special Topics in Theoretical Computer Science",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Completion of at least two core courses | ?Permission of instructor)"
     },
     {
       "id": "CS 694",
       "title": "Special Topics in Visual Computing",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Completion of at least two core courses | ?Permission of instructor)"
     },
     {
       "id": "CS 695",
       "title": "Special Topics in Computer Science",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Completion of at least two core courses | ?Permission of instructor)"
     },
     {
       "id": "CS 697",
       "title": "Independent Reading and Research",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Completion of at least two core courses | ?Permission of instructor)"
     },
     {
       "id": "CS 700",
       "title": "Research Methodology in Computer Science",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Admission to PhD in Computer Science | ?Admission to PhD in Information Technology)"
     },
     {
       "id": "CS 701",
       "title": "Research Experience in Computer Science",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CS 700)"
     },
     {
       "id": "CS 719",
       "title": "Scalable Internet Services",
-      "prereq": "(CS 555 & CS 571)"
+      "prereq": "(CS 555:B- & CS 571:B-)",
+      "recommended": null
     },
     {
       "id": "CS 747",
       "title": "Deep Learning",
-      "prereq": "(CS 580 | CS 584)"
+      "prereq": "(CS 580:B- | CS 584:B-)",
+      "recommended": "(CS 688)"
     },
     {
       "id": "CS 757",
       "title": "Generative Deep Learning",
-      "prereq": null
+      "prereq": "CS 688:B-",
+      "recommended": "(CS 747)"
     },
     {
       "id": "CS 773",
       "title": "Real-Time Systems Design and Development",
-      "prereq": "CS 571"
+      "prereq": "CS 571:B-",
+      "recommended": null
     },
     {
       "id": "CS 782",
       "title": "Advanced Machine Learning",
-      "prereq": "(CS 687 | CS 688)"
+      "prereq": "(CS 687:B- | CS 688:B-)",
+      "recommended": null
     },
     {
       "id": "CS 787",
       "title": "Decision Guidance Systems",
-      "prereq": "(CS 550 | INFS 614)"
+      "prereq": "(INFS 614:B- | CS 550:B-)",
+      "recommended": null
     },
     {
       "id": "CS 795",
       "title": "Advanced Topics in CS",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Admission into computer science PhD program)"
     },
     {
       "id": "CS 798",
       "title": "Research Project",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?18 hours of credit applicable toward the MS degree)"
     },
     {
       "id": "CS 799",
       "title": "MS Thesis",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?18 hours of credit applicable toward the MS degree)"
     },
     {
       "id": "CS 800",
       "title": "Computer Science Colloquium",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "CS 895",
       "title": "Research Topics in CS",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Doctoral status)"
     },
     {
       "id": "CS 896",
       "title": "Directed Reading and Research",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Permission of instructor)"
     },
     {
       "id": "CS 998",
       "title": "Doctoral Dissertation Proposal",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Passed the PhD qualifying examinations | ?Must have a dissertation advisor)"
     },
     {
       "id": "CS 999",
       "title": "Doctoral Dissertation",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Admission to candidacy)"
     }
   ]
 }
