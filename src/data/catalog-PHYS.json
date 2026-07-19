@@ -1,0 +1,640 @@
+{
+  "courses": [
+    {
+      "id": "PHYS 103",
+      "title": "Physics and Everyday Phenomena I",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "PHYS 104",
+      "title": "Physics and Everyday Phenomena II",
+      "prereq": null,
+      "recommended": "(PHYS 103)"
+    },
+    {
+      "id": "PHYS 106",
+      "title": "The Quantum World: A Continuous Revolution in What We Know and How We Live",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "PHYS 111",
+      "title": "Introduction to the Fundamentals of Atmospheric Science",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "PHYS 112",
+      "title": "Introduction to the Fundamentals of Atmospheric Science Lab",
+      "prereq": "(PHYS 111*:C | CLIM 111*:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 122",
+      "title": "Inside Relativity",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "PHYS 123",
+      "title": "Inside the Quantum World",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "PHYS 124",
+      "title": "Experimental Explorations in Physics",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "PHYS 131",
+      "title": "Introduction to Renewable Energy",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "PHYS 160",
+      "title": "University Physics I",
+      "prereq": "(MATH 114*:C | MATH 116*:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 161",
+      "title": "University Physics I Laboratory",
+      "prereq": "(PHYS 160*:C | PHYS 170*:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 170",
+      "title": "Introductory and Modern Physics I",
+      "prereq": "MATH 113*:C",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 225",
+      "title": "Problems in Physics I",
+      "prereq": "(PHYS 260:C | PHYS 270:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 243",
+      "title": "College Physics I",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "PHYS 244",
+      "title": "College Physics I Lab",
+      "prereq": "PHYS 243*:C",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 245",
+      "title": "College Physics II",
+      "prereq": "PHYS 243:C",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 246",
+      "title": "College Physics II Lab",
+      "prereq": "(PHYS 244:C & PHYS 245*:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 251",
+      "title": "Introduction to Computer Methods in Physics",
+      "prereq": "(PHYS 160:C | PHYS 170:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 260",
+      "title": "University Physics II",
+      "prereq": "(PHYS 160:C & (MATH 213*:C | MATH 215*:C))",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 261",
+      "title": "University Physics II Laboratory",
+      "prereq": "(PHYS 161:C & (PHYS 260*:C | PHYS 270*:C))",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 262",
+      "title": "University Physics III",
+      "prereq": "PHYS 260:C",
+      "recommended": "(PHYS 261:C)"
+    },
+    {
+      "id": "PHYS 263",
+      "title": "University Physics III Laboratory",
+      "prereq": "(PHYS 261:C & PHYS 262*:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 266",
+      "title": "Introduction to Thermodynamics",
+      "prereq": "PHYS 260:C",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 270",
+      "title": "Introductory and Modern Physics II",
+      "prereq": "(PHYS 170:C & MATH 114*:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 301",
+      "title": "Analytical Methods of Physics",
+      "prereq": "MATH 214:C",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 303",
+      "title": "Classical Mechanics",
+      "prereq": "((PHYS 260:C | PHYS 270:C) & PHYS 301*:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 305",
+      "title": "Electromagnetic Theory",
+      "prereq": "((PHYS 260:C | PHYS 270:C) & PHYS 301*:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 306",
+      "title": "Wave Motion and Electromagnetic Radiation",
+      "prereq": "(PHYS 305:C & PHYS 301:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 307",
+      "title": "Thermal Physics",
+      "prereq": "(PHYS 260:C | PHYS 270:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 308",
+      "title": "Modern Physics",
+      "prereq": "(PHYS 260:C | PHYS 270:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 310",
+      "title": "Physics of Semiconductor Materials and Processing",
+      "prereq": "(PHYS 262:C | PHYS 307:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 311",
+      "title": "Instrumentation",
+      "prereq": "(PHYS 251:C & PHYS 261:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 312",
+      "title": "Waves and Optics",
+      "prereq": "(PHYS 251:C & PHYS 261:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 325",
+      "title": "Intermediate Computer Methods in Physics",
+      "prereq": "(PHYS 251:C & PHYS 261:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 326",
+      "title": "Problems in Physics II",
+      "prereq": "(PHYS 301*:C | PHYS 307*:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 331",
+      "title": "Physics of Renewable Energy",
+      "prereq": "(PHYS 260:C | PHYS 270:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 332",
+      "title": "Solar Cells",
+      "prereq": "(((PHYS 260:C | PHYS 270:C) & PHYS 261:C) | (PHYS 245:C & PHYS 246:C))",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 334",
+      "title": "Introduction to Quantum Computation and Quantum Information",
+      "prereq": "((PHYS 260:C | PHYS 270:C) & (MATH 203:C | PHYS 301:C))",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 370",
+      "title": "Molecular Biophysics",
+      "prereq": "(PHYS 307:C | (CHEM 331:C & CHEM 332:C))",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 385",
+      "title": "Materials Science with Applications to Renewable Energy",
+      "prereq": "(PHYS 262:C | PHYS 266:C | PHYS 307:C | ME 221:C | (PHYS 245:C & MATH 113:C))",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 390",
+      "title": "Topics in Physics",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "PHYS 391",
+      "title": "Special Topics in Physics",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "PHYS 402",
+      "title": "Introduction to Quantum Mechanics and Atomic Physics",
+      "prereq": "(PHYS 303:C & PHYS 305:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 403",
+      "title": "Quantum Mechanics II",
+      "prereq": "PHYS 402:C",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 405",
+      "title": "Honors Thesis in Physics I",
+      "prereq": "(PHYS 251:C & PHYS 301:C & PHYS 303:C & PHYS 305:C & PHYS 307:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 406",
+      "title": "Honors Thesis in Physics II",
+      "prereq": "PHYS 405:C",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 407",
+      "title": "Senior Laboratory in Modern Physics",
+      "prereq": "(PHYS 251:C & PHYS 311:C & PHYS 312:C & PHYS 402:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 408",
+      "title": "Senior Research",
+      "prereq": "(PHYS 251:C & PHYS 301:C & PHYS 303:C & PHYS 305:C & PHYS 307:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 409",
+      "title": "Physics Internship",
+      "prereq": "(PHYS 251:C & PHYS 301:C & PHYS 303:C & PHYS 305:C & PHYS 307:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 410",
+      "title": "Computational Physics Capstone",
+      "prereq": "(PHYS 251:C & (PHYS 325:C | ASTR 401:C) & PHYS 303:C & PHYS 305:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 411",
+      "title": "Renewable Energy Internship",
+      "prereq": "PHYS 131:C",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 412",
+      "title": "Solid State Physics and Applications",
+      "prereq": "(PHYS 402:C | PHYS 502:B-)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 416",
+      "title": "Undergraduate Physics Review",
+      "prereq": "(PHYS 301:C & PHYS 303:C & PHYS 305:C & PHYS 307:C & PHYS 402:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 417",
+      "title": "Geophysics",
+      "prereq": null,
+      "recommended": "(GEOL 101 | GEOL 103 | MATH 113 | ?One year of PHYS | ?Permission of instructor)"
+    },
+    {
+      "id": "PHYS 428",
+      "title": "Relativity",
+      "prereq": "(PHYS 303:C & PHYS 305:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 440",
+      "title": "Nuclear and Particle Physics",
+      "prereq": "((PHYS 402:C | PHYS 502:B-) & PHYS 428*:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 465",
+      "title": "Planetary Atmospheres and Ionospheres",
+      "prereq": "(PHYS 260:C & PHYS 301:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 475",
+      "title": "Atmospheric Physics",
+      "prereq": "(PHYS 170:C | PHYS 262:C | PHYS 307:C)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 502",
+      "title": "Introduction to Quantum Mechanics and Atomic Physics",
+      "prereq": null,
+      "recommended": "(PHYS 308 | ?Equivalent course)"
+    },
+    {
+      "id": "PHYS 510",
+      "title": "Computational Physics I",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "PHYS 512",
+      "title": "Solid State Physics and Applications",
+      "prereq": null,
+      "recommended": "(PHYS 402 | PHYS 502 | ?Equivalent course)"
+    },
+    {
+      "id": "PHYS 513",
+      "title": "Applied Electromagnetic Theory",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "PHYS 533",
+      "title": "Modern Instrumentation",
+      "prereq": null,
+      "recommended": "(PHYS 513 | PHYS 685)"
+    },
+    {
+      "id": "PHYS 534",
+      "title": "Introduction to Quantum Computation and Quantum Information",
+      "prereq": null,
+      "recommended": "(?Experience with programming | MATH 203 | PHYS 301 | PHYS 160 | PHYS 260 | PHYS 170 | PHYS 270 | ?Permission of instructor)"
+    },
+    {
+      "id": "PHYS 540",
+      "title": "Nuclear and Particle Physics",
+      "prereq": null,
+      "recommended": "(PHYS 402 | PHYS 502 | ?Equivalent course)"
+    },
+    {
+      "id": "PHYS 575",
+      "title": "Atmospheric Physics",
+      "prereq": null,
+      "recommended": "(PHYS 305 | PHYS 262 | PHYS 260 | ?Equivalent course)"
+    },
+    {
+      "id": "PHYS 580",
+      "title": "Selected Interdisciplinary Topics",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "PHYS 581",
+      "title": "Topics in Renewable Energy",
+      "prereq": null,
+      "recommended": "(PHYS 262 | PHYS 266 | ?Equivalent course)"
+    },
+    {
+      "id": "PHYS 590",
+      "title": "Selected Topics in Physics",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "PHYS 591",
+      "title": "Systems for Quantum Scientists",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "PHYS 600",
+      "title": "Special Topics in Physics",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "PHYS 611",
+      "title": "Electro-optics",
+      "prereq": "((PHYS 502:B- | PHYS 684:B-) & (PHYS 513:B- | PHYS 685:B-))",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 612",
+      "title": "Physics of Modern Imaging",
+      "prereq": "(PHYS 513:B- | PHYS 685:B-)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 613",
+      "title": "Computational Physics II",
+      "prereq": null,
+      "recommended": "(PHYS 510)"
+    },
+    {
+      "id": "PHYS 614",
+      "title": "Thermodynamics and Kinetics of Materials",
+      "prereq": "(MATH 113:C & MATH 114:C & MATH 213:C & MATH 307:C & (PHYS 262:C | PHYS 266:C))",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 615",
+      "title": "Fundamentals of Materials Science",
+      "prereq": null,
+      "recommended": "(CDS 385 | PHYS 385 | ?Undergraduate degree in physics, chemistry, materials, electrical or mechanical engineering or a related discipline | ?Permission of instructor)"
+    },
+    {
+      "id": "PHYS 620",
+      "title": "Continuum Mechanics",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "PHYS 628",
+      "title": "Relativity",
+      "prereq": null,
+      "recommended": "(PHYS 303 | PHYS 305 | ?Equivalent course)"
+    },
+    {
+      "id": "PHYS 630",
+      "title": "Introduction to Biophysics",
+      "prereq": null,
+      "recommended": "(?Undergraduate degree in physics | ?Permission of instructor)"
+    },
+    {
+      "id": "PHYS 640",
+      "title": "Finite Element Analysis of Solids and Fluids",
+      "prereq": null,
+      "recommended": "(PHYS 620 | ?Permission of instructor)"
+    },
+    {
+      "id": "PHYS 660",
+      "title": "Space Weather",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "PHYS 665",
+      "title": "Planetary Atmospheres and Ionospheres",
+      "prereq": null,
+      "recommended": "(PHYS 262 | MATH 214)"
+    },
+    {
+      "id": "PHYS 670",
+      "title": "Physics Teaching Seminar I",
+      "prereq": null,
+      "recommended": "(?Intended for first-time physics/astronomy GTAs)"
+    },
+    {
+      "id": "PHYS 671",
+      "title": "Physics Teaching Seminar II",
+      "prereq": null,
+      "recommended": "(PHYS 670 | ?Intended for first-year physics/astronomy GTAs)"
+    },
+    {
+      "id": "PHYS 683",
+      "title": "Mathematical Methods in Physics",
+      "prereq": null,
+      "recommended": "(?Undergraduate degree in physics | ?Permission of instructor)"
+    },
+    {
+      "id": "PHYS 684",
+      "title": "Quantum Mechanics I",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "PHYS 685",
+      "title": "Classical Electrodynamics I",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "PHYS 690",
+      "title": "Engineering Thermodynamics",
+      "prereq": null,
+      "recommended": "(PHYS 620 | PHYS 705 | ?Permission of instructor)"
+    },
+    {
+      "id": "PHYS 694",
+      "title": "Applied Mechanics of Solids",
+      "prereq": null,
+      "recommended": "(PHYS 620)"
+    },
+    {
+      "id": "PHYS 695",
+      "title": "Applied Fluid Mechanics",
+      "prereq": null,
+      "recommended": "(PHYS 620 | PHYS 705 | ?Permission of instructor)"
+    },
+    {
+      "id": "PHYS 701",
+      "title": "Theoretical Physics",
+      "prereq": null,
+      "recommended": "(?Undergraduate degree in physics | ?Permission of instructor)"
+    },
+    {
+      "id": "PHYS 703",
+      "title": "Seminar in Physics",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "PHYS 705",
+      "title": "Classical Mechanics",
+      "prereq": null,
+      "recommended": "(?Undergraduate degree in physics | ?Permission of instructor)"
+    },
+    {
+      "id": "PHYS 711",
+      "title": "Statistical Mechanics",
+      "prereq": null,
+      "recommended": "(?Undergraduate degree in physics | ?Permission of instructor)"
+    },
+    {
+      "id": "PHYS 736",
+      "title": "Computational Quantum Mechanics",
+      "prereq": "(PHYS 502:B- & PHYS 510:B-)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 760",
+      "title": "Space Plasma Physics",
+      "prereq": "(PHYS 513:B- | PHYS 685:B-)",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 780",
+      "title": "Advanced Selected Topics in Physics",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "PHYS 784",
+      "title": "Quantum Mechanics II",
+      "prereq": "PHYS 684:B-",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 785",
+      "title": "Classical Electrodynamics II",
+      "prereq": "PHYS 685:B-",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 786",
+      "title": "Quantum Field Theory of Particles and Condensed Matter",
+      "prereq": "PHYS 684:B-",
+      "recommended": null
+    },
+    {
+      "id": "PHYS 794",
+      "title": "Physics Internship",
+      "prereq": null,
+      "recommended": "(?Departmental approval)"
+    },
+    {
+      "id": "PHYS 796",
+      "title": "Directed Reading and Research",
+      "prereq": null,
+      "recommended": "(?Admission to MS program | ?Admission to PhD program | ?Permission of instructor)"
+    },
+    {
+      "id": "PHYS 798",
+      "title": "Research Project",
+      "prereq": null,
+      "recommended": "(?Nine graduate credits | ?Permission of instructor)"
+    },
+    {
+      "id": "PHYS 799",
+      "title": "Master's Thesis",
+      "prereq": null,
+      "recommended": "(?9 graduate credits | ?Permission of instructor)"
+    },
+    {
+      "id": "PHYS 998",
+      "title": "Doctoral Dissertation Proposal",
+      "prereq": null,
+      "recommended": "(?Admission to physics doctoral program | ?Permission of advisor)"
+    },
+    {
+      "id": "PHYS 999",
+      "title": "Doctoral Dissertation",
+      "prereq": null,
+      "recommended": null
+    }
+  ]
+}

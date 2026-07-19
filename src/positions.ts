@@ -177,6 +177,33 @@ export const POSITIONS: Map<string, number> = (() => {
     for (const m of members) x.set(m, x.get(m)! + shift);
   }
 
+  // A department with almost no cross-department connectivity (ASTR,
+  // mostly self-contained since its real chains lean on PHYS, which isn't
+  // loaded) never gets pulled toward the rest of the graph by the physics
+  // loop above -- there's nothing to pull on. It just sits wherever the
+  // initial deterministic seed placed it, and the empty space between it
+  // and everything else stays exactly that wide forever (a global stretch
+  // preserves proportions, so a huge gap just becomes a huge gap at any
+  // scale). This pass caps only the OUTLIER gaps between clusters -- gaps
+  // dramatically wider than the typical (median) gap elsewhere -- down to
+  // a fixed multiple of that median, shifting everything past the gap
+  // inward to close it. Genuinely local spacing (anything not already an
+  // outlier) is completely untouched, since only excess beyond the cap is
+  // removed.
+  {
+    const sorted = [...ids].sort((a, b) => x.get(a)! - x.get(b)!);
+    const gaps = sorted.slice(1).map((id, i) => x.get(id)! - x.get(sorted[i])!);
+    const sortedGaps = [...gaps].sort((a, b) => a - b);
+    const median = sortedGaps[Math.floor(sortedGaps.length / 2)] || 0.001;
+    const maxGap = median * 6;
+    let cumulativeShift = 0;
+    for (let i = 1; i < sorted.length; i++) {
+      const gap = gaps[i - 1];
+      if (gap > maxGap) cumulativeShift += gap - maxGap;
+      x.set(sorted[i], x.get(sorted[i])! - cumulativeShift);
+    }
+  }
+
   // final normalize into [0.03, 0.97]
   const lo = Math.min(...x.values()), hi = Math.max(...x.values());
   for (const id of ids)
