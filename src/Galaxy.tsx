@@ -17,12 +17,13 @@ import { exprLines } from './format';
 const VW = 1600, VH = 900, PAD = 70;   // fixed virtual canvas
 const MAX_ZOOM_MULT = 8;
 const DRAG_THRESHOLD = 4;              // px of movement before a click becomes a pan
-const DIM_FLOOR = 0.10;
+const DIM_FLOOR = 0.02;                // fully unrelated nodes/edges
 const ROW = 80;                        // local layout: world units per hop, vertically
 const SLOT = 46;                       // local layout: max world units per leaf slot, horizontally
 const LERP = 0.16;                     // per-frame easing toward target position
 const MAX_SPAN = VW - 2 * PAD;         // a fan can never be wider than the usable canvas
 const MAX_VSPAN = VH - 2 * PAD;        // ...or taller, for very deep chains
+const ROW_CAP = 2 * ROW;               // ceiling on stretched row spacing
 
 function allRefs(e: Expr | null): string[] {
   if (!e) return [];
@@ -31,9 +32,11 @@ function allRefs(e: Expr | null): string[] {
   return e.of.flatMap(allRefs);
 }
 
+// depth 1 (direct neighbor) = full opacity, depth 2 = half, depth 3+ = flat quarter
 function depthOpacity(depth: number): number {
   if (depth <= 1) return 1;
-  return Math.max(DIM_FLOOR, Math.pow(0.5, depth - 1));
+  //if (depth === 2) return 1 0.5;
+  return .3 //0.25;
 }
 
 // BFS outward from `start`, tracking hop-distance and the tree's parent ->
@@ -84,8 +87,12 @@ function placeFan(
   // stretch to fill whatever room actually exists from the anchor to the
   // screen edge in this direction, rather than a flat per-hop constant, so a
   // shallow fan spreads out to use the space instead of clumping near ROW.
+  // Capped: without a ceiling, a tree with very few hops (e.g. one lone
+  // dependent) divides nearly the whole remaining screen by 1 and shoots
+  // that single node all the way to the edge, a long disconnected-looking
+  // line with nothing in between. ROW_CAP keeps shallow trees comfortable.
   const available = verticalSign === 1 ? (VH - PAD - anchor.y) : (anchor.y - PAD);
-  const rowScale = Math.max(24, available / maxDist);
+  const rowScale = Math.min(ROW_CAP, Math.max(24, available / maxDist));
 
   const raw = new Map<string, Pos>();
   for (const [id, rx] of layout.relX) {
@@ -117,7 +124,7 @@ export default function Galaxy() {
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const [query, setQuery] = useState('');
   const [size, setSize] = useState({ w: window.innerWidth, h: window.innerHeight });
-  const [showGrad, setShowGrad] = useState(true);
+  const [showGrad, setShowGrad] = useState(false);
   const effectiveMaxTier = showGrad ? MAX_TIER : UNDERGRAD_MAX_TIER;
   const [camera, setCamera] = useState<Camera | null>(null);
 
@@ -209,6 +216,7 @@ export default function Galaxy() {
   // animated position of every node; eases toward whatever target() returns
   const animPos = useRef<Map<string, Pos>>(new Map());
   const lastCanvasSize = useRef({ w: 0, h: 0 });
+  const litRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
     let raf = 0;
@@ -246,6 +254,7 @@ export default function Galaxy() {
         for (const [id, p] of placeFan(anchor, down, active, 1)) localTarget.set(id, p);
         for (const [id, p] of placeFan(anchor, up, active, -1)) localTarget.set(id, p);
       }
+      litRef.current = lit;
 
       const targetOf = (id: string): Pos =>
         (active && localTarget.has(id)) ? localTarget.get(id)! : globalWorldOf(id, s.effectiveMaxTier);
@@ -285,7 +294,7 @@ export default function Galaxy() {
         const to = posOf(c.id);
         for (const r of s.prereqsOf.get(c.id) ?? []) {
           const from = posOf(r);
-          let stroke = '#8a8a96', alpha = active === null ? 0.16 : 0.03;
+          let stroke = '#8a8a96', alpha = active === null ? 0.16 : DIM_FLOOR;
           if (active !== null && down!.children.get(c.id)?.includes(r)) {
             stroke = '#6fb2e0'; alpha = depthOpacity(down!.dist.get(r)!);
           } else if (active !== null && up!.children.get(r)?.includes(c.id)) {
@@ -365,12 +374,18 @@ export default function Galaxy() {
     y: (sy - cam.y) / cam.scale,
   });
 
-  const pickAt = (sx: number, sy: number): string | null => {
+  // `restrict`: hovering while a course is pinned can only land on the
+  // pinned course's related (lit) set, not the dimmed rest of the graph.
+  // Clicking stays unrestricted so you can still re-pin elsewhere or click
+  // empty space to release the pin.
+  const pickAt = (sx: number, sy: number, restrict: boolean): string | null => {
     if (!camera) return null;
     const w = toWorld(sx, sy, camera);
     const threshold = 12 / camera.scale;
+    const limited = restrict && selected !== null;
     let best: string | null = null, bestD = threshold;
     for (const c of visible) {
+      if (limited && !litRef.current.has(c.id)) continue;
       const p = animPos.current.get(c.id) ?? globalWorldOf(c.id, effectiveMaxTier);
       const d = Math.hypot(p.x - w.x, p.y - w.y);
       if (d < bestD) { bestD = d; best = c.id; }
@@ -396,12 +411,12 @@ export default function Galaxy() {
       }
     }
     const rect = ref.current!.getBoundingClientRect();
-    setHovered(pickAt(ev.clientX - rect.left, ev.clientY - rect.top));
+    setHovered(pickAt(ev.clientX - rect.left, ev.clientY - rect.top, true));
   };
   const onUp = (ev: React.MouseEvent) => {
     if (drag.current && !drag.current.moved) {
       const rect = ref.current!.getBoundingClientRect();
-      setSelected(pickAt(ev.clientX - rect.left, ev.clientY - rect.top));
+      setSelected(pickAt(ev.clientX - rect.left, ev.clientY - rect.top, false));
     }
     drag.current = null;
   };
@@ -418,8 +433,11 @@ export default function Galaxy() {
     setCamera(clampCamera(next, size.w, size.h));
   };
 
+  // tooltip content follows the live hover even while a course is pinned;
+  // only the graph's layout/highlighting stays locked to the pinned course
+  // (that's `active` inside the render loop, computed as selected ?? hovered)
   const course: Course | undefined =
-    (selected ?? hovered) ? byId.get((selected ?? hovered)!) : undefined;
+    (hovered ?? selected) ? byId.get((hovered ?? selected)!) : undefined;
 
   const tooltipRef = useRef<HTMLDivElement>(null);
   const [tipPos, setTipPos] = useState({ left: 0, top: 0 });
