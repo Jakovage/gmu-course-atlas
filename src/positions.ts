@@ -150,16 +150,31 @@ export const POSITIONS: Map<string, number> = (() => {
   // the same department (often also the same tier -- several intro courses
   // with no prereqs, say) on the EXACT same point, since each is shifted
   // independently onto the identical department reference. One more
-  // overlap pass nudges anything that now coincides within a tier apart --
-  // unlike the loop above, this one does NOT re-center each row to 0.5,
-  // so departments keep the regional position the reconciliation just gave
-  // them instead of being dragged back toward the middle.
+  // overlap pass nudges anything that now coincides within a tier apart.
+  // This pass alone does not re-center (order/spacing matters here, not
+  // the row's mean) -- centering happens uniformly for every row in one
+  // final pass below instead, so it can't fight with this one.
   for (const members of byTier.values()) {
     members.sort((a, b) => (x.get(a)! - x.get(b)!) || (a < b ? -1 : 1));
     for (let i = 1; i < members.length; i++) {
       const prev = x.get(members[i - 1])!, cur = x.get(members[i])!;
       if (cur < prev + minGap) x.set(members[i], prev + minGap);
     }
+  }
+
+  // Every row's mean gets pulled back to 0.5, as a pure rigid shift (no
+  // reordering, no rescaling -- relative spacing within a row, including
+  // all the outlier handling above, is completely untouched). Without
+  // this, a row containing orphan-reconciled members drifts away from 0.5
+  // while every OTHER row stays centered (the main physics loop above
+  // already recenters every row each iteration, including the wide,
+  // well-connected ones -- so 0.5 is already the working assumption
+  // everywhere else; a sparse row silently breaking that is the bug, not
+  // a feature worth preserving).
+  for (const members of byTier.values()) {
+    const mean = members.reduce((s, m) => s + x.get(m)!, 0) / members.length;
+    const shift = 0.5 - mean;
+    for (const m of members) x.set(m, x.get(m)! + shift);
   }
 
   // final normalize into [0.03, 0.97]

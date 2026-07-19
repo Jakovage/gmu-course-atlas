@@ -457,7 +457,7 @@ export default function Galaxy() {
       ctx.translate(s.camera.x, s.camera.y);
       ctx.scale(s.camera.scale, s.camera.scale);
 
-      ctx.lineWidth = 1 / s.camera.scale;
+      ctx.lineWidth = 1.4 / s.camera.scale;
       for (const c of s.visible) {
         const to = posOf(c.id);
         for (const r of s.prereqsOf.get(c.id) ?? []) {
@@ -485,17 +485,19 @@ export default function Galaxy() {
                   g.addColorStop(1, DEPT_COLOR[deptOf(c.id)]);
                   return g;
                 })();
-          let alpha = active === null ? 0.16 : 0;
+          // recommended (advisory) edges are dashed and, in global view,
+          // meaningfully dimmer than real prereqs -- they're not actual
+          // structure, and at full catalog scale they shouldn't visually
+          // compete with the graph's real dependency backbone for attention
+          const isRecommended = s.recommendedEdge.has(`${r}>${c.id}`);
+          const baseAlpha = active === null ? (isRecommended ? 0.045 : 0.09) : 0;
+          let alpha = baseAlpha;
           if (active !== null && down!.children.get(c.id)?.includes(r)) {
             stroke = '#6fb2e0'; alpha = depthOpacity(down!.dist.get(r)!);
           } else if (active !== null && up!.children.get(r)?.includes(c.id)) {
             stroke = '#e0a15a'; alpha = depthOpacity(up!.dist.get(c.id)!);
           }
           if (!passesFilter(c.id) || !passesFilter(r)) alpha = active !== null ? 0 : DIM_FLOOR;
-          // recommended (advisory) edges get the SAME color/positioning as
-          // any other connection -- dashed is the only identifier that
-          // distinguishes "you may want this" from "you must have this"
-          const isRecommended = s.recommendedEdge.has(`${r}>${c.id}`);
           ctx.setLineDash(isRecommended ? [5, 4] : []);
           ctx.strokeStyle = stroke;
           ctx.globalAlpha = alpha;
