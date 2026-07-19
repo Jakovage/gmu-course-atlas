@@ -178,7 +178,6 @@ export default function Galaxy() {
   const [query, setQuery] = useState('');
   const [size, setSize] = useState({ w: window.innerWidth, h: window.innerHeight });
   const [showGrad, setShowGrad] = useState(false);
-  const effectiveMaxTier = showGrad ? MAX_TIER : UNDERGRAD_MAX_TIER;
   const [camera, setCamera] = useState<Camera | null>(null);
 
   const visible = useMemo(
@@ -186,38 +185,74 @@ export default function Galaxy() {
     [showGrad],
   );
 
+  // Department filter: empty set = show everything (default). Checking one
+  // or more narrows to those departments' own courses PLUS their immediate
+  // (one-hop) prereqs/unlocks, even across an unchecked department -- so
+  // cross-department context at the boundary isn't lost, just not followed
+  // transitively. Needs its OWN adjacency built from `visible` directly,
+  // since the "real" prereqsOf/dependentsOf further down are computed FROM
+  // the filtered result of this step, not before it.
+  const departments = useMemo(() => [...new Set(CATALOG.map((c) => deptOf(c.id)))].sort(), []);
+  const [deptFilter, setDeptFilter] = useState<Set<string>>(new Set());
+  const deptVisible = useMemo(() => {
+    if (deptFilter.size === 0) return visible;
+    const byId = new Map(visible.map((c) => [c.id, c]));
+    const prereqsOfAll = new Map<string, string[]>();
+    const dependentsOfAll = new Map<string, string[]>(visible.map((c) => [c.id, []]));
+    for (const c of visible) {
+      const refs = [...new Set(allRefs(c.prereq))].filter((r) => byId.has(r));
+      prereqsOfAll.set(c.id, refs);
+      for (const r of refs) dependentsOfAll.get(r)!.push(c.id);
+    }
+    const selected = visible.filter((c) => deptFilter.has(deptOf(c.id)));
+    const keep = new Set(selected.map((c) => c.id));
+    for (const c of selected) {
+      for (const r of prereqsOfAll.get(c.id) ?? []) keep.add(r);
+      for (const r of dependentsOfAll.get(c.id) ?? []) keep.add(r);
+    }
+    return visible.filter((c) => keep.has(c.id));
+  }, [visible, deptFilter]);
+
+  // The y-scale is always the tallest tier among whatever's ACTUALLY
+  // visible right now (grad toggle + department filter combined), not a
+  // fixed catalog-wide constant -- filtering to a small department that
+  // only reaches tier 3 shouldn't leave the top two-thirds of the canvas
+  // empty. With no department filter active this reduces to exactly the
+  // old showGrad ? MAX_TIER : UNDERGRAD_MAX_TIER behavior.
+  const effectiveMaxTier = Math.max(0, ...deptVisible.map((c) => TIERS.get(c.id) ?? 0));
+
   // Immediate-relatives count (direct prereqs + direct unlocks), measured
-  // against the full grad-toggled graph -- deliberately NOT the
+  // against the department-filtered graph -- deliberately NOT the
   // relatives-filtered set below, since filtering by a count that the
   // filter itself changes would be circular. Slider at 1 (rightmost,
   // default) shows everything; sliding left progressively hides the most
   // connected hub courses first, until only fully isolated (0-relative)
   // courses remain at the far left.
   const { degreeOf, maxDegree } = useMemo(() => {
-    const byId = new Map(visible.map((c) => [c.id, c]));
+    const byId = new Map(deptVisible.map((c) => [c.id, c]));
     const prereqCount = new Map<string, number>();
-    const unlockCount = new Map<string, number>(visible.map((c) => [c.id, 0]));
-    for (const c of visible) {
+    const unlockCount = new Map<string, number>(deptVisible.map((c) => [c.id, 0]));
+    for (const c of deptVisible) {
       const refs = [...new Set(allRefs(c.prereq))].filter((r) => byId.has(r));
       prereqCount.set(c.id, refs.length);
       for (const r of refs) unlockCount.set(r, (unlockCount.get(r) ?? 0) + 1);
     }
     const degreeOf = new Map<string, number>();
     let maxDegree = 1;
-    for (const c of visible) {
+    for (const c of deptVisible) {
       const d = (prereqCount.get(c.id) ?? 0) + (unlockCount.get(c.id) ?? 0);
       degreeOf.set(c.id, d);
       if (d > maxDegree) maxDegree = d;
     }
     return { degreeOf, maxDegree };
-  }, [visible]);
+  }, [deptVisible]);
 
   const [relFilter, setRelFilter] = useState(1); // 0..1; 1 = show everything
   const filteredVisible = useMemo(() => {
-    if (relFilter >= 1) return visible;
+    if (relFilter >= 1) return deptVisible;
     const threshold = Math.round(relFilter * maxDegree);
-    return visible.filter((c) => (degreeOf.get(c.id) ?? 0) <= threshold);
-  }, [visible, relFilter, degreeOf, maxDegree]);
+    return deptVisible.filter((c) => (degreeOf.get(c.id) ?? 0) <= threshold);
+  }, [deptVisible, relFilter, degreeOf, maxDegree]);
 
   const visibleIds = useMemo(() => new Set(filteredVisible.map((c) => c.id)), [filteredVisible]);
 
@@ -319,7 +354,7 @@ export default function Galaxy() {
     if (firstRun.current) { firstRun.current = false; return; }
     const fit = fitScale(size.w, size.h);
     setCamera({ x: (size.w - VW * fit) / 2, y: (size.h - VH * fit) / 2, scale: fit });
-  }, [showGrad]);
+  }, [showGrad, deptFilter]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setSelected(null); };
@@ -334,11 +369,11 @@ export default function Galaxy() {
   // latest-value cache the render loop reads from, so the loop itself only
   // needs to start once (no restart-on-every-state-change churn)
   const stateRef = useRef({
-    camera, size, hovered, selected, visible: filteredVisible, fullVisible: visible,
+    camera, size, hovered, selected, visible: filteredVisible, fullVisible: deptVisible,
     byId, prereqsOf, dependentsOf, matches: effectiveMatches, effectiveMaxTier, coreqOf, recommendedEdge,
   });
   stateRef.current = {
-    camera, size, hovered, selected, visible: filteredVisible, fullVisible: visible,
+    camera, size, hovered, selected, visible: filteredVisible, fullVisible: deptVisible,
     byId, prereqsOf, dependentsOf, matches: effectiveMatches, effectiveMaxTier, coreqOf, recommendedEdge,
   };
 
@@ -615,7 +650,7 @@ export default function Galaxy() {
     const w = toWorld(sx, sy, camera);
     const threshold = 12 / camera.scale;
     const limitedToLit = restrict && selected !== null;
-    const [xMin, xRange] = xRangeOf(visible);
+    const [xMin, xRange] = xRangeOf(deptVisible);
     let best: string | null = null, bestD = threshold;
     for (const c of filteredVisible) {
       if (limitedToLit && !litRef.current.has(c.id)) continue;
@@ -729,6 +764,50 @@ export default function Galaxy() {
           onChange={(e) => setRelFilter(parseFloat(e.target.value))}
           style={{ width: '100%' }}
         />
+      </div>
+      <div style={{
+        position: 'fixed', top: 14, right: 14, zIndex: 10,
+        background: '#16161e', border: '1px solid #34343e', borderRadius: 8,
+        padding: '10px 12px', color: '#e6e6ee', fontSize: 12.5,
+        fontFamily: 'system-ui, sans-serif', width: 200,
+        maxHeight: 'calc(100vh - 28px)', overflowY: 'auto',
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+          <span style={{ fontWeight: 600 }}>departments</span>
+          {deptFilter.size > 0 && (
+            <button
+              onClick={() => setDeptFilter(new Set())}
+              style={{
+                background: 'transparent', border: 'none', color: '#7f9fd1', fontSize: 11,
+                cursor: 'pointer', padding: 0,
+              }}
+            >clear</button>
+          )}
+        </div>
+        {departments.map((d) => (
+          <label
+            key={d}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 7, padding: '3px 0',
+              cursor: 'pointer', userSelect: 'none',
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={deptFilter.has(d)}
+              onChange={(e) => {
+                const next = new Set(deptFilter);
+                if (e.target.checked) next.add(d); else next.delete(d);
+                setDeptFilter(next);
+              }}
+            />
+            <span style={{
+              width: 9, height: 9, borderRadius: '50%', flexShrink: 0,
+              background: DEPT_COLOR[d] ?? '#8a8a94',
+            }} />
+            <span>{d}</span>
+          </label>
+        ))}
       </div>
       <div style={{
         position: 'fixed', bottom: 14, left: 14, zIndex: 10, color: '#8a8a94',
