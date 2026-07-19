@@ -3,487 +3,584 @@
     {
       "id": "CHEM 101",
       "title": "Introduction to Modern Chemistry",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "CHEM 102",
       "title": "Chemistry for Changing Times",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "CHEM 103",
       "title": "Chemical Science in a Modern Society",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "CHEM 104",
       "title": "Chemistry for Changing Times",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "CHEM 105",
       "title": "Introductory Chemistry Laboratory I",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 101)"
     },
     {
       "id": "CHEM 106",
       "title": "Introductory Chemistry Laboratory II",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 102)"
     },
     {
       "id": "CHEM 155",
       "title": "Introduction to Environmental Chemistry I",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "CHEM 156",
       "title": "Introduction to Environmental Chemistry II",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 155 | ?Permission of instructor)"
     },
     {
       "id": "CHEM 211",
       "title": "General Chemistry I",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 213*)"
     },
     {
       "id": "CHEM 212",
       "title": "General Chemistry II",
-      "prereq": "CHEM 211"
+      "prereq": "CHEM 211:C",
+      "recommended": "(CHEM 214*)"
     },
     {
       "id": "CHEM 213",
       "title": "General Chemistry Laboratory I",
-      "prereq": "CHEM 211*"
+      "prereq": "CHEM 211*:C",
+      "recommended": null
     },
     {
       "id": "CHEM 214",
       "title": "General Chemistry Laboratory II",
-      "prereq": "(CHEM 211 & CHEM 212* & CHEM 213)"
+      "prereq": "(CHEM 211:C & CHEM 212*:C & CHEM 213:C)",
+      "recommended": null
     },
     {
       "id": "CHEM 271",
       "title": "General Chemistry for Engineers Lecture",
-      "prereq": "CHEM 272*"
+      "prereq": "CHEM 272*:C",
+      "recommended": null
     },
     {
       "id": "CHEM 272",
       "title": "General Chemistry for Engineers Lab",
-      "prereq": "CHEM 271*"
+      "prereq": "CHEM 271*:C",
+      "recommended": null
     },
     {
       "id": "CHEM 310",
       "title": "Survey of Organic Chemistry",
-      "prereq": "(CHEM 271 & (CHEM 272 | (CHEM 211 & CHEM 212 & CHEM 213 & CHEM 214)))"
+      "prereq": "((CHEM 271:C & CHEM 272:C) | (CHEM 211:C & CHEM 212:C & CHEM 213:C & CHEM 214:C))",
+      "recommended": null
     },
     {
       "id": "CHEM 313",
       "title": "Organic Chemistry I",
-      "prereq": "(CHEM 211 & CHEM 212 & CHEM 213 & CHEM 214)"
+      "prereq": "(CHEM 211:C & CHEM 212:C & CHEM 213:C & CHEM 214:C)",
+      "recommended": "(CHEM 315*)"
     },
     {
       "id": "CHEM 314",
       "title": "Organic Chemistry II",
-      "prereq": "(CHEM 211 & CHEM 212 & CHEM 213 & CHEM 214 & CHEM 313)"
+      "prereq": "(CHEM 211:C & CHEM 212:C & CHEM 213:C & CHEM 214:C & CHEM 313:C)",
+      "recommended": "(CHEM 318*)"
     },
     {
       "id": "CHEM 315",
       "title": "Organic Chemistry Lab I",
-      "prereq": "(CHEM 211 & CHEM 212 & CHEM 213 & CHEM 214 & CHEM 313*)"
+      "prereq": "(CHEM 211:C & CHEM 212:C & CHEM 213:C & CHEM 214:C & CHEM 313*:C)",
+      "recommended": null
     },
     {
       "id": "CHEM 318",
       "title": "Organic Chemistry Lab II",
-      "prereq": "(CHEM 211 & CHEM 212 & CHEM 213 & CHEM 214 & CHEM 313 & CHEM 314* & CHEM 315)"
+      "prereq": "(CHEM 211:C & CHEM 212:C & CHEM 213:C & CHEM 214:C & CHEM 313:C & CHEM 314*:C & CHEM 315:C)",
+      "recommended": "(CHEM 314*)"
     },
     {
       "id": "CHEM 321",
       "title": "Quantitative Chemical Analysis",
-      "prereq": "(CHEM 211 & CHEM 212 & CHEM 213 & CHEM 214 & (MATH 113:C | MATH 124:C))"
+      "prereq": "(CHEM 211:C & CHEM 212:C & CHEM 213:C & CHEM 214:C & (MATH 113:C | MATH 124:C))",
+      "recommended": null
     },
     {
       "id": "CHEM 322",
       "title": "Quantitative Chemical Analysis Lecture",
-      "prereq": "(CHEM 211 & CHEM 212 & CHEM 213 & CHEM 214 & (MATH 113 | MATH 124))"
+      "prereq": "(CHEM 211:C & CHEM 212:C & CHEM 213:C & CHEM 214:C & (MATH 113:C | MATH 124:C))",
+      "recommended": null
     },
     {
       "id": "CHEM 323",
       "title": "Quantitative Chemical Analysis Laboratory",
-      "prereq": "CHEM 322"
+      "prereq": "CHEM 322:C",
+      "recommended": null
     },
     {
       "id": "CHEM 331",
       "title": "Physical Chemistry I",
-      "prereq": "(CHEM 211 & CHEM 212 & CHEM 213 & CHEM 214 & (MATH 114 | MATH 116) & (PHYS 160* | PHYS 243*))"
+      "prereq": "(CHEM 211:C & CHEM 212:C & CHEM 213:C & CHEM 214:C & (MATH 114:C | MATH 116:C) & (PHYS 160*:C | PHYS 243*:C))",
+      "recommended": null
     },
     {
       "id": "CHEM 332",
       "title": "Physical Chemistry II",
-      "prereq": "(CHEM 331 & MATH 114 & (PHYS 160 | PHYS 243) & (PHYS 244* | PHYS 260*))"
+      "prereq": "(CHEM 331:C & (MATH 114:C | MATH 116:C) & (PHYS 160:C | PHYS 243:C) & (PHYS 244*:C | PHYS 260*:C))",
+      "recommended": null
     },
     {
       "id": "CHEM 336",
       "title": "Physical Chemistry Lab I",
-      "prereq": "(CHEM 212 & CHEM 321 & CHEM 331* & (MATH 114 | MATH 116) & (PHYS 160* | PHYS 243*))"
+      "prereq": "(CHEM 212:C & CHEM 321:C & CHEM 331*:C & (MATH 114:C | MATH 116:C) & (PHYS 160*:C | PHYS 243*:C))",
+      "recommended": null
     },
     {
       "id": "CHEM 337",
       "title": "Physical Chemistry Lab II",
-      "prereq": "(CHEM 331 & CHEM 332* & CHEM 336)"
+      "prereq": "(CHEM 331:C & CHEM 332*:C & CHEM 336:C)",
+      "recommended": null
     },
     {
       "id": "CHEM 355",
       "title": "Undergraduate Research",
-      "prereq": "(CHEM 313 & CHEM 315 & MATH 113 & PHYS 243 & PHYS 244)"
+      "prereq": "(CHEM 313:C & CHEM 315:C & MATH 113:C & PHYS 243:C & PHYS 244:C)",
+      "recommended": null
     },
     {
       "id": "CHEM 413",
       "title": "Synthetic and Mechanistic Organic Chemistry",
-      "prereq": "(CHEM 314 & CHEM 318 & CHEM 331)"
+      "prereq": "(CHEM 314:C & CHEM 318:C & CHEM 331:C)",
+      "recommended": null
     },
     {
       "id": "CHEM 422",
       "title": "Instrumental Methods of Chemical Analysis",
-      "prereq": "(CHEM 321 & CHEM 332 & CHEM 336)"
+      "prereq": "(CHEM 321:C & CHEM 332:C & CHEM 336:C)",
+      "recommended": null
     },
     {
       "id": "CHEM 423",
       "title": "Instrumental Methods of Chemical Analysis Laboratory",
-      "prereq": "CHEM 422"
+      "prereq": "CHEM 422:C",
+      "recommended": null
     },
     {
       "id": "CHEM 424",
       "title": "Principles of Chemical Separation",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 332 | CHEM 422 | ?Permission of instructor)"
     },
     {
       "id": "CHEM 425",
       "title": "Electroanalytical Chemistry",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 332 | CHEM 422 | ?Permission of instructor)"
     },
     {
       "id": "CHEM 427",
       "title": "Aquatic Environmental Chemistry",
-      "prereq": "CHEM 321"
+      "prereq": "CHEM 321:C",
+      "recommended": null
     },
     {
       "id": "CHEM 438",
       "title": "Atmospheric Chemistry",
-      "prereq": "CHEM 332"
+      "prereq": "CHEM 332:C",
+      "recommended": null
     },
     {
       "id": "CHEM 439",
       "title": "RS: Atmospheric Chemistry II: Air Analysis Techniques",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 438 | ?Permission of instructor)"
     },
     {
       "id": "CHEM 441",
       "title": "Properties and Bonding of Inorganic Compounds",
-      "prereq": "(CHEM 332 & CHEM 336)"
+      "prereq": "(CHEM 332:C & CHEM 336:C)",
+      "recommended": null
     },
     {
       "id": "CHEM 445",
       "title": "Inorganic Preparations and Techniques",
-      "prereq": "CHEM 441"
+      "prereq": "CHEM 441:C",
+      "recommended": null
     },
     {
       "id": "CHEM 446",
       "title": "Bioinorganic Chemistry",
-      "prereq": "(CHEM 331 & CHEM 336 & (BIOL 483 | CHEM 463))"
+      "prereq": "((CHEM 463:C | BIOL 483:C) & CHEM 331:C & CHEM 336:C)",
+      "recommended": null
     },
     {
       "id": "CHEM 451",
       "title": "Special Projects in Chemistry",
-      "prereq": "(CHEM 314 & CHEM 318 & CHEM 321 & CHEM 331 & CHEM 336)"
+      "prereq": "(CHEM 314:C & CHEM 318:C & CHEM 321:C & CHEM 331:C & CHEM 336:C)",
+      "recommended": null
     },
     {
       "id": "CHEM 452",
       "title": "Special Projects in Chemistry",
-      "prereq": "CHEM 451"
+      "prereq": "CHEM 451:C",
+      "recommended": null
     },
     {
       "id": "CHEM 455",
       "title": "Honors Research in Chemistry",
-      "prereq": "(CHEM 313 & CHEM 314 & CHEM 315 & CHEM 318 & CHEM 331 & CHEM 336 & CHEM 490*)"
+      "prereq": "(CHEM 313:C & CHEM 314:C & CHEM 315:C & CHEM 318:C & CHEM 331:C & CHEM 336:C & CHEM 490*:C)",
+      "recommended": null
     },
     {
       "id": "CHEM 456",
       "title": "Honors Research in Chemistry",
-      "prereq": "(CHEM 455:C & CHEM 490*)"
+      "prereq": "(CHEM 455:C & CHEM 490*:C)",
+      "recommended": null
     },
     {
       "id": "CHEM 458",
       "title": "Chemical Oceanography",
-      "prereq": "(CHEM 211 & CHEM 212 & (CHEM 321 | GEOL 309))"
+      "prereq": "(CHEM 211:C & CHEM 212:C & (CHEM 321:C | GEOL 309:C))",
+      "recommended": null
     },
     {
       "id": "CHEM 460",
       "title": "Chemistry in the Kitchen",
-      "prereq": "(CHEM 463:C & ((CHEM 211:C & CHEM 212:C & CHEM 213:C & CHEM 214:C) | (CHEM 271:C & CHEM 272:C)) & (CHEM 310:C | (CHEM 313:C & CHEM 315:C)))"
+      "prereq": "((((CHEM 211:C & CHEM 213:C) & (CHEM 212:C & CHEM 214:C)) | (CHEM 271:C & CHEM 272:C)) & ((CHEM 313:C & CHEM 315:C) | CHEM 310:C) & CHEM 463:C)",
+      "recommended": "(?Minimum 85 earned credit hours)"
     },
     {
       "id": "CHEM 463",
       "title": "General Biochemistry I",
-      "prereq": "(BIOL 213 & CHEM 313)"
+      "prereq": "(CHEM 313:C & BIOL 213:C)",
+      "recommended": null
     },
     {
       "id": "CHEM 464",
       "title": "General Biochemistry II",
-      "prereq": "(CHEM 463 | (BIOL 483 & CHEM 314))"
+      "prereq": "(CHEM 463:C | (BIOL 483:C & CHEM 314:C))",
+      "recommended": null
     },
     {
       "id": "CHEM 465",
       "title": "Biochemistry Lab",
-      "prereq": "(CHEM 315 & (BIOL 483 | CHEM 463*))"
+      "prereq": "((CHEM 463*:C | BIOL 483:C) & CHEM 315:C)",
+      "recommended": "(CHEM 315:C | CHEM 463*:C)"
     },
     {
       "id": "CHEM 467",
       "title": "The Chemistry of Enzyme-Catalyzed Reactions",
-      "prereq": "(CHEM 314 & CHEM 331 & CHEM 463 & CHEM 464)"
+      "prereq": "(CHEM 463:C & CHEM 464:C & CHEM 314:C & CHEM 331:C)",
+      "recommended": null
     },
     {
       "id": "CHEM 468",
       "title": "Bioorganic Chemistry",
-      "prereq": "(CHEM 314 & (BIOL 483 | CHEM 463))"
+      "prereq": "((CHEM 463:C | BIOL 483:C) & CHEM 314:C)",
+      "recommended": null
     },
     {
       "id": "CHEM 470",
       "title": "Laboratory Instructional Methods for Chemistry",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 314)"
     },
     {
       "id": "CHEM 471",
       "title": "Solid State Chemistry",
-      "prereq": "CHEM 441"
+      "prereq": "CHEM 441:C",
+      "recommended": null
     },
     {
       "id": "CHEM 472",
       "title": "Modern Polymer Chemistry",
-      "prereq": "(CHEM 313 & CHEM 314 & CHEM 321 & CHEM 331)"
+      "prereq": "(CHEM 313:C & CHEM 314:C & CHEM 321:C & CHEM 331:C)",
+      "recommended": null
     },
     {
       "id": "CHEM 479",
       "title": "Special Topics in Chemistry",
-      "prereq": "(CHEM 211 & CHEM 212)"
+      "prereq": "(CHEM 211:C & CHEM 212:C)",
+      "recommended": "(?Permission of instructor)"
     },
     {
       "id": "CHEM 480",
       "title": "Fundamentals of Nanoscience and Nanomaterials",
-      "prereq": "(CHEM 331 & CHEM 332 & MATH 113 & MATH 114)"
+      "prereq": "(CHEM 331:C & CHEM 332:C & MATH 113:C & MATH 114:C)",
+      "recommended": null
     },
     {
       "id": "CHEM 490",
       "title": "Undergraduate Seminar",
-      "prereq": "(CHEM 331 | CHEM 336)"
+      "prereq": "(CHEM 331:C | CHEM 336:C)",
+      "recommended": null
     },
     {
       "id": "CHEM 500",
       "title": "Selected Topics in Modern Chemistry",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "CHEM 513",
       "title": "Synthetic and Mechanistic Organic Chemistry",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 314:C | CHEM 318:C | CHEM 331:C)"
     },
     {
       "id": "CHEM 529",
       "title": "Instrumental Techniques of Analysis",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 321 | CHEM 422 | CHEM 521 | ?Permission of department)"
     },
     {
       "id": "CHEM 531",
       "title": "Elements of Physical Chemistry",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 211 | CHEM 212 | CHEM 313 | CHEM 314 | PHYS 243 | PHYS 245 | MATH 113 | ?Permission of instructor)"
     },
     {
       "id": "CHEM 560",
       "title": "Environmental Biotechnology",
-      "prereq": "(CHEM 211 & CHEM 212 & CHEM 213 & CHEM 214)"
+      "prereq": "(CHEM 211:C & CHEM 212:C & CHEM 213:C & CHEM 214:C)",
+      "recommended": "(CHEM 446 | BIOL 213 | ?Equivalent course)"
     },
     {
       "id": "CHEM 563",
       "title": "General Biochemistry I",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 313 | BIOL 213)"
     },
     {
       "id": "CHEM 564",
       "title": "General Biochemistry II",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 563 | ?Equivalent course)"
     },
     {
       "id": "CHEM 567",
       "title": "The Chemistry of Enzyme-Catalyzed Reactions",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 313 | CHEM 463 | ?Permission of instructor)"
     },
     {
       "id": "CHEM 568",
       "title": "Bioorganic Chemistry",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 314 | CHEM 463 | ?Equivalent course | ?Permission of instructor)"
     },
     {
       "id": "CHEM 579",
       "title": "Special Topics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 313 | CHEM 314 | ?Permission of instructor)"
     },
     {
       "id": "CHEM 613",
       "title": "Modern Polymer Chemistry",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "CHEM 614",
       "title": "Physical Organic Chemistry",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 314 | ?Permission of instructor)"
     },
     {
       "id": "CHEM 620",
       "title": "Modern Instrumentation",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 332 | CHEM 422 | ?Permission of instructor)"
     },
     {
       "id": "CHEM 624",
       "title": "Principles of Chemical Separation",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 332 | CHEM 422 | ?Permission of instructor)"
     },
     {
       "id": "CHEM 625",
       "title": "Electroanalytical Chemistry",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 332 | CHEM 422 | ?Permission of instructor)"
     },
     {
       "id": "CHEM 627",
       "title": "Aquatic Environmental Chemistry",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 321 | GEOL 302 | ?Equivalent course | ?Permission of instructor)"
     },
     {
       "id": "CHEM 633",
       "title": "Chemical Thermodynamics and Kinetics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 331 | CHEM 332)"
     },
     {
       "id": "CHEM 641",
       "title": "Solid State Chemistry",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 441 | ?Permission of instructor)"
     },
     {
       "id": "CHEM 646",
       "title": "Bioinorganic Chemistry",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 441 | ?Permission of instructor)"
     },
     {
       "id": "CHEM 651",
       "title": "Environmental Chemistry of Organic Substances",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?One semester of physical chemistry | ?Permission of instructor)"
     },
     {
       "id": "CHEM 660",
       "title": "Protein Biochemistry",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 463 | ?Equivalent course | ?Permission of instructor)"
     },
     {
       "id": "CHEM 661",
       "title": "Antibiotic Chemistry and Resistance",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 463 | ?Equivalent course | ?Permission of instructor)"
     },
     {
       "id": "CHEM 662",
       "title": "Modern Methods of Drug Discovery",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 463 | ?Equivalent course | ?Permission of instructor)"
     },
     {
       "id": "CHEM 665",
       "title": "Protein-Protein Interactions: Methods and Applications",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 463 | ?Equivalent course | ?Permission of instructor)"
     },
     {
       "id": "CHEM 670",
       "title": "Teaching Practicum",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Enrollment in the graduate program | ?Permission of chair)"
     },
     {
       "id": "CHEM 680",
       "title": "Fundamentals of Nanoscience and Nanomaterials",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 331:C | CHEM 332:C | MATH 113:C | MATH 114:C)"
     },
     {
       "id": "CHEM 728",
       "title": "Introduction to Solid Surfaces",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 422 | ?Equivalent course)"
     },
     {
       "id": "CHEM 735",
       "title": "Astrophysical Chemistry of Planetary Bodies",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 331 | ASTR 403 | ?Permission of instructor)"
     },
     {
       "id": "CHEM 736",
       "title": "Computational Quantum Mechanics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(PHYS 502 | PHYS 510 | ?Permission of instructor)"
     },
     {
       "id": "CHEM 767",
       "title": "Industrial Biochemistry",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 463 | ?Permission of instructor)"
     },
     {
       "id": "CHEM 790",
       "title": "Graduate Seminar",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Admission to a graduate program in Chemistry and Biochemistry | ?Permission of instructor)"
     },
     {
       "id": "CHEM 796",
       "title": "Directed Reading and Research",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Admission to a graduate program in Chemistry and Biochemistry | ?Admission to an affiliated program)"
     },
     {
       "id": "CHEM 798",
       "title": "Research Project",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 798* | CHEM 799* | ?Permission of department | ?Six credits required)"
     },
     {
       "id": "CHEM 799",
       "title": "Master's Thesis",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Permission of department)"
     },
     {
       "id": "CHEM 814",
       "title": "Advanced Bioorganic Chemistry",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 313 | CHEM 314 | CHEM 463 | ?Equivalent course | ?Permission of instructor)"
     },
     {
       "id": "CHEM 817",
       "title": "Organic Structural Spectroscopy",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 314 | ?Equivalent course)"
     },
     {
       "id": "CHEM 821",
       "title": "Theory of Analytical Processes",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Admission to the Chemistry and Biochemistry doctoral program)"
     },
     {
       "id": "CHEM 833",
       "title": "Physical Chemistry and Biochemistry",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 331 | ?Permission of instructor)"
     },
     {
       "id": "CHEM 891",
       "title": "Doctoral Scientific Critique, Writing and Presentation",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Permission of academic advisor | ?Permission of research advisor | ?Permission of research committee)"
     },
     {
       "id": "CHEM 896",
       "title": "Doctoral Directed Reading and Research",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Admission to the PhD in Chemistry and Biochemistry | ?Admission to an affiliated program)"
     },
     {
       "id": "CHEM 998",
       "title": "Doctoral Dissertation Proposal",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Permission of research advisor | ?Permission of graduate committee)"
     },
     {
       "id": "CHEM 999",
       "title": "Doctoral Dissertation Research",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Admission to candidacy in the Chemistry and Biochemistry doctoral program)"
     }
   ]
 }

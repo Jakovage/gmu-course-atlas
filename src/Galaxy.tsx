@@ -70,19 +70,6 @@ function bfsTree(start: string, adj: Map<string, string[]>) {
   return { dist, children };
 }
 
-// every descendant of `root` within a BFS tree's children map (root itself
-// excluded) -- used to drag a coreq partner's whole branch along with it
-// when it gets relocated to sit parallel to the active course.
-function collectSubtree(root: string, children: Map<string, string[]>): string[] {
-  const out: string[] = [];
-  const stack = [...(children.get(root) ?? [])];
-  while (stack.length) {
-    const id = stack.pop()!;
-    out.push(id);
-    stack.push(...(children.get(id) ?? []));
-  }
-  return out;
-}
 
 // classic tree x-layout: leaves get sequential slots, each parent centers
 // over the span of its children. Returns relative x (in slot units).
@@ -243,24 +230,43 @@ export default function Galaxy() {
       .map((c) => c.id));
   }, [query, filteredVisible]);
 
-  const { byId, prereqsOf, dependentsOf, coreqOf } = useMemo(() => {
+  const { byId, prereqsOf, dependentsOf, coreqOf, recommendedEdge, recommendedIds } = useMemo(() => {
     const byId = new Map(filteredVisible.map((c) => [c.id, c]));
+    // prereqsOf/dependentsOf now carry BOTH real prereqs and recommended
+    // refs together -- recommended courses need to sit inside the same
+    // tree/BFS layout as everything else (positioned via placeFan, subject
+    // to the same tree-only-edges rule, same distance falloff), or they
+    // fall back to wherever their raw global position is and the dashed
+    // lines shoot across the whole canvas to reach them. recommendedEdge
+    // tags which specific (from, to) pairs came from `recommended` rather
+    // than `prereq`, purely so the draw pass can render them dashed --
+    // it's a styling flag, not a separate graph.
+    // tiers.ts / positions.ts / impact.ts / the AND-OR boxes all read only
+    // c.prereq directly, never this merged view, so a recommendation still
+    // can't affect tier depth, the relatives count, or gate logic.
     const prereqsOf = new Map<string, string[]>();
     const dependentsOf = new Map<string, string[]>(filteredVisible.map((c) => [c.id, []]));
-    // one-directional: coreqOf.get(X) = courses X's OWN prereq expression
-    // stars. This belongs entirely to X -- if X requires Y but allows Y
-    // concurrently, that's X's own flexibility, not a partnership. Focusing
-    // X pulls Y parallel; focusing Y does NOT pull X parallel, since Y never
-    // made any such allowance itself (Y just renders normally above X in
-    // the unlocks fan, hierarchical like any other dependent).
+    const recommendedEdge = new Set<string>();
+    const recommendedIds = new Map<string, string[]>(); // for the tooltip's own list
+    // one-directional: coreqOf.get(X) = courses X's OWN prereq (or
+    // recommended) expression stars. Belongs entirely to X -- if X allows Y
+    // concurrently, that's X's own flexibility, not a partnership.
     const coreqOf = new Map<string, Set<string>>(filteredVisible.map((c) => [c.id, new Set()]));
     for (const c of filteredVisible) {
-      const refs = [...new Set(allRefs(c.prereq))].filter((r) => byId.has(r));
-      prereqsOf.set(c.id, refs);
-      for (const r of refs) dependentsOf.get(r)!.push(c.id);
+      const prereqRefs = [...new Set(allRefs(c.prereq))].filter((r) => byId.has(r));
+      const recRefs = [...new Set(allRefs(c.recommended))]
+        .filter((r) => byId.has(r) && r !== c.id && !prereqRefs.includes(r));
+      prereqsOf.set(c.id, [...prereqRefs, ...recRefs]);
+      for (const r of prereqRefs) dependentsOf.get(r)!.push(c.id);
+      for (const r of recRefs) {
+        dependentsOf.get(r)!.push(c.id);
+        recommendedEdge.add(`${r}>${c.id}`);
+      }
+      recommendedIds.set(c.id, recRefs);
       for (const r of concurrentRefs(c.prereq)) if (byId.has(r)) coreqOf.get(c.id)!.add(r);
+      for (const r of concurrentRefs(c.recommended)) if (byId.has(r)) coreqOf.get(c.id)!.add(r);
     }
-    return { byId, prereqsOf, dependentsOf, coreqOf };
+    return { byId, prereqsOf, dependentsOf, coreqOf, recommendedEdge, recommendedIds };
   }, [filteredVisible]);
 
   // x is renormalized to whichever courses are actually visible, not the
@@ -323,11 +329,11 @@ export default function Galaxy() {
   // needs to start once (no restart-on-every-state-change churn)
   const stateRef = useRef({
     camera, size, hovered, selected, visible: filteredVisible, fullVisible: visible,
-    byId, prereqsOf, dependentsOf, matches, effectiveMaxTier, coreqOf,
+    byId, prereqsOf, dependentsOf, matches, effectiveMaxTier, coreqOf, recommendedEdge,
   });
   stateRef.current = {
     camera, size, hovered, selected, visible: filteredVisible, fullVisible: visible,
-    byId, prereqsOf, dependentsOf, matches, effectiveMaxTier, coreqOf,
+    byId, prereqsOf, dependentsOf, matches, effectiveMaxTier, coreqOf, recommendedEdge,
   };
 
   // animated position of every node; eases toward whatever target() returns
@@ -374,28 +380,32 @@ export default function Galaxy() {
 
         // direct coreqs render parallel: same row as the active course,
         // fanning out beside it instead of hanging in the before/after tree.
-        // The partner's own subtree (whatever IT in turn requires/unlocks)
-        // gets shifted by the same delta, as one rigid unit -- otherwise
-        // only the partner teleports sideways while its descendants stay at
-        // their original tiered spot, stretching the connecting edges into
-        // long, near-horizontal lines across the canvas.
+        // The partner's own subtree gets an INDEPENDENT layout rooted at its
+        // new position -- not a rigid drag of its old one, which would land
+        // a deep subtree's descendants on top of active's OTHER, unrelated
+        // branches (spacing was computed assuming the partner stayed one
+        // row below active, not beside it). BUT: a coreq partner often
+        // shares most of its own foundation with active's own tree (e.g. a
+        // partner two courses share nearly the same prereq chain) -- for
+        // any node already placed by active's own down/up fan, that
+        // placement wins and is left untouched, so shared requirements stay
+        // correctly attributed to active rather than getting silently
+        // re-centered around the partner. Only nodes genuinely exclusive to
+        // the partner's own subtree get this fresh layout.
         const partners = [...(s.coreqOf.get(active) ?? [])].sort();
         partners.forEach((id, i) => {
           const side = i % 2 === 0 ? 1 : -1;
           const rank = Math.ceil((i + 1) / 2);
           const newPos = { x: anchor.x + side * rank * COREQ_GAP, y: anchor.y };
-          const oldPos = localTarget.get(id);
-          if (!oldPos) { localTarget.set(id, newPos); return; }
-          const dx = newPos.x - oldPos.x, dy = newPos.y - oldPos.y;
-          for (const sid of collectSubtree(id, down!.children)) {
-            const p = localTarget.get(sid);
-            if (p) localTarget.set(sid, { x: p.x + dx, y: p.y + dy });
-          }
-          for (const sid of collectSubtree(id, up!.children)) {
-            const p = localTarget.get(sid);
-            if (p) localTarget.set(sid, { x: p.x + dx, y: p.y + dy });
-          }
           localTarget.set(id, newPos);
+          const partnerDown = bfsTree(id, s.prereqsOf);
+          const partnerUp = bfsTree(id, s.dependentsOf);
+          for (const [sid, p] of placeFan(newPos, partnerDown, id, 1)) {
+            if (sid !== active && !localTarget.has(sid)) { localTarget.set(sid, p); lit.add(sid); }
+          }
+          for (const [sid, p] of placeFan(newPos, partnerUp, id, -1)) {
+            if (sid !== active && !localTarget.has(sid)) { localTarget.set(sid, p); lit.add(sid); }
+          }
         });
       }
       litRef.current = lit;
@@ -461,11 +471,17 @@ export default function Galaxy() {
             stroke = '#e0a15a'; alpha = depthOpacity(up!.dist.get(c.id)!);
           }
           if (!passesFilter(c.id) || !passesFilter(r)) alpha = active !== null ? 0 : DIM_FLOOR;
+          // recommended (advisory) edges get the SAME color/positioning as
+          // any other connection -- dashed is the only identifier that
+          // distinguishes "you may want this" from "you must have this"
+          const isRecommended = s.recommendedEdge.has(`${r}>${c.id}`);
+          ctx.setLineDash(isRecommended ? [5, 4] : []);
           ctx.strokeStyle = stroke;
           ctx.globalAlpha = alpha;
           ctx.beginPath(); ctx.moveTo(from.x, from.y); ctx.lineTo(to.x, to.y); ctx.stroke();
         }
       }
+      ctx.setLineDash([]);
 
       // AND/OR boxes for the active course's own direct prereq expression
       if (active) {
@@ -685,7 +701,7 @@ export default function Galaxy() {
         position: 'fixed', bottom: 14, left: 14, zIndex: 10, color: '#8a8a94',
         fontSize: 11, fontFamily: 'system-ui, sans-serif', pointerEvents: 'none',
       }}>
-        blue = requires (any depth) · amber = unlocks (any depth) · fainter = farther away
+        blue = requires (any depth) · amber = unlocks (any depth) · dashed = recommended · fainter = farther away
       </div>
       <canvas
         ref={ref}
@@ -725,6 +741,14 @@ export default function Galaxy() {
               <div style={{ color: '#7f7f8a', fontSize: 10, textTransform: 'uppercase' }}>Corequisites</div>
               <div style={{ color: '#a8a8b4' }}>
                 {[...(coreqOf.get(course.id) ?? [])].sort().join(', ')}
+              </div>
+            </div>
+          )}
+          {(recommendedIds.get(course.id) ?? []).length > 0 && (
+            <div style={{ marginTop: 6 }}>
+              <div style={{ color: '#7f7f8a', fontSize: 10, textTransform: 'uppercase' }}>Recommended</div>
+              <div style={{ color: '#a8a8b4' }}>
+                {(recommendedIds.get(course.id) ?? []).join(', ')}
               </div>
             </div>
           )}

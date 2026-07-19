@@ -3,982 +3,1178 @@
     {
       "id": "BIOL 101",
       "title": "Biology Freshman Seminar",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "BIOL 102",
       "title": "Introductory Biology I-Survey of Biodiversity and Ecology",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "BIOL 103",
       "title": "Introductory Biology II-Survey of Cell and Molecular Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "BIOL 105",
       "title": "Introductory Biology II Laboratory",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 103*)"
     },
     {
       "id": "BIOL 106",
       "title": "Introductory Biology I Laboratory",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 102)"
     },
     {
       "id": "BIOL 107",
       "title": "Intro Biology II Lecture",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "BIOL 124",
       "title": "Human Anatomy and Physiology I",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 103)"
     },
     {
       "id": "BIOL 125",
       "title": "Human Anatomy and Physiology II",
-      "prereq": "BIOL 124:C"
+      "prereq": "BIOL 124:C",
+      "recommended": null
     },
     {
       "id": "BIOL 140",
       "title": "Plants and People",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "BIOL 177",
       "title": "Introductory Ecology for Environmental Engineers",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "BIOL 213",
       "title": "Cell Structure and Function",
-      "prereq": "((BIOL 103:C | CHEM 211:C | CHEM 271:C) & BIOL 215*:C)"
+      "prereq": "((BIOL 103:C | CHEM 211:C | CHEM 271:C) & BIOL 215*:C)",
+      "recommended": null
     },
     {
       "id": "BIOL 214",
       "title": "Biostatistics for Biology Majors",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 213*)"
     },
     {
       "id": "BIOL 215",
       "title": "Cell Structure and Function Laboratory",
-      "prereq": "BIOL 213*:C"
+      "prereq": "BIOL 213*:C",
+      "recommended": null
     },
     {
       "id": "BIOL 246",
       "title": "Introductory Microbiology",
-      "prereq": "(BIOL 124:C | BIOL 103:C | BIOL 213:C | GCH 270:C)"
+      "prereq": "(BIOL 124:C | BIOL 103:C | BIOL 213:C | GCH 270:C)",
+      "recommended": "(BIOL 306*)"
     },
     {
       "id": "BIOL 295",
       "title": "Summer Research in Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Permission of instructor | ?Permission of Biology Program Director)"
     },
     {
       "id": "BIOL 300",
       "title": "BioDiversity",
-      "prereq": "BIOL 213:C"
+      "prereq": "BIOL 213:C",
+      "recommended": null
     },
     {
       "id": "BIOL 301",
       "title": "Biology and Society",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 103 | ?60 credits | ?Permission of instructor)"
     },
     {
       "id": "BIOL 302",
       "title": "Alternative Careers in Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "BIOL 303",
       "title": "Animal Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 213:C | ?Permission of instructor)"
     },
     {
       "id": "BIOL 304",
       "title": "Plant Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 213:C | ?Permission of instructor)"
     },
     {
       "id": "BIOL 305",
       "title": "Biology of Microorganisms",
-      "prereq": "BIOL 213:C"
+      "prereq": "BIOL 213:C",
+      "recommended": "(BIOL 306*)"
     },
     {
       "id": "BIOL 306",
       "title": "Biology of Microorganisms Laboratory",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 305* | BIOL 246*)"
     },
     {
       "id": "BIOL 308",
       "title": "Foundations of Ecology and Evolution",
-      "prereq": "((BIOL 213:C & BIOL 214:C) | (EVPP 108:C & EVPP 109:C & BIOL 214:C & BIOL 338*:C))"
+      "prereq": "((BIOL 213:C & BIOL 214:C) | (EVPP 108:C & EVPP 109:C & BIOL 214:C & BIOL 338*:C))",
+      "recommended": "(BIOL 311)"
     },
     {
       "id": "BIOL 309",
       "title": "Oceanography",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(GEOL 101 | GEOL 103 | GEOL 102 | GEOL 104 | EVPP 108 | EVPP 109 | EVPP 112 | EVPP 113 | EVPP 210 | CHEM 211 | CHEM 213 | BIOL 102 | BIOL 213 | PHYS 160 | PHYS 161 | PHYS 243 | PHYS 244)"
     },
     {
       "id": "BIOL 311",
       "title": "General Genetics",
-      "prereq": "(BIOL 213:C | BIOL 313*:C)"
+      "prereq": "(BIOL 213:C | BIOL 313*:C)",
+      "recommended": "(BIOL 214)"
     },
     {
       "id": "BIOL 312",
       "title": "Biostatistics for Bioinformatics",
-      "prereq": "(BIOL 214:C & CDS 130:C)"
+      "prereq": "(BIOL 214:C & CDS 130:C)",
+      "recommended": null
     },
     {
       "id": "BIOL 313",
       "title": "General Genetics Laboratory",
-      "prereq": "((BIOL 213:C | BIOL 215:C) & BIOL 311*:C)"
+      "prereq": "((BIOL 213:C | BIOL 215:C) & BIOL 311*:C)",
+      "recommended": null
     },
     {
       "id": "BIOL 314",
       "title": "Introduction to Research Design and Analysis",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 213 | BIOL 214 | BIOL 312 | ?Equivalent introductory statistics course | BIOL 311 | CHEM 211 | CHEM 212 | CHEM 213 | CHEM 214 | ?Completion of Biology core | ?Enrollment in Biology Research Semester)"
     },
     {
       "id": "BIOL 318",
       "title": "Conservation Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 308 | BIOL 300 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 320",
       "title": "Comparative Chordate Anatomy",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 308 | BIOL 310 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 322",
       "title": "Developmental Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 213 | BIOL 311 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 323",
       "title": "Environmental Effects on Embryonic Development",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "BIOL 326",
       "title": "Animal Physiology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 213 | EVPP 210 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 331",
       "title": "Invertebrate Zoology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 308 | BIOL 300 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 332",
       "title": "Insect Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 308 | BIOL 300 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 334",
       "title": "Vertebrate Paleontology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(GEOL 101 | GEOL 103 | GEOL 102 | BIOL 103 | BIOL 102 | BIOL 213 | BIOL 300 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 335",
       "title": "Forensic Entomology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 213 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 336",
       "title": "Invertebrate Paleontology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(GEOL 101 | GEOL 103 | GEOL 102 | BIOL 103 | BIOL 102 | BIOL 213 | BIOL 300)"
     },
     {
       "id": "BIOL 338",
       "title": "Foundations of Ecology and Evolution Laboratory",
-      "prereq": "BIOL 308*:C"
+      "prereq": "BIOL 308*:C",
+      "recommended": null
     },
     {
       "id": "BIOL 340",
       "title": "Introductory Botany",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?100-level introductory biology | BIOL 213)"
     },
     {
       "id": "BIOL 344",
       "title": "Plant Diversity and Evolution",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 308 | BIOL 310 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 345",
       "title": "Plant Ecology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 308 | BIOL 310 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 350",
       "title": "Freshwater Ecosystems",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 211 | CHEM 213 | CHEM 212 | CHEM 214 | CHEM 155 | CHEM 156 | BIOL 308 | EVPP 301)"
     },
     {
       "id": "BIOL 351",
       "title": "Conservation Seminar",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(EVPP 301 | EVPP 302 | BIOL 308 | INTS 401 | ?Equivalent course | ?Permission of instructor)"
     },
     {
       "id": "BIOL 352",
       "title": "Monitoring and Assessment of Biodiversity",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(EVPP 301 | EVPP 302 | BIOL 308 | INTS 401 | ?Equivalent course | ?Permission of instructor)"
     },
     {
       "id": "BIOL 353",
       "title": "Small Population Management",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(EVPP 301 | EVPP 302 | BIOL 308 | INTS 401 | ?Equivalent course | ?Permission of instructor)"
     },
     {
       "id": "BIOL 354",
       "title": "Research in Conservation",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(EVPP 301 | EVPP 302 | BIOL 308 | INTS 401 | ?Equivalent course | ?Permission of instructor)"
     },
     {
       "id": "BIOL 355",
       "title": "Ecological Engineering and Ecosystem Restoration",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 211 | CHEM 213 | BIOL 308 | EVPP 301 | PHYS 243)"
     },
     {
       "id": "BIOL 356",
       "title": "Landscape and Macrosystems Ecology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(EVPP 301 | EVPP 302 | BIOL 308 | INTS 401 | ?Equivalent course)"
     },
     {
       "id": "BIOL 357",
       "title": "Ecology Field Skills",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 308 | BIOL 300 | ?Equivalent course | INTS 401)"
     },
     {
       "id": "BIOL 374",
       "title": "Biogeography: Space, Time, and Life",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 300 | GGS 122 | GGS 102 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 377",
       "title": "Applied Ecology",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "BIOL 378",
       "title": "Applied Ecology Laboratory",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 377* | EVPP 377*)"
     },
     {
       "id": "BIOL 379",
       "title": "RS: Ecological Sustainability",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 308 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 382",
       "title": "Introduction to Virology",
-      "prereq": "(BIOL 305:C | BIOL 246:C)"
+      "prereq": "(BIOL 305:C | BIOL 246:C)",
+      "recommended": null
     },
     {
       "id": "BIOL 385",
       "title": "Biotechnology and Genetic Engineering",
-      "prereq": "BIOL 311:C"
+      "prereq": "BIOL 311:C",
+      "recommended": null
     },
     {
       "id": "BIOL 400",
       "title": "News & Views: Selected Topics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(ENGH 302 | BIOL 311 | BIOL 300 | BIOL 308)"
     },
     {
       "id": "BIOL 401",
       "title": "Phage Discovery",
-      "prereq": "((BIOL 305:C | BIOL 246:C) & BIOL 306:C)"
+      "prereq": "((BIOL 305:C | BIOL 246:C) & BIOL 306:C)",
+      "recommended": null
     },
     {
       "id": "BIOL 402",
       "title": "Applied and Industrial Microbiology",
-      "prereq": "(BIOL 305:C | BIOL 246:C)"
+      "prereq": "(BIOL 305:C | BIOL 246:C)",
+      "recommended": null
     },
     {
       "id": "BIOL 403",
       "title": "Techniques in Applied and Industrial Microbiology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 213 | BIOL 305 | BIOL 306 | CHEM 211 | CHEM 213 | CHEM 212 | CHEM 214 | BIOL 402* | ?Permission of instructor)"
     },
     {
       "id": "BIOL 404",
       "title": "Medical Microbiology",
-      "prereq": "(BIOL 305:C | BIOL 246:C)"
+      "prereq": "(BIOL 305:C | BIOL 246:C)",
+      "recommended": null
     },
     {
       "id": "BIOL 405",
       "title": "Microbial Genetics",
-      "prereq": "(BIOL 305:C | (BIOL 246:C & BIOL 306:C & BIOL 311:C & BIOL 313:C))"
+      "prereq": "(BIOL 305:C | (BIOL 246:C & BIOL 306:C & BIOL 311:C & BIOL 313:C))",
+      "recommended": null
     },
     {
       "id": "BIOL 407",
       "title": "Microbial Diversity",
-      "prereq": "((BIOL 305:C | BIOL 246:C) & BIOL 306:C)"
+      "prereq": "((BIOL 305:C | BIOL 246:C) & BIOL 306:C)",
+      "recommended": null
     },
     {
       "id": "BIOL 408",
       "title": "Mushrooms, Molds and Society",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(EVPP 108 | EVPP 109 | EVPP 112 | EVPP 113 | EVPP 210 | BIOL 213)"
     },
     {
       "id": "BIOL 409",
       "title": "Medical Mycology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 213:C)"
     },
     {
       "id": "BIOL 410",
       "title": "Biology and Society",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 103 | ?75 credits | ?Permission of instructor)"
     },
     {
       "id": "BIOL 411",
       "title": "Advanced General Genetics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 311:C | ?Permission of instructor)"
     },
     {
       "id": "BIOL 412",
       "title": "Phage Genomics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 311 | ?Equivalent course | ?Permission of instructor)"
     },
     {
       "id": "BIOL 413",
       "title": "Histotechniques",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 311 | ?Permission of instructor | ?Biology major | ?Undergraduate courses in biology and chemistry)"
     },
     {
       "id": "BIOL 417",
       "title": "Selected Topics in Molecular and Cellular Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 311 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 418",
       "title": "Current Topics in Microbiology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 305)"
     },
     {
       "id": "BIOL 420",
       "title": "Vaccines",
-      "prereq": "(BIOL 305:C | BIOL 246:C)"
+      "prereq": "(BIOL 305:C | BIOL 246:C)",
+      "recommended": null
     },
     {
       "id": "BIOL 421",
       "title": "Genetics of Human Diseases",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 311)"
     },
     {
       "id": "BIOL 422",
       "title": "Stem Cell Biology and Regenerative Medicine",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 311)"
     },
     {
       "id": "BIOL 423",
       "title": "Biology of Obesity and Weight Loss",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 213 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 424",
       "title": "Female Reproductive Biology & Health",
-      "prereq": "BIOL 213:C"
+      "prereq": "BIOL 213:C",
+      "recommended": null
     },
     {
       "id": "BIOL 425",
       "title": "Human Physiology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 213 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 426",
       "title": "Mechanisms of Aging",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 213 | BIOL 311 | ?Equivalent course | ?Permission of instructor)"
     },
     {
       "id": "BIOL 427",
       "title": "Disease Ecology and Conservation",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?60 credits | BIOL 213 | BIOL 305 | BIOL 306 | EVPP 305 | EVPP 306 | BIOL 308 | EVPP 301 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 428",
       "title": "Planetary Health",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(EVPP 301 | BIOL 308 | BIOL 305 | BIOL 306 | EVPP 305 | EVPP 306 | BIOL 318 | EVPP 318 | ?60 credit hours | ?Permission of instructor)"
     },
     {
       "id": "BIOL 429",
       "title": "Biological Foundations of Pharmacology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 124 | BIOL 125 | BIOL 430 | BIOL 431 | BIOL 483 | CHEM 463)"
     },
     {
       "id": "BIOL 430",
       "title": "Advanced Human Anatomy and Physiology I",
-      "prereq": "BIOL 213:C"
+      "prereq": "BIOL 213:C",
+      "recommended": "(?60 credits)"
     },
     {
       "id": "BIOL 431",
       "title": "Advanced Human Anatomy and Physiology II",
-      "prereq": "BIOL 430:C"
+      "prereq": "BIOL 430:C",
+      "recommended": null
     },
     {
       "id": "BIOL 432",
       "title": "Clinical Applications in Human Physiology",
-      "prereq": "((BIOL 124:C & BIOL 125:C) | (BIOL 430:C & BIOL 431:C))"
+      "prereq": "((BIOL 124:C & BIOL 125:C) | (BIOL 430:C & BIOL 431:C))",
+      "recommended": null
     },
     {
       "id": "BIOL 433",
       "title": "Selected Topics in Plant Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 300 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 435",
       "title": "Selected Topics in Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Permission of instructor)"
     },
     {
       "id": "BIOL 437",
       "title": "Ornithology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 308 | ?Equivalent course | ?Permission of instructor)"
     },
     {
       "id": "BIOL 438",
       "title": "Mammalogy",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 308 | ?Equivalent course | ?Permission of instructor)"
     },
     {
       "id": "BIOL 439",
       "title": "Herpetology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 308 | ?Equivalent course | ?Permission of instructor)"
     },
     {
       "id": "BIOL 440",
       "title": "Field Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 308 | BIOL 300 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 442",
       "title": "Urban Ecosystems and Processes",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 211 | CHEM 213 | MATH 113 | ?Equivalent course | BIOL 308 | PHYS 243 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 443",
       "title": "Tropical Ecology",
-      "prereq": "(BIOL 308:C | BIOL 300:C)"
+      "prereq": "(BIOL 308:C | BIOL 300:C)",
+      "recommended": null
     },
     {
       "id": "BIOL 444",
       "title": "Tropical Ecology Laboratory",
-      "prereq": "(BIOL 308:C | BIOL 300:C)"
+      "prereq": "(BIOL 308:C | BIOL 300:C)",
+      "recommended": null
     },
     {
       "id": "BIOL 446",
       "title": "Ecological and Evolutionary Physiology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 308 | BIOL 300 | BIOL 326 | BIOL 430 | BIOL 431 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 449",
       "title": "Marine Ecology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 308 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 450",
       "title": "Marine Conservation",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 309 | ?Equivalent course | ?Permission of instructor)"
     },
     {
       "id": "BIOL 452",
       "title": "Immunology",
-      "prereq": "(BIOL 213:C & (BIOL 305:C | BIOL 246:C))"
+      "prereq": "(BIOL 213:C & (BIOL 305:C | BIOL 246:C))",
+      "recommended": "(BIOL 311)"
     },
     {
       "id": "BIOL 453",
       "title": "Immunology Laboratory",
-      "prereq": "BIOL 306:C"
+      "prereq": "BIOL 306:C",
+      "recommended": "(BIOL 452*)"
     },
     {
       "id": "BIOL 454",
       "title": "Marine Mammal Biology and Conservation",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 309 | BIOL 449 | ?Equivalent course | ?Permission of instructor)"
     },
     {
       "id": "BIOL 457",
       "title": "Reproductive Strategies",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 307 | BIOL 308 | ?60 hours)"
     },
     {
       "id": "BIOL 459",
       "title": "Fungi and Ecosystems",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 308 | BIOL 300 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 460",
       "title": "Infectious Diseases Wildlife",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?60 credits | BIOL 308 | EVPP 301 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 465",
       "title": "Histology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 308 | BIOL 300)"
     },
     {
       "id": "BIOL 468",
       "title": "Vertebrate Natural History",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 308 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 471",
       "title": "Evolution",
-      "prereq": "BIOL 308:C"
+      "prereq": "BIOL 308:C",
+      "recommended": null
     },
     {
       "id": "BIOL 472",
       "title": "Introductory Animal Behavior",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 308 | BIOL 300 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 473",
       "title": "Introductory Laboratory in Animal Behavior",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 472*)"
     },
     {
       "id": "BIOL 480",
       "title": "The Diversity of Fishes",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 300 | BIOL 350 | EVPP 350)"
     },
     {
       "id": "BIOL 482",
       "title": "Introduction to Molecular Genetics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 213 | BIOL 311 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 483",
       "title": "General Biochemistry",
-      "prereq": "(BIOL 213:C & CHEM 313:C)"
+      "prereq": "(BIOL 213:C & CHEM 313:C)",
+      "recommended": null
     },
     {
       "id": "BIOL 484",
       "title": "Cell Signaling and Disease",
-      "prereq": "BIOL 311:C"
+      "prereq": "BIOL 311:C",
+      "recommended": "(BIOL 483 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 485",
       "title": "Cell Signaling Laboratory",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 484* | ?Permission of instructor)"
     },
     {
       "id": "BIOL 486",
       "title": "Molecular Biology and Biotechnology Laboratory",
-      "prereq": "BIOL 385:C"
+      "prereq": "BIOL 385:C",
+      "recommended": null
     },
     {
       "id": "BIOL 489",
       "title": "Teaching Practicum",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 213 | BIOL 311 | ?60 credit hours | ?Permission of instructor | ?Permission of course coordinator | ?Permission of Program Director)"
     },
     {
       "id": "BIOL 491",
       "title": "Selected Topics in Biology Laboratory Techniques",
-      "prereq": "(BIOL 213:C & BIOL 311:C & (BIOL 305:C | BIOL 246:C) & BIOL 306:C & (CHEM 211:C & CHEM 213:C) & (CHEM 212:C & CHEM 214:C))"
+      "prereq": "(BIOL 213:C & BIOL 311:C & (BIOL 305:C | BIOL 246:C) & BIOL 306:C & CHEM 211:C & CHEM 213:C & CHEM 212:C & CHEM 214:C)",
+      "recommended": null
     },
     {
       "id": "BIOL 492",
       "title": "Senior Seminar",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 311 | ?90 credit hours | ?Permission of instructor)"
     },
     {
       "id": "BIOL 493",
       "title": "Honors Research in Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Admission to Biology Honors Program | ?Permission of instructor | ?Permission of Biology Program Director)"
     },
     {
       "id": "BIOL 494",
       "title": "Honors Seminar in Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Acceptance into Biology Honors Program | ?Permission of instructor)"
     },
     {
       "id": "BIOL 495",
       "title": "Directed Studies in Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Permission of instructor | ?Permission of Biology Program Director)"
     },
     {
       "id": "BIOL 497",
       "title": "Special Problems in Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?60 credits | ?Permission of instructor | ?Permission of chair)"
     },
     {
       "id": "BIOL 498",
       "title": "Research Seminar",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 213 | BIOL 214 | BIOL 312 | ?Equivalent introductory statistics course | BIOL 311 | CHEM 211 | CHEM 213 | CHEM 212 | CHEM 214 | ?Completion of Biology core)"
     },
     {
       "id": "BIOL 499",
       "title": "RS: Research in Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 213 | BIOL 214 | BIOL 312 | ?Equivalent introductory statistics course | BIOL 311 | CHEM 211 | CHEM 213 | CHEM 212 | CHEM 214 | ?Completion of Biology core)"
     },
     {
       "id": "BIOL 501",
       "title": "Microbial Diversity: An Organismal Approach",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Undergraduate course in microbiology | ?Permission of instructor)"
     },
     {
       "id": "BIOL 502",
       "title": "Adaptation in Biosystems",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "BIOL 506",
       "title": "Selected Topics in Microbiology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 305 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 507",
       "title": "Selected Topics in Ecology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Course in ecology | ?Permission of instructor)"
     },
     {
       "id": "BIOL 508",
       "title": "Selected Topics in Animal Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 303 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 515",
       "title": "Developmental Neurobiology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?60 hours | PSYC 372 | BIOL 213 | BIOL 310)"
     },
     {
       "id": "BIOL 516",
       "title": "Mammalian Neurobiology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 515)"
     },
     {
       "id": "BIOL 518",
       "title": "Conservation Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 307 | BIOL 311 | ?Equivalent course)"
     },
     {
       "id": "BIOL 527",
       "title": "Conservation Medicine",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 213 | BIOL 305 | BIOL 306 | EVPP 305 | EVPP 306 | BIOL 308 | EVPP 301 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 528",
       "title": "Planetary Health",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Course in conservation medicine | ?Course in evolution | ?Course in disease ecology | ?Course in One Health | ?Course in conservation biology | ?Permission of instructor)"
     },
     {
       "id": "BIOL 532",
       "title": "Animal Behavior",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 324 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 533",
       "title": "Selected Topics in Plant Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Course in plant biology | ?Permission of instructor)"
     },
     {
       "id": "BIOL 537",
       "title": "Ornithology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Course in ecology | ?Permission of instructor)"
     },
     {
       "id": "BIOL 538",
       "title": "Mammalogy",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Course in ecology | ?Permission of instructor)"
     },
     {
       "id": "BIOL 539",
       "title": "Herpetology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Course in ecology | ?Permission of instructor)"
     },
     {
       "id": "BIOL 543",
       "title": "Tropical Ecosystems",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "BIOL 550",
       "title": "Waterscape Ecology and Management",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?General Chemistry | ?Course in ecology)"
     },
     {
       "id": "BIOL 553",
       "title": "Advanced Topics in Immunology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 452 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 555",
       "title": "Lab in Waterscape Ecology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 550 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 559",
       "title": "Fungi and Ecosystems",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 304 | ?Course in microbiology | ?Permission of instructor)"
     },
     {
       "id": "BIOL 560",
       "title": "Infectious Diseases of Wildlife",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Course in evolution | ?Course in ecology | ?Course in zoology | ?Course in conservation biology | ?Permission of instructor)"
     },
     {
       "id": "BIOL 561",
       "title": "Comparative Animal Physiology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 326 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 562",
       "title": "Personalized Medicine",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Advanced undergraduate coursework in genetics | ?Advanced undergraduate coursework in molecular cell biology)"
     },
     {
       "id": "BIOL 563",
       "title": "Virology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 482 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 564",
       "title": "Techniques in Virology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 563* | ?Permission of instructor)"
     },
     {
       "id": "BIOL 565",
       "title": "Medical Microbiology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Completion of the EMDP2 undergraduate curriculum with minimum grade B)"
     },
     {
       "id": "BIOL 566",
       "title": "Cancer Genomics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Course in genetics | ?Course in biochemistry)"
     },
     {
       "id": "BIOL 568",
       "title": "Advanced Topics in Molecular Genetics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 482 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 572",
       "title": "Human Genetics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 311 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 573",
       "title": "Developmental Genetics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 311 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 574",
       "title": "Population Genetics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 308 | BIOL 311 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 575",
       "title": "Selected Topics in Genetics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 311 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 579",
       "title": "Molecular Evolution and Conservation Genetics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 311 | BIOL 471 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 580",
       "title": "Computer Applications for the Life Sciences",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?12 hours of biology | ?One year of college mathematics | ?Permission of instructor)"
     },
     {
       "id": "BIOL 581",
       "title": "Estuarine and Coastal Ecology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Course in ecology | ?Permission of instructor)"
     },
     {
       "id": "BIOL 582",
       "title": "Estuarine and Coastal Ecology Laboratory",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 581 | EVPP 581)"
     },
     {
       "id": "BIOL 583",
       "title": "General Biochemistry",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 213 | CHEM 313 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 585",
       "title": "Eukaryotic Cell Biology Laboratory",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 484 | BIOL 682 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 589",
       "title": "Teaching Practicum",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Permission of instructor | ?Permission of chair | ?Permission of course coordinator)"
     },
     {
       "id": "BIOL 591",
       "title": "Special Topics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Permission of instructor)"
     },
     {
       "id": "BIOL 607",
       "title": "Fundamentals of Ecology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Permission of department)"
     },
     {
       "id": "BIOL 608",
       "title": "Topics in Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Employment or anticipated employment as a science teacher)"
     },
     {
       "id": "BIOL 638",
       "title": "Sensory Ecology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 508*)"
     },
     {
       "id": "BIOL 639",
       "title": "Community Ecology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 308 | ?Equivalent ecology course)"
     },
     {
       "id": "BIOL 643",
       "title": "Microbial Ecology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Course in microbiology | ?Permission of instructor)"
     },
     {
       "id": "BIOL 644",
       "title": "Wetland Ecology and Management",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CHEM 211 | CHEM 212 | BIOL 307 | PHYS 106 | PHYS 107 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 645",
       "title": "Freshwater Ecology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(EVPP 550 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 648",
       "title": "Population Ecology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Course in ecology | ?Permission of instructor)"
     },
     {
       "id": "BIOL 649",
       "title": "Biological Resource Management",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Course in ecology | ?Permission of instructor)"
     },
     {
       "id": "BIOL 650",
       "title": "Environment Analysis and Modeling",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?8 hours of ecology | ?Permission of instructor)"
     },
     {
       "id": "BIOL 665",
       "title": "Environmental Hazards to Human Health",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Course in animal physiology | ?Course in organic chemistry | ?Permission of instructor)"
     },
     {
       "id": "BIOL 666",
       "title": "Human Genetics Concepts for Health Care",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?BS degree | ?Enrollment in accelerated MS program | ?Course in cell biology | ?Course in molecular biology)"
     },
     {
       "id": "BIOL 667",
       "title": "Signal Transduction in Cancer",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Undergraduate course in cell or molecular biology | BIOL 566 | BIOL 682)"
     },
     {
       "id": "BIOL 668",
       "title": "Advanced Techniques in Molecular Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 568 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 669",
       "title": "Pathogenic Microbiology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 682 | BIOL 744:B)"
     },
     {
       "id": "BIOL 671",
       "title": "Fundamental Concepts in Evolution",
-      "prereq": "(BIOL 311:C & BIOL 308:C)"
+      "prereq": "(BIOL 311:C & BIOL 308:C)",
+      "recommended": null
     },
     {
       "id": "BIOL 675",
       "title": "Aerosol Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Undergraduate course in physics | ?Undergraduate course in mathematics | ?Undergraduate course in microbiology | ?Permission of Director of the Center for Biodefense)"
     },
     {
       "id": "BIOL 678",
       "title": "Cell-Based Assays",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Permission of instructor | ?400-level coursework in cell or molecular biology)"
     },
     {
       "id": "BIOL 680",
       "title": "Experimental Design and Analysis for the Life Sciences",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Course in biostatistics | ?Permission of instructor)"
     },
     {
       "id": "BIOL 682",
       "title": "Advanced Eukaryotic Cell Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 483 | CHEM 313 | CHEM 314 | ?Permission of instructor)"
     },
     {
       "id": "BIOL 685",
       "title": "Emerging Infectious Diseases",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(BIOL 213 | BIOL 311 | BIOL 482 | ?Equivalent course | ?Permission of instructor)"
     },
     {
       "id": "BIOL 689",
       "title": "Interdisciplinary Tools in the Biosciences",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "BIOL 690",
       "title": "Introduction to Graduate Studies in Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "BIOL 691",
       "title": "Current Topics in Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "BIOL 692",
       "title": "Seminar in Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "BIOL 693",
       "title": "Directed Studies in Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Permission of instructor | ?Permission of graduate committee)"
     },
     {
       "id": "BIOL 695",
       "title": "Seminar in Molecular, Microbial, and Cellular Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "BIOL 715",
       "title": "Microbial Physiology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Undergraduate lecture/lab course in microbiology | ?Course in biochemistry)"
     },
     {
       "id": "BIOL 718",
       "title": "Techniques in Microbial Pathogenesis",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Admission to PhD Biosciences program | ?Admission to MS Biology program | ?Permission of instructor)"
     },
     {
       "id": "BIOL 720",
       "title": "Microbial Metabolism",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Undergraduate lecture/lab course in microbiology | ?Course in biochemistry)"
     },
     {
       "id": "BIOL 745",
       "title": "Environmental Toxicology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Course in ecology | ?Course in physiology | ?Permission of instructor)"
     },
     {
       "id": "BIOL 793",
       "title": "Research in Biology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?8 graduate hours in BIOL | ?Permission of instructor | ?Permission of chair)"
     },
     {
       "id": "BIOL 798",
       "title": "Master's Research Project",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Permission of instructor | ?Permission of chair)"
     },
     {
       "id": "BIOL 799",
       "title": "Thesis",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?8 graduate hours in BIOL | ?Permission of instructor)"
     }
   ]
 }

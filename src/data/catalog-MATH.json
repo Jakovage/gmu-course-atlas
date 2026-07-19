@@ -3,717 +3,860 @@
     {
       "id": "MATH 104",
       "title": "Trigonometry and Transcendental Functions",
-      "prereq": "(?Math Placement Algebra II >= 07 | MATH 103)"
+      "prereq": "(?Math Placement Algebra II >= 07 | MATH 103)",
+      "recommended": null
     },
     {
       "id": "MATH 105",
       "title": "Precalculus Mathematics",
-      "prereq": "(?Math Placement Aleks >= 55 | MATH 103)"
+      "prereq": "(MATH 103 | ?Math Placement Aleks >= 55)",
+      "recommended": null
     },
     {
       "id": "MATH 106",
       "title": "Quantitative Reasoning",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "MATH 108",
       "title": "Introductory Calculus with Business Applications",
-      "prereq": "(?Math Placement Aleks >= 55 | MATH 103)"
+      "prereq": "(MATH 103:C | ?Math Placement Aleks >= 55)",
+      "recommended": null
     },
     {
       "id": "MATH 110",
       "title": "Introductory Probability",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "MATH 111",
       "title": "Linear Mathematical Modeling",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "MATH 113",
       "title": "Analytic Geometry and Calculus I",
-      "prereq": "(?Math Placement Aleks >= 80 | MATH 104 | MATH 105)"
+      "prereq": "(MATH 105:C | MATH 104:C | ?Math Placement Aleks >= 80)",
+      "recommended": null
     },
     {
       "id": "MATH 114",
       "title": "Analytic Geometry and Calculus II",
-      "prereq": "(MATH 113 | (MATH 123 & MATH 124) | MATH 115:C)"
+      "prereq": "(MATH 113:C | (MATH 123:C & MATH 124:C) | MATH 115:C)",
+      "recommended": null
     },
     {
       "id": "MATH 115",
       "title": "Analytic Geometry and Calculus I (Honors)",
-      "prereq": "(?Math Placement Aleks >= 80 | ?Math Placement Transcendentals >= 65)"
+      "prereq": "(?Math Placement Transcendentals >= 65 | ?Math Placement Aleks >= 80)",
+      "recommended": "(?Permission of instructor)"
     },
     {
       "id": "MATH 116",
       "title": "Analytic Geometry and Calculus II (Honors)",
-      "prereq": "(MATH 113 | MATH 115)"
+      "prereq": "(MATH 115:C | MATH 113:A)",
+      "recommended": null
     },
     {
       "id": "MATH 123",
       "title": "Calculus with Algebra/Trigonometry, Part A",
-      "prereq": "(?Math Placement Aleks >= 65 | MATH 104 | MATH 105)"
+      "prereq": "(?Math Placement Aleks >= 65 | MATH 105:C | MATH 104:C)",
+      "recommended": null
     },
     {
       "id": "MATH 124",
       "title": "Calculus with Algebra/Trigonometry, Part B",
-      "prereq": "MATH 123"
+      "prereq": "MATH 123:C",
+      "recommended": null
     },
     {
       "id": "MATH 125",
       "title": "Discrete Mathematics I",
-      "prereq": "(?Math Placement Aleks >= 65 | MATH 103 | MATH 105 | MATH 108 | MATH 113 | MATH 115:C | MATH 123:C)"
+      "prereq": "(MATH 103 | MATH 105:C | MATH 108:C | MATH 113:C | MATH 115:C | MATH 123:C | ?Math Placement Aleks >= 65)",
+      "recommended": null
     },
     {
       "id": "MATH 175",
       "title": "Mathematics of Cryptography: An Introduction",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Grade of B or better in a calculus course)"
     },
     {
       "id": "MATH 203",
       "title": "Linear Algebra",
-      "prereq": "(MATH 114 | MATH 116)"
+      "prereq": "(MATH 114:C | MATH 116:C)",
+      "recommended": null
     },
     {
       "id": "MATH 213",
       "title": "Analytic Geometry and Calculus III",
-      "prereq": "(MATH 114 | MATH 116)"
+      "prereq": "(MATH 114:C | MATH 116:C)",
+      "recommended": null
     },
     {
       "id": "MATH 214",
       "title": "Elementary Differential Equations",
-      "prereq": "(MATH 114 | MATH 116)"
+      "prereq": "(MATH 114:C | MATH 116:C)",
+      "recommended": "(MATH 203*)"
     },
     {
       "id": "MATH 215",
       "title": "Analytic Geometry and Calculus III (Honors)",
-      "prereq": "(MATH 114 | MATH 116)"
+      "prereq": "(MATH 114:C | MATH 116:C)",
+      "recommended": null
     },
     {
       "id": "MATH 216",
       "title": "Theory of Differential Equations",
-      "prereq": "(MATH 203 & (MATH 213 | MATH 215))"
+      "prereq": "(MATH 203:C & (MATH 213:C | MATH 215:C))",
+      "recommended": null
     },
     {
       "id": "MATH 271",
       "title": "Mathematics for the Elementary School Teachers I",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Grade of C or better in 3 credits of college math)"
     },
     {
       "id": "MATH 272",
       "title": "Mathematics for the Elementary School Teachers II",
-      "prereq": "MATH 271"
+      "prereq": "MATH 271:C",
+      "recommended": null
     },
     {
       "id": "MATH 300",
       "title": "Introduction to Advanced Mathematics",
-      "prereq": "((MATH 114 | MATH 116:C) & (MATH 125 | MATH 175:C))"
+      "prereq": "((MATH 114:C | MATH 116:C) & (MATH 125:C | MATH 175:C))",
+      "recommended": null
     },
     {
       "id": "MATH 301",
       "title": "Number Theory",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Completion of 6 hours of MATH)"
     },
     {
       "id": "MATH 302",
       "title": "Foundations of Geometry",
-      "prereq": "(MATH 114 | MATH 116)"
+      "prereq": "(MATH 114:C | MATH 116:C)",
+      "recommended": null
     },
     {
       "id": "MATH 307",
       "title": "Mathematical Modeling",
-      "prereq": "(MATH 203 & (MATH 214 | MATH 216:C))"
+      "prereq": "(MATH 203:C & (MATH 214:C | MATH 216:C))",
+      "recommended": null
     },
     {
       "id": "MATH 312",
       "title": "Geometry",
-      "prereq": "(MATH 114 | MATH 116)"
+      "prereq": "(MATH 114:C | MATH 116:C)",
+      "recommended": "(MATH 300)"
     },
     {
       "id": "MATH 313",
       "title": "Introduction to Applied Analysis",
-      "prereq": "(MATH 213 | MATH 215)"
+      "prereq": "(MATH 213:C | MATH 215:C)",
+      "recommended": null
     },
     {
       "id": "MATH 314",
       "title": "Advanced Differential Equations",
-      "prereq": "(MATH 214 | MATH 216)"
+      "prereq": "(MATH 214:C | MATH 216:C)",
+      "recommended": null
     },
     {
       "id": "MATH 315",
       "title": "Advanced Calculus I",
-      "prereq": "(MATH 300 & (MATH 213 | MATH 215))"
+      "prereq": "((MATH 213:C | MATH 215:C) & MATH 300:C)",
+      "recommended": null
     },
     {
       "id": "MATH 316",
       "title": "Advanced Calculus II",
-      "prereq": "MATH 315"
+      "prereq": "MATH 315:C",
+      "recommended": null
     },
     {
       "id": "MATH 321",
       "title": "Abstract Algebra",
-      "prereq": "(MATH 300 & (MATH 213 | MATH 215))"
+      "prereq": "((MATH 213:C | MATH 215:C) & MATH 300:C)",
+      "recommended": null
     },
     {
       "id": "MATH 322",
       "title": "Advanced Linear Algebra",
-      "prereq": "(MATH 203 & MATH 300)"
+      "prereq": "(MATH 203:C & MATH 300:C)",
+      "recommended": null
     },
     {
       "id": "MATH 325",
       "title": "Discrete Mathematics II",
-      "prereq": "MATH 125"
+      "prereq": "MATH 125:C",
+      "recommended": null
     },
     {
       "id": "MATH 351",
       "title": "Probability",
-      "prereq": "(MATH 213 | MATH 215)"
+      "prereq": "(MATH 213:C | MATH 215:C)",
+      "recommended": null
     },
     {
       "id": "MATH 352",
       "title": "Statistics",
-      "prereq": "MATH 351"
+      "prereq": "MATH 351:C",
+      "recommended": null
     },
     {
       "id": "MATH 400",
       "title": "History of Math (Topic Varies)",
-      "prereq": "MATH 300"
+      "prereq": "MATH 300:C",
+      "recommended": null
     },
     {
       "id": "MATH 401",
       "title": "Mathematics through 3D Printing",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 300 | ?At least 3 credits of Mathematics above MATH 300)"
     },
     {
       "id": "MATH 405",
       "title": "Honors Thesis in Mathematics I",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 315 | ?Three additional credits of MATH above the 300 level excluding MATH 400 | ?Admission to the Honors Program in Mathematics)"
     },
     {
       "id": "MATH 406",
       "title": "RS: Honors Thesis in Mathematics II",
-      "prereq": null
+      "prereq": "MATH 405:C",
+      "recommended": null
     },
     {
       "id": "MATH 411",
       "title": "Functions of a Complex Variable",
-      "prereq": "(MATH 214 | MATH 216)"
+      "prereq": "(MATH 214:C | MATH 216:C)",
+      "recommended": "(MATH 300)"
     },
     {
       "id": "MATH 413",
       "title": "Modern Applied Mathematics I",
-      "prereq": "(MATH 203 & (MATH 214 | MATH 216))"
+      "prereq": "((MATH 203:C & MATH 214:C) | MATH 216:C)",
+      "recommended": null
     },
     {
       "id": "MATH 414",
       "title": "Modern Applied Mathematics II",
-      "prereq": "MATH 413"
+      "prereq": "MATH 413:C",
+      "recommended": null
     },
     {
       "id": "MATH 421",
       "title": "Abstract Algebra II",
-      "prereq": "MATH 321"
+      "prereq": "MATH 321:C",
+      "recommended": null
     },
     {
       "id": "MATH 431",
       "title": "Topology",
-      "prereq": "MATH 315"
+      "prereq": "MATH 315:C",
+      "recommended": null
     },
     {
       "id": "MATH 432",
       "title": "Differential Geometry",
-      "prereq": "MATH 315"
+      "prereq": "MATH 315:C",
+      "recommended": null
     },
     {
       "id": "MATH 433",
       "title": "Algebraic Geometry",
-      "prereq": "MATH 321"
+      "prereq": "MATH 321:C",
+      "recommended": null
     },
     {
       "id": "MATH 441",
       "title": "Deterministic Optimization",
-      "prereq": "MATH 203"
+      "prereq": "MATH 203:C",
+      "recommended": null
     },
     {
       "id": "MATH 442",
       "title": "Stochastic Models",
-      "prereq": "MATH 351"
+      "prereq": "MATH 351:C",
+      "recommended": null
     },
     {
       "id": "MATH 446",
       "title": "Numerical Analysis I",
-      "prereq": "(CS 112 & MATH 203)"
+      "prereq": "(MATH 203:C & CS 112:C)",
+      "recommended": null
     },
     {
       "id": "MATH 447",
       "title": "Numerical Analysis II",
-      "prereq": "(MATH 446 & (MATH 214 | MATH 216))"
+      "prereq": "((MATH 214:C | MATH 216:C) & MATH 446:C)",
+      "recommended": null
     },
     {
       "id": "MATH 453",
       "title": "Advanced Mathematical Statistics",
-      "prereq": "(MATH 352 | STAT 356:C)"
+      "prereq": "(MATH 352:C | STAT 356:C)",
+      "recommended": null
     },
     {
       "id": "MATH 462",
       "title": "Mathematics of Machine Learning and Industrial Applications I",
-      "prereq": "(CS 112 & MATH 203 & MATH 213)"
+      "prereq": "(MATH 203:C & MATH 213:C & CS 112:C)",
+      "recommended": null
     },
     {
       "id": "MATH 463",
       "title": "Mathematics of Machine Learning and Industrial Applications II",
-      "prereq": "MATH 462*"
+      "prereq": "MATH 462*:C",
+      "recommended": null
     },
     {
       "id": "MATH 464",
       "title": "Linear Algebra with Data Applications",
-      "prereq": "CS 112"
+      "prereq": "CS 112:C",
+      "recommended": "(MATH 322*)"
     },
     {
       "id": "MATH 465",
       "title": "Mathematics of Data Science",
-      "prereq": "(CS 112 & MATH 214 & MATH 322)"
+      "prereq": "(MATH 214:C & MATH 322:C & CS 112:C)",
+      "recommended": "(MATH 352 | MATH 464 | STAT 350 | STAT 360 | STAT 356)"
     },
     {
       "id": "MATH 478",
       "title": "Introduction to Partial Differential Equations with Numerical Methods",
-      "prereq": "(MATH 203 & (MATH 214 | MATH 216))"
+      "prereq": "((MATH 203:C & MATH 214:C) | MATH 216:C)",
+      "recommended": null
     },
     {
       "id": "MATH 490",
       "title": "Internship",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "MATH 491",
       "title": "Reading and Undergraduate Research in Mathematics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Mathematical science majors only)"
     },
     {
       "id": "MATH 493",
       "title": "Topics in Applicable Mathematics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Six credits of MATH at or above the 310 level)"
     },
     {
       "id": "MATH 494",
       "title": "Topics in Pure Mathematics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Six hours of MATH at or above the 310 level)"
     },
     {
       "id": "MATH 495",
       "title": "Undergraduate Seminar",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "MATH 515",
       "title": "Advanced Calculus I",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 213 | MATH 215 | MATH 300 | ?Equivalent course)"
     },
     {
       "id": "MATH 521",
       "title": "Abstract Algebra",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 213 | MATH 300 | ?Equivalent course)"
     },
     {
       "id": "MATH 531",
       "title": "Topology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 315 | ?Equivalent course)"
     },
     {
       "id": "MATH 546",
       "title": "Numerical Analysis I",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 203 | CS 112 | ?Equivalent course)"
     },
     {
       "id": "MATH 551",
       "title": "Regression and Time Series",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 352 | STAT 652 | ?SOA Exam P | ?Permission of instructor)"
     },
     {
       "id": "MATH 553",
       "title": "Advanced Mathematical Statistics in Actuarial Sciences",
-      "prereq": "(MATH 352 | MATH 554 | STAT 356)"
+      "prereq": "(MATH 352:C | STAT 356:C | MATH 554:C)",
+      "recommended": null
     },
     {
       "id": "MATH 554",
       "title": "Financial Mathematics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 113 | MATH 114*)"
     },
     {
       "id": "MATH 555",
       "title": "Actuarial Modeling I",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 554 | MATH 351 | STAT 344)"
     },
     {
       "id": "MATH 556",
       "title": "Actuarial Modeling II",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 554 | MATH 351 | STAT 344)"
     },
     {
       "id": "MATH 557",
       "title": "Financial Derivatives",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 554 | MATH 351 | STAT 344 | ?Permission of instructor)"
     },
     {
       "id": "MATH 600",
       "title": "Special Topics in Mathematics",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "MATH 601",
       "title": "Analysis I for Teachers",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Open only to inservice math teachers at the middle or secondary level | ?Permission of instructor)"
     },
     {
       "id": "MATH 602",
       "title": "Analysis II for Teachers",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Open only to inservice math teachers at the middle or secondary level | ?Permission of instructor)"
     },
     {
       "id": "MATH 604",
       "title": "Geometry for Teachers",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Open only to inservice math teachers at the middle or secondary level | ?Permission of instructor)"
     },
     {
       "id": "MATH 605",
       "title": "Discrete/Finite Mathematics for Teachers",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Open only to inservice math teachers at the middle or secondary level | ?Permission of instructor)"
     },
     {
       "id": "MATH 607",
       "title": "Algebraic Structure for Teachers",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Open only to inservice math teachers at the middle or secondary level | ?Permission of instructor)"
     },
     {
       "id": "MATH 608",
       "title": "Problem Solving in Mathematics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Open only to inservice math teachers at the middle or secondary level | ?Permission of instructor)"
     },
     {
       "id": "MATH 610",
       "title": "Number Systems and Number Theory for K-8 Teachers",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "MATH 611",
       "title": "Geometry and Measurement for K-8 Teachers",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "MATH 612",
       "title": "Probability and Statistics for K-8 Teachers",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "MATH 613",
       "title": "Algebra and Functions for K-8 Teachers",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "MATH 614",
       "title": "Rational Numbers and Proportional Reasoning for K-8 Teachers",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "MATH 619",
       "title": "Topics in Mathematical Logic",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "MATH 621",
       "title": "Algebra I",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Familiarity with basic properties of groups and rings | ?Permission of instructor)"
     },
     {
       "id": "MATH 624",
       "title": "Euclidean Geometry",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 315 | MATH 322 | ?Equivalent course)"
     },
     {
       "id": "MATH 625",
       "title": "Numerical Linear Algebra",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Computer literacy including some programming experience)"
     },
     {
       "id": "MATH 629",
       "title": "Topics in Algebra",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "MATH 631",
       "title": "Topology I: Topology of Metric Spaces",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 315 | ?Equivalent course)"
     },
     {
       "id": "MATH 639",
       "title": "Topics in Geometry and Topology",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "MATH 641",
       "title": "Combinatorics and Graph Theory",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 321 | ?Equivalent course)"
     },
     {
       "id": "MATH 642",
       "title": "Enumerative Graph Theory",
-      "prereq": "MATH 621"
+      "prereq": "MATH 621:B-",
+      "recommended": "(MATH 641 | MATH 325 | MATH 203 | ?Equivalent course)"
     },
     {
       "id": "MATH 644",
       "title": "Convex and Discrete Geometry",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 315 | MATH 322 | ?Equivalent course)"
     },
     {
       "id": "MATH 649",
       "title": "Topics in Combinatorics",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "MATH 653",
       "title": "Construction and Evaluation of Actuarial Models I",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 351 | STAT 644 | MATH 555)"
     },
     {
       "id": "MATH 654",
       "title": "Construction and Evaluation of Actuarial Models II",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 556 | ?Permission of instructor)"
     },
     {
       "id": "MATH 655",
       "title": "Pension Valuation",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 556 | ?SOA Exam EA-1 | ?Permission of instructor)"
     },
     {
       "id": "MATH 661",
       "title": "Complex Analysis I",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "MATH 662",
       "title": "Mathematics of Machine Learning and Industrial Applications I",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(CS 112 | ?Equivalent course)"
     },
     {
       "id": "MATH 663",
       "title": "Mathematics of Machine Learning and Industrial Applications II",
-      "prereq": "MATH 662*"
+      "prereq": "MATH 662*:B-",
+      "recommended": null
     },
     {
       "id": "MATH 664",
       "title": "Linear Algebra with Data Applications",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 322 | ?Equivalent course | ?Basic programming experience)"
     },
     {
       "id": "MATH 665",
       "title": "Mathematics of Data Science",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 664)"
     },
     {
       "id": "MATH 671",
       "title": "Fourier Analysis",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "MATH 673",
       "title": "Dynamical Systems",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Elementary courses in linear algebra and differential equations)"
     },
     {
       "id": "MATH 674",
       "title": "Stochastic Differential Equations",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 214 | MATH 351)"
     },
     {
       "id": "MATH 675",
       "title": "Linear Analysis",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 315 | MATH 322 | ?Equivalent course)"
     },
     {
       "id": "MATH 677",
       "title": "Ordinary Differential Equations",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 214 | ?Equivalent course)"
     },
     {
       "id": "MATH 678",
       "title": "Partial Differential Equations",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Elementary differential equations course)"
     },
     {
       "id": "MATH 679",
       "title": "Topics in Analysis and Potential Theory",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "MATH 680",
       "title": "Industrial Mathematics",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "MATH 683",
       "title": "Modern Optimization Theory",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "MATH 685",
       "title": "Numerical Analysis",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Computer literacy including some programming experience)"
     },
     {
       "id": "MATH 686",
       "title": "Numerical Solutions of Differential Equations",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 214 | MATH 446 | MATH 685)"
     },
     {
       "id": "MATH 687",
       "title": "Variational Methods",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 446 | MATH 685 | ?Elementary differential equations course)"
     },
     {
       "id": "MATH 689",
       "title": "Topics in Applied and Computational Mathematics",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "MATH 690",
       "title": "Graduate Internship",
-      "prereq": null
+      "prereq": "MATH 675:B",
+      "recommended": "(MATH 675:B | ?Grade of B or better in four core courses | ?Permission of internship coordinator)"
     },
     {
       "id": "MATH 697",
       "title": "Independent Reading and Research",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     },
     {
       "id": "MATH 720",
       "title": "Algebraic Combinatorics",
-      "prereq": "MATH 621"
+      "prereq": "MATH 621:B-",
+      "recommended": "(MATH 325 | ?Equivalent course)"
     },
     {
       "id": "MATH 721",
       "title": "Algebra II",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 621)"
     },
     {
       "id": "MATH 722",
       "title": "Algebraic Topology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 621 | MATH 631 | ?Equivalent course)"
     },
     {
       "id": "MATH 723",
       "title": "Combinatorial Structures",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 321 | ?Equivalent course)"
     },
     {
       "id": "MATH 724",
       "title": "Commutative Algebra",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 621)"
     },
     {
       "id": "MATH 725",
       "title": "Algebraic Geometry",
-      "prereq": "MATH 621"
+      "prereq": "MATH 621:B-",
+      "recommended": "(MATH 724)"
     },
     {
       "id": "MATH 726",
       "title": "Homological Algebra",
-      "prereq": null
+      "prereq": "MATH 621:B-",
+      "recommended": null
     },
     {
       "id": "MATH 732",
       "title": "Topology II: Set-Theoretic Topology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 631 | ?Equivalent course)"
     },
     {
       "id": "MATH 734",
       "title": "Commutative Algebra II",
-      "prereq": "(MATH 621:B- & MATH 724:B-)"
+      "prereq": "(MATH 621:B- & MATH 724:B-)",
+      "recommended": "(MATH 725* | MATH 726*)"
     },
     {
       "id": "MATH 735",
       "title": "Computational and Applied Topology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 631)"
     },
     {
       "id": "MATH 740",
       "title": "Differential Topology",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 621 | MATH 631 | ?Equivalent course)"
     },
     {
       "id": "MATH 741",
       "title": "Lie Groups",
-      "prereq": "MATH 621"
+      "prereq": "MATH 621:B-",
+      "recommended": "(MATH 740)"
     },
     {
       "id": "MATH 742",
       "title": "Differential Geometry",
-      "prereq": "MATH 740"
+      "prereq": "MATH 740:B-",
+      "recommended": null
     },
     {
       "id": "MATH 762",
       "title": "Complex Analysis II",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 661)"
     },
     {
       "id": "MATH 763",
       "title": "Functions of Several Complex Variables",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 661 | MATH 762 | ?Equivalent preparation in one complex variable)"
     },
     {
       "id": "MATH 772",
       "title": "Wavelet Theory",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 315 | ?Equivalent course)"
     },
     {
       "id": "MATH 776",
       "title": "Measure and Integration",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 675)"
     },
     {
       "id": "MATH 781",
       "title": "Advanced Methods in Applied Mathematics",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 677 | ?Permission of instructor)"
     },
     {
       "id": "MATH 784",
       "title": "Nonlinear Functional Analysis",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 675 | ?Permission of instructor)"
     },
     {
       "id": "MATH 790",
       "title": "Classical Potential Theory",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 675 | MATH 776)"
     },
     {
       "id": "MATH 795",
       "title": "Graduate Seminar",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Enrolled in the PhD program in Mathematics)"
     },
     {
       "id": "MATH 798",
       "title": "Directed Reading or Research",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Fifteen credits of graduate courses in mathematics)"
     },
     {
       "id": "MATH 799",
       "title": "MS Thesis",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(MATH 798 | ?Three credits required)"
     },
     {
       "id": "MATH 800",
       "title": "Studies for the Doctor of Philosophy in Education",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Admission to the PhD in Education program to study in mathematical sciences)"
     },
     {
       "id": "MATH 998",
       "title": "Doctoral Dissertation Proposal",
-      "prereq": null
+      "prereq": null,
+      "recommended": "(?Successful completion of qualifying exam)"
     },
     {
       "id": "MATH 999",
       "title": "Doctoral Dissertation",
-      "prereq": null
+      "prereq": null,
+      "recommended": null
     }
   ]
 }
