@@ -230,6 +230,12 @@ export default function Galaxy() {
       .map((c) => c.id));
   }, [query, filteredVisible]);
 
+  // Clicking to focus a course suspends the search filter (the query text
+  // stays in the box, it just stops narrowing anything) until you type
+  // again -- so pinning a result doesn't also hide its full neighborhood.
+  const [searchSuspended, setSearchSuspended] = useState(false);
+  const effectiveMatches = searchSuspended ? null : matches;
+
   const { byId, prereqsOf, dependentsOf, coreqOf, recommendedEdge, recommendedIds } = useMemo(() => {
     const byId = new Map(filteredVisible.map((c) => [c.id, c]));
     // prereqsOf/dependentsOf now carry BOTH real prereqs and recommended
@@ -329,11 +335,11 @@ export default function Galaxy() {
   // needs to start once (no restart-on-every-state-change churn)
   const stateRef = useRef({
     camera, size, hovered, selected, visible: filteredVisible, fullVisible: visible,
-    byId, prereqsOf, dependentsOf, matches, effectiveMaxTier, coreqOf, recommendedEdge,
+    byId, prereqsOf, dependentsOf, matches: effectiveMatches, effectiveMaxTier, coreqOf, recommendedEdge,
   });
   stateRef.current = {
     camera, size, hovered, selected, visible: filteredVisible, fullVisible: visible,
-    byId, prereqsOf, dependentsOf, matches, effectiveMaxTier, coreqOf, recommendedEdge,
+    byId, prereqsOf, dependentsOf, matches: effectiveMatches, effectiveMaxTier, coreqOf, recommendedEdge,
   };
 
   // animated position of every node; eases toward whatever target() returns
@@ -588,7 +594,7 @@ export default function Galaxy() {
     let best: string | null = null, bestD = threshold;
     for (const c of filteredVisible) {
       if (limitedToLit && !litRef.current.has(c.id)) continue;
-      if (matches !== null && !matches.has(c.id)) continue;
+      if (effectiveMatches !== null && !effectiveMatches.has(c.id)) continue;
       const p = animPos.current.get(c.id) ?? globalWorldOf(c.id, effectiveMaxTier, xMin, xRange);
       const d = Math.hypot(p.x - w.x, p.y - w.y);
       if (d < bestD) { bestD = d; best = c.id; }
@@ -619,7 +625,9 @@ export default function Galaxy() {
   const onUp = (ev: React.MouseEvent) => {
     if (drag.current && !drag.current.moved) {
       const rect = ref.current!.getBoundingClientRect();
-      setSelected(pickAt(ev.clientX - rect.left, ev.clientY - rect.top, false));
+      const picked = pickAt(ev.clientX - rect.left, ev.clientY - rect.top, false);
+      setSelected(picked);
+      if (picked) setSearchSuspended(true); // clicking empty space (deselect) leaves it as-is
     }
     drag.current = null;
   };
@@ -660,7 +668,7 @@ export default function Galaxy() {
     <div style={{ position: 'relative' }}>
       <input
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={(e) => { setQuery(e.target.value); setSearchSuspended(false); }}
         placeholder="search courses..."
         style={{
           position: 'fixed', top: 14, left: 14, zIndex: 10,
@@ -734,14 +742,6 @@ export default function Galaxy() {
               {exprLines(course.prereq).map((line, i) => (
                 <div key={i} style={{ marginTop: 1 }}>{line}</div>
               ))}
-            </div>
-          )}
-          {(coreqOf.get(course.id)?.size ?? 0) > 0 && (
-            <div style={{ marginTop: 6 }}>
-              <div style={{ color: '#7f7f8a', fontSize: 10, textTransform: 'uppercase' }}>Corequisites</div>
-              <div style={{ color: '#a8a8b4' }}>
-                {[...(coreqOf.get(course.id) ?? [])].sort().join(', ')}
-              </div>
             </div>
           )}
           {(recommendedIds.get(course.id) ?? []).length > 0 && (

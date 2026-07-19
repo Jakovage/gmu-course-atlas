@@ -1,0 +1,1060 @@
+{
+  "courses": [
+    {
+      "id": "ECE 101",
+      "title": "Introduction to Electrical and Computer Engineering",
+      "prereq": "(((?Math Placement Algebra I >= 13 & ?Math Placement Algebra II >= 07 & ?Math Placement Transcendentals >= 07) | ?Math Placement Aleks >= 65) | (MATH 105:C | MATH 113*:C | MATH 115*:C | MATH 123*:C))",
+      "recommended": null
+    },
+    {
+      "id": "ECE 201",
+      "title": "Introduction to Signals and Systems",
+      "prereq": "((MATH 114:C | MATH 116:C) & ECE 101:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 231",
+      "title": "Digital System Design",
+      "prereq": "((CS 112:C | CDS 130:C | CS 109:C) & (ECE 101:C | PHYS 261:C) & ECE 232*:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 232",
+      "title": "Digital System Design Lab",
+      "prereq": "((CS 112:C | CDS 130:C | CS 109:C) & (ECE 101:C | PHYS 261:C) & ECE 231*:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 240",
+      "title": "C Programming for Engineers",
+      "prereq": "(CS 112:C | CS 109:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 285",
+      "title": "Electric Circuit Analysis I",
+      "prereq": "(PHYS 260:C & PHYS 261:C & ECE 101:C & (MATH 214*:C | MATH 216*:C) & MATH 203*:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 286",
+      "title": "Electric Circuit Analysis II",
+      "prereq": "(ECE 285:C & (MATH 214:C | MATH 216:C) & MATH 203:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 301",
+      "title": "Digital Electronics",
+      "prereq": "(MATH 125:C | MATH 114:C | IT 102:C | MATH 116:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 305",
+      "title": "Electromagnetic Theory",
+      "prereq": "((MATH 214:C | MATH 216:C) & PHYS 260:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 311",
+      "title": "Energy Infrastructure, Market, and Management",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECE 321",
+      "title": "Continuous-Time Signals and Systems",
+      "prereq": "(ECE 201:C & ENGR 107:C & MATH 203*:C & (MATH 214*:C | MATH 216*:C))",
+      "recommended": null
+    },
+    {
+      "id": "ECE 330",
+      "title": "Circuit Theory",
+      "prereq": "(PHYS 260:C & PHYS 261:C & MATH 214:C & (MATH 203*:C | ME 351*:C))",
+      "recommended": null
+    },
+    {
+      "id": "ECE 333",
+      "title": "Linear Electronics I",
+      "prereq": "(ECE 285:C | ECE 330:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 334",
+      "title": "Linear Electronics Lab I",
+      "prereq": "((PHYS 261:C | PHYS 265:C) & ECE 333*:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 340",
+      "title": "Data Structures and Systems Programming in C",
+      "prereq": "(CS 211:C & (ECE 240:C | CS 222:C))",
+      "recommended": null
+    },
+    {
+      "id": "ECE 350",
+      "title": "Embedded Systems and Hardware Interfaces",
+      "prereq": "((CS 112 | CS 109) & (ECE 285 | ECE 330) & (ECE 301 | (ECE 231 & ECE 232) | ME 331))",
+      "recommended": null
+    },
+    {
+      "id": "ECE 370",
+      "title": "Introduction to Robotics",
+      "prereq": "((CS 112:C | ENGR 125 | CS 109:C) & (MATH 203:C | ME 351:C) & MATH 213:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 390",
+      "title": "Engineering Design and Fabrication",
+      "prereq": "(BENG 380:C | ECE 280:C | ECE 285:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 391",
+      "title": "Professional Development for Engineers",
+      "prereq": "(COMM 100:C | COMM 101:C | HNRS 353:C | HNRS 360:C | HNRS 361:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 395",
+      "title": "Electrical and Computer Engineering Internship",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECE 408",
+      "title": "Small Modular Reactor Simulation Lab",
+      "prereq": "(ECE 286 | ECE 330 | PHYS 306)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 409",
+      "title": "Data Center Engineering",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECE 410",
+      "title": "Applications of Discrete-Time Signal Processing",
+      "prereq": "((ECE 220:C | ECE 321:C) & STAT 346:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 411",
+      "title": "Electricity Sector Engineering, Economics, and Regulation",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECE 412",
+      "title": "Renewable Energy Lab",
+      "prereq": "(ECE 286:C | ECE 330:C | PHYS 306:C)",
+      "recommended": "(ECE 415*)"
+    },
+    {
+      "id": "ECE 414",
+      "title": "Grid Digitization and Automation",
+      "prereq": "((CS 112:C | CS 109:C | CDS 130:C | ENGR 125) & (ECE 286:C | ECE 330:C))",
+      "recommended": null
+    },
+    {
+      "id": "ECE 415",
+      "title": "Power System Analysis",
+      "prereq": "(ECE 286:C | ECE 330:C | PHYS 306:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 416",
+      "title": "Electric Machinery and Modern Applications",
+      "prereq": "(ECE 286:C | ECE 330:C | PHYS 306:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 417",
+      "title": "Smart Grid and Cyber Security",
+      "prereq": "(ECE 311:C | (PHYS 260:C & PHYS 261:C))",
+      "recommended": null
+    },
+    {
+      "id": "ECE 418",
+      "title": "Power System Protection and Control",
+      "prereq": "(ECE 286:C | ECE 330:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 419",
+      "title": "Power Electronics for Modern Power Systems",
+      "prereq": "(ECE 333:C & ECE 334:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 420",
+      "title": "Smart Grid Lab",
+      "prereq": "(ECE 286:C | ECE 330:C | PHYS 306:C)",
+      "recommended": "(ECE 415*)"
+    },
+    {
+      "id": "ECE 421",
+      "title": "Classical Systems and Control Theory",
+      "prereq": "(ECE 220:C | ECE 321:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 424",
+      "title": "Modern Control Systems Design",
+      "prereq": "(ECE 421:C | ME 432:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 425",
+      "title": "Secure RF Communications",
+      "prereq": "((CS 222:C | ECE 240:C | CS 262:C) & (ECE 465:C | CYSE 230:C | CS 455:C) & (MATH 125:C | ECE 231:C))",
+      "recommended": null
+    },
+    {
+      "id": "ECE 427",
+      "title": "Introduction to Machine Learning and Artificial Intelligence in Engineering",
+      "prereq": "((STAT 346:C | STAT 344:C) & (MATH 203:C | ME 351:C) & (CS 112:C | SYST 130:C))",
+      "recommended": null
+    },
+    {
+      "id": "ECE 429",
+      "title": "Modern Control Systems Lab",
+      "prereq": "(ECE 421*:C | ME 432*:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 430",
+      "title": "Principles of Semiconductor Devices",
+      "prereq": "(PHYS 260:C & (MATH 214:C | MATH 216:C))",
+      "recommended": null
+    },
+    {
+      "id": "ECE 431",
+      "title": "Digital Circuit Design",
+      "prereq": "((ECE 331:C | ECE 231:C) & ECE 333:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 433",
+      "title": "Linear Electronics II",
+      "prereq": "(ECE 286:C & ECE 333:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 434",
+      "title": "Linear Electronics II Laboratory",
+      "prereq": "(ECE 334:C & ECE 433*:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 436",
+      "title": "Printed Circuit Board Design Lab",
+      "prereq": "((ECE 232:C | ECE 332:C) & ECE 334:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 445",
+      "title": "Computer Organization",
+      "prereq": "((ECE 331:C | ECE 231:C) & (ECE 332:C | ECE 232:C) & (CS 262:C | ECE 240:C | CS 222:C))",
+      "recommended": null
+    },
+    {
+      "id": "ECE 446",
+      "title": "Device Driver Development",
+      "prereq": "(ECE 445:C | CS 465:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 447",
+      "title": "Microcontrollers",
+      "prereq": "(ECE 445:C | CS 465:C)",
+      "recommended": "(ECE 350)"
+    },
+    {
+      "id": "ECE 448",
+      "title": "FPGA Design with VHDL",
+      "prereq": "ECE 445:C",
+      "recommended": null
+    },
+    {
+      "id": "ECE 450",
+      "title": "Mobile Robots",
+      "prereq": "ECE 350:C",
+      "recommended": null
+    },
+    {
+      "id": "ECE 455",
+      "title": "GPU Architecture and Programming",
+      "prereq": "(ECE 445:C | CS 465:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 460",
+      "title": "Communication and Information Theory",
+      "prereq": "((ECE 220:C | ECE 321:C) & STAT 346:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 461",
+      "title": "Communication Engineering Laboratory",
+      "prereq": "(ECE 334:C & ECE 460:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 462",
+      "title": "Data and Computer Communications",
+      "prereq": "((STAT 344:C | STAT 346:C) & (ECE 220:C | ECE 321:C) & (ECE 231:C | ECE 331:C | ECE 301:C))",
+      "recommended": null
+    },
+    {
+      "id": "ECE 463",
+      "title": "Digital Communications Systems",
+      "prereq": "ECE 460:C",
+      "recommended": null
+    },
+    {
+      "id": "ECE 465",
+      "title": "Computer Networking Protocols",
+      "prereq": "((STAT 346:C | STAT 344:C) & (CS 222:C | ECE 240:C | CS 211:C))",
+      "recommended": null
+    },
+    {
+      "id": "ECE 467",
+      "title": "Computer Networking Laboratory",
+      "prereq": null,
+      "recommended": "(ECE 465*)"
+    },
+    {
+      "id": "ECE 472",
+      "title": "Quantum Computing System design",
+      "prereq": "(MATH 203:C & ECE 340:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 476",
+      "title": "Cryptography Fundamentals",
+      "prereq": "(ECE 301:C | ECE 231:C | ECE 331:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 480",
+      "title": "Small Spacecraft Engineering",
+      "prereq": "((ECE 285:C | ECE 330:C) & (CS 112:C | CS 109:C | ENGR 125:C))",
+      "recommended": null
+    },
+    {
+      "id": "ECE 488",
+      "title": "Nanoelectronics Fundamentals",
+      "prereq": "ECE 333:C",
+      "recommended": null
+    },
+    {
+      "id": "ECE 491",
+      "title": "Engineering Seminar",
+      "prereq": "(COMM 100:C | COMM 101:C | HNRS 353:C | HNRS 360:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 492",
+      "title": "Senior Advanced Design Project I",
+      "prereq": "((((COMM 100:C | COMM 101:C) & (ENGH 302:C | ENGL 302:C)) | HNRS 353:C | HNRS 360:C | HNRS 361:C) & ECE 201:C & ECE 286:C & ECE 350:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 493",
+      "title": "RS: Senior Advanced Design Project II",
+      "prereq": "(ECE 492:C & ENGH 302:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 498",
+      "title": "Independent Study in Electrical and Computer Engineering",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECE 499",
+      "title": "Special Topics in Electrical and Computer Engineering",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECE 500",
+      "title": "Special Topics",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECE 505",
+      "title": "Hardware Security",
+      "prereq": null,
+      "recommended": "(ECE 301 | ECE 231 | CS 211 | CS 222 | ECE 240 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 506",
+      "title": "Embedded Systems Reverse Engineering",
+      "prereq": null,
+      "recommended": "(DFOR 510 | DFOR 660 | ECE 447 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 507",
+      "title": "Seminar in Emerging Technologies",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECE 508",
+      "title": "Internet of Things",
+      "prereq": null,
+      "recommended": "(ECE 350 | ECE 301 | ECE 231 | CS 222 | ECE 240 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 511",
+      "title": "Computer Architecture",
+      "prereq": null,
+      "recommended": "(ECE 445 | CS 465 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 513",
+      "title": "Applied Electromagnetic Theory",
+      "prereq": null,
+      "recommended": "(ECE 305 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 514",
+      "title": "Grid Digitization and Automation",
+      "prereq": null,
+      "recommended": "(ECE 415 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 515",
+      "title": "Power System Analysis and Dynamics",
+      "prereq": null,
+      "recommended": "(ECE 286 | ECE 330 | PHYS 306 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 516",
+      "title": "Mobile Systems and Applications",
+      "prereq": null,
+      "recommended": "(CS 211 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 517",
+      "title": "Cyber Infrastructure of the Smart Grid",
+      "prereq": null,
+      "recommended": "(ECE 415 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 518",
+      "title": "Power System Protection and Control",
+      "prereq": null,
+      "recommended": "(ECE 415 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 519",
+      "title": "Power Electronics for Modern Power Systems",
+      "prereq": null,
+      "recommended": "(ECE 333 | ECE 334 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 521",
+      "title": "Linear Systems and Control",
+      "prereq": null,
+      "recommended": "(ECE 421* | ME 432*)"
+    },
+    {
+      "id": "ECE 527",
+      "title": "Learning From Data",
+      "prereq": null,
+      "recommended": "(MATH 203 | STAT 346 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 528",
+      "title": "Introduction to Random Processes in Electrical and Computer Engineering",
+      "prereq": null,
+      "recommended": "(ECE 321 | STAT 346 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 530",
+      "title": "Sensor Engineering",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECE 531",
+      "title": "Introduction to Wireless Communications and Networks",
+      "prereq": null,
+      "recommended": "(ECE 460 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 532",
+      "title": "Secure Wireless Communications and Networks",
+      "prereq": null,
+      "recommended": "(CS 222 | ECE 240 | ECE 462 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 533",
+      "title": "Spectrum Engineering",
+      "prereq": null,
+      "recommended": "(ECE 321 | ?Equivalent course | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 535",
+      "title": "Digital Signal Processing",
+      "prereq": null,
+      "recommended": "(ECE 460 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 537",
+      "title": "Image Processing and Computer Vision",
+      "prereq": null,
+      "recommended": "(CS 112 | ECE 201 | MATH 203 | STAT 346 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 538",
+      "title": "Medical Imaging",
+      "prereq": null,
+      "recommended": "(ECE 321 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 539",
+      "title": "Neural Engineering",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECE 542",
+      "title": "Computer Network Architectures and Protocols",
+      "prereq": null,
+      "recommended": "(STAT 346 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 545",
+      "title": "Digital System Design with VHDL",
+      "prereq": null,
+      "recommended": "(ECE 231 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 547",
+      "title": "Applied Cryptography",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECE 550",
+      "title": "System Engineering Design",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECE 552",
+      "title": "Big Data Technologies",
+      "prereq": null,
+      "recommended": "(CS 112 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 553",
+      "title": "GenAI and LLM Technologies",
+      "prereq": null,
+      "recommended": "(CS 112 | ECE 231 | ECE 301 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 554",
+      "title": "Machine Learning for Embedded Systems",
+      "prereq": null,
+      "recommended": "(ECE 445 | CS 465 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 555",
+      "title": "GPU Architecture and Programming",
+      "prereq": null,
+      "recommended": "(ECE 445 | CS 465 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 556",
+      "title": "Neuromorphic Computing",
+      "prereq": null,
+      "recommended": "(MATH 203 | STAT 344 | STAT 346 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 561",
+      "title": "Electric Machinery for Clean Energy Systems",
+      "prereq": null,
+      "recommended": "(ECE 286 | ECE 330 | PHYS 306 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 565",
+      "title": "Introduction to Optical Electronics",
+      "prereq": null,
+      "recommended": "(ECE 305 | ECE 333)"
+    },
+    {
+      "id": "ECE 567",
+      "title": "Optical Fiber Communications",
+      "prereq": null,
+      "recommended": "(ECE 462 | TCOM 500 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 570",
+      "title": "Quantum Computing System Design",
+      "prereq": null,
+      "recommended": "(PHYS 534*)"
+    },
+    {
+      "id": "ECE 575",
+      "title": "AI Design and Deployment Risks",
+      "prereq": null,
+      "recommended": "(CS 480* | CS 580* | ECE 427* | ECE 527* | ECE 554*)"
+    },
+    {
+      "id": "ECE 576",
+      "title": "AI: Ethics, Policy, and Society",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECE 577",
+      "title": "Emerging AI & Robotics Tech Seminar",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECE 578",
+      "title": "Intellectual Property Protection for Engineers",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECE 580",
+      "title": "Small Spacecraft Engineering",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECE 584",
+      "title": "Semiconductor Device Fundamentals",
+      "prereq": null,
+      "recommended": "(ECE 333 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 585",
+      "title": "Human Robot Interaction",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECE 586",
+      "title": "Digital Integrated Circuits",
+      "prereq": null,
+      "recommended": "(ECE 231 | ECE 333 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 587",
+      "title": "Design of Analog Integrated Circuits",
+      "prereq": null,
+      "recommended": "(ECE 333 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 588",
+      "title": "Nanoelectronics Fundamentals",
+      "prereq": null,
+      "recommended": "(ECE 333 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 590",
+      "title": "Selected Topics in Engineering",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECE 605",
+      "title": "Microgrid Design and Control",
+      "prereq": null,
+      "recommended": "(ECE 518 | ECE 519 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 606",
+      "title": "Advanced Data Analytics in Smart Grid",
+      "prereq": null,
+      "recommended": "(ECE 518 | ECE 527 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 607",
+      "title": "High Voltage DC and Flexible AC Transmission Systems",
+      "prereq": null,
+      "recommended": "(ECE 419 | ECE 519)"
+    },
+    {
+      "id": "ECE 611",
+      "title": "Advanced Computer Architecture",
+      "prereq": null,
+      "recommended": "(ECE 511 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 612",
+      "title": "Real-Time Embedded Systems",
+      "prereq": null,
+      "recommended": "(ECE 511 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 613",
+      "title": "Computer Architecture Security",
+      "prereq": null,
+      "recommended": "(ECE 511)"
+    },
+    {
+      "id": "ECE 615",
+      "title": "Software/Hardware Codesign",
+      "prereq": null,
+      "recommended": "(ECE 511 | ECE 545 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 616",
+      "title": "Advanced Mobile Systems and Applications",
+      "prereq": null,
+      "recommended": "(ECE 516 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 617",
+      "title": "Distributed and Federated Learning",
+      "prereq": null,
+      "recommended": "(ECE 527 | ECE 554 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 618",
+      "title": "Hardware Accelerators for Machine Learning",
+      "prereq": null,
+      "recommended": "(ECE 511 | CS 465 | ECE 527 | ECE 554 | CS 580 | CS 688 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 619",
+      "title": "Nonlinear Systems and Control",
+      "prereq": null,
+      "recommended": "(ECE 521 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 620",
+      "title": "Optimal Control Theory",
+      "prereq": null,
+      "recommended": "(ECE 521 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 621",
+      "title": "Systems Identification",
+      "prereq": null,
+      "recommended": "(ECE 521 | ECE 528 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 622",
+      "title": "Kalman Filtering with Applications",
+      "prereq": null,
+      "recommended": "(ECE 521 | ECE 528 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 623",
+      "title": "Distributed Control and Optimization",
+      "prereq": null,
+      "recommended": "(ECE 521)"
+    },
+    {
+      "id": "ECE 625",
+      "title": "Autonomous Control for Robotic Systems",
+      "prereq": null,
+      "recommended": "(ECE 521)"
+    },
+    {
+      "id": "ECE 626",
+      "title": "Robot Learning",
+      "prereq": null,
+      "recommended": "(ECE 521 | ECE 527)"
+    },
+    {
+      "id": "ECE 627",
+      "title": "Adaptive Control",
+      "prereq": null,
+      "recommended": "(ECE 521 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 628",
+      "title": "Random Processes in Electrical and Computer Engineering",
+      "prereq": null,
+      "recommended": "(ECE 528 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 629",
+      "title": "Wireless Networks",
+      "prereq": null,
+      "recommended": "(ECE 531 | ECE 542 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 630",
+      "title": "Principles of Digital Communications",
+      "prereq": null,
+      "recommended": "(ECE 528 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 631",
+      "title": "Software-Defined Radio",
+      "prereq": null,
+      "recommended": "(ECE 531 | ECE 535 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 632",
+      "title": "Digital Communications",
+      "prereq": null,
+      "recommended": "(ECE 630 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 633",
+      "title": "Error Control Coding",
+      "prereq": null,
+      "recommended": "(ECE 511 | ECE 542 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 634",
+      "title": "Detection and Estimation Theory",
+      "prereq": null,
+      "recommended": "(ECE 528 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 635",
+      "title": "Adaptive Signal Processing",
+      "prereq": null,
+      "recommended": "(ECE 528)"
+    },
+    {
+      "id": "ECE 636",
+      "title": "Advanced Digital Signal Processing",
+      "prereq": null,
+      "recommended": "(ECE 528 | ECE 535)"
+    },
+    {
+      "id": "ECE 637",
+      "title": "Array Processing",
+      "prereq": null,
+      "recommended": "(ECE 528 | ECE 535)"
+    },
+    {
+      "id": "ECE 639",
+      "title": "Satellite Communications",
+      "prereq": null,
+      "recommended": "(ECE 528 | ECE 542 | ECE 580)"
+    },
+    {
+      "id": "ECE 640",
+      "title": "Small Satellite Development",
+      "prereq": null,
+      "recommended": "(ECE 580 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 641",
+      "title": "Robot System Integration",
+      "prereq": "(ME 631:B- & ECE 521:B- & CS 580:B- & CYSE 550:B-)",
+      "recommended": null
+    },
+    {
+      "id": "ECE 642",
+      "title": "Design and Analysis of Computer Networks",
+      "prereq": null,
+      "recommended": "(ECE 528 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 643",
+      "title": "Network Switching and Routing",
+      "prereq": null,
+      "recommended": "(ECE 542 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 645",
+      "title": "Computer Arithmetic",
+      "prereq": null,
+      "recommended": "(ECE 545 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 647",
+      "title": "Post-Quantum Cryptography",
+      "prereq": null,
+      "recommended": "(ECE 476 | CYSE 476 | CS 487 | IT 466 | CYSE 550 | CS 587 | ECE 547 | ISA 656 | AIT 682 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 648",
+      "title": "Digital Signal Processing Hardware Architectures",
+      "prereq": null,
+      "recommended": "(ECE 535 | ECE 545 | ?Equivalent course | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 649",
+      "title": "Side-Channel Security",
+      "prereq": null,
+      "recommended": "(ECE 547 | ECE 476 | CS 487 | CYSE 476 | IT 466 | CS 587 | CYSE 550 | DFOR 510 | ISA 656 | AIT 682 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 651",
+      "title": "Advanced Learning From Data",
+      "prereq": null,
+      "recommended": "(ECE 527 | DAEN 527 | CS 688 | MATH 203 | STAT 346 | CS 112 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 653",
+      "title": "Machine Learning Security and Privacy",
+      "prereq": null,
+      "recommended": "(ECE 527 | ECE 554 | CS 688 | CYSE 689 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 655",
+      "title": "Advanced GPU Programming and Deep Learning",
+      "prereq": null,
+      "recommended": "(ECE 555 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 657",
+      "title": "Probabilistic Machine Learning",
+      "prereq": null,
+      "recommended": "(ECE 528 | OR 542 | STAT 544 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 660",
+      "title": "Space Systems Engineering",
+      "prereq": null,
+      "recommended": "(ECE 580 | SYST 520)"
+    },
+    {
+      "id": "ECE 664",
+      "title": "Information Theory",
+      "prereq": null,
+      "recommended": "(ECE 528 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 670",
+      "title": "Principles of Command, Control, Communications, Computing, and Intelligence (C4I)",
+      "prereq": null,
+      "recommended": "(ECE 528 | SYST 611 | OR 542 | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 674",
+      "title": "Systems Architecture Design & Evaluation",
+      "prereq": null,
+      "recommended": "(SYST 520 | ECE 550)"
+    },
+    {
+      "id": "ECE 681",
+      "title": "VLSI Design for ASICs",
+      "prereq": null,
+      "recommended": "(ECE 545 | ECE 586* | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 683",
+      "title": "VLSI Verification, Testing, and Security",
+      "prereq": null,
+      "recommended": "(ECE 505:B- | ECE 681:B- | ?Equivalent course)"
+    },
+    {
+      "id": "ECE 684",
+      "title": "MOS Device Electronics",
+      "prereq": null,
+      "recommended": "(ECE 584 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 685",
+      "title": "Nanoelectronics",
+      "prereq": null,
+      "recommended": "(ECE 584)"
+    },
+    {
+      "id": "ECE 686",
+      "title": "Sensor Device Technology",
+      "prereq": null,
+      "recommended": "(ECE 530 | ECE 584 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 687",
+      "title": "Radio Frequency Electronics",
+      "prereq": "ECE 691:B-",
+      "recommended": "(ECE 584 | ECE 587 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 698",
+      "title": "Independent Reading and Research",
+      "prereq": null,
+      "recommended": "(?At least two core courses | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 699",
+      "title": "Advanced Topics in Electrical and Computer Engineering",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECE 701",
+      "title": "Research Experience in Electrical and Computer Engineering",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECE 732",
+      "title": "Mobile Communication Systems",
+      "prereq": null,
+      "recommended": "(ECE 542 | ECE 630)"
+    },
+    {
+      "id": "ECE 747",
+      "title": "Cryptographic Engineering",
+      "prereq": null,
+      "recommended": "(ECE 646 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 795",
+      "title": "Engineering Seminar",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECE 797",
+      "title": "Scholarly Paper",
+      "prereq": null,
+      "recommended": "(?Completed 18 credit hours of graduate work)"
+    },
+    {
+      "id": "ECE 798",
+      "title": "Research Project",
+      "prereq": null,
+      "recommended": "(?Completed 18 credit hours of graduate work)"
+    },
+    {
+      "id": "ECE 799",
+      "title": "Master's Thesis",
+      "prereq": null,
+      "recommended": "(?9 graduate credits | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 896",
+      "title": "Directed Reading and Research",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECE 899",
+      "title": "Research Topics in ECE",
+      "prereq": null,
+      "recommended": "(?Completion of at least one 600 or 700 level course in the Research Topic area | ?Permission of instructor)"
+    },
+    {
+      "id": "ECE 997",
+      "title": "PhD Seminar",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECE 998",
+      "title": "Doctoral Dissertation Proposal",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECE 999",
+      "title": "Doctoral Dissertation",
+      "prereq": null,
+      "recommended": null
+    }
+  ]
+}
