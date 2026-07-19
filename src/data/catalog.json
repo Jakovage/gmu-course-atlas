@@ -1238,7 +1238,7 @@
     {
       "id": "MATH 114",
       "title": "Analytic Geometry and Calculus II",
-      "prereq": "(MATH 113 | (MATH 123 & (MATH 115:C | MATH 124)))"
+      "prereq": "(MATH 113 | (MATH 123 & MATH 124) | MATH 115:C)"
     },
     {
       "id": "MATH 115",

@@ -1,9 +1,12 @@
-// Tiers: vertical layer per course. Undergrad (<500) and graduate (500+) are
-// two independent bands: grad tier = undergrad's tallest tier + 1 + the
-// course's own depth within grad-only chains. So every graduate course sits
-// strictly above every undergraduate course, regardless of whether it has
-// undergrad prereqs (those are satisfied by the band alone) or none at all
-// (it still lands at the base of the grad band, not the base of the world).
+// Tiers: vertical layer per course. Five strictly-ordered bands, by catalog
+// level: 100s, 200s, 300s, 400s, grad (500+). Each band's own courses get
+// their tier from real prereq-chain depth WITHIN that band (same technique
+// as before), then the whole band is shifted to sit directly above the
+// previous band's tallest point. So a 300-level course whose only tracked
+// prereqs happen to be outside the loaded catalog (computed depth 0) still
+// floors at the 300-level band rather than sinking to the world floor next
+// to genuine intro courses -- but a 300-level course with a real, deep
+// in-band chain can still climb higher than that floor, same as always.
 // Cross-band references still draw as edges; they just don't affect height.
 import { CATALOG } from './catalog';
 import type { Expr } from './parse';
@@ -11,6 +14,17 @@ import type { Expr } from './parse';
 export function levelOf(id: string): 'grad' | 'undergrad' {
   const m = id.match(/(\d{3})/);
   return m && parseInt(m[1], 10) >= 500 ? 'grad' : 'undergrad';
+}
+
+// which of the five bands a course belongs to, in increasing order
+function bandOf(id: string): number {
+  const m = id.match(/(\d{3})/);
+  const n = m ? parseInt(m[1], 10) : 100;
+  if (n >= 500) return 4;
+  if (n >= 400) return 3;
+  if (n >= 300) return 2;
+  if (n >= 200) return 1;
+  return 0;
 }
 
 function orderingRefs(e: Expr | null): string[] {
@@ -48,26 +62,29 @@ function computeBandDepth(courses: typeof CATALOG): Map<string, number> {
 }
 
 export const TIERS: Map<string, number> = (() => {
-  const undergrad = CATALOG.filter((c) => levelOf(c.id) === 'undergrad');
-  const grad = CATALOG.filter((c) => levelOf(c.id) === 'grad');
-
-  const underDepth = computeBandDepth(undergrad);
-  const gradDepth = computeBandDepth(grad);
-
-  const underMax = underDepth.size ? Math.max(...underDepth.values()) : 0;
-  const gradBase = underMax + 1;
+  const bands: (typeof CATALOG)[] = [[], [], [], [], []];
+  for (const c of CATALOG) bands[bandOf(c.id)].push(c);
 
   const tiers = new Map<string, number>();
-  for (const c of undergrad) tiers.set(c.id, underDepth.get(c.id) ?? 0);
-  for (const c of grad) tiers.set(c.id, gradBase + (gradDepth.get(c.id) ?? 0));
+  let base = 0;
+  for (const bandCourses of bands) {
+    const localDepth = computeBandDepth(bandCourses);
+    let localMax = 0;
+    for (const c of bandCourses) {
+      const d = localDepth.get(c.id) ?? 0;
+      tiers.set(c.id, base + d);
+      localMax = Math.max(localMax, d);
+    }
+    base += localMax + 1; // next band starts strictly above this one
+  }
 
   // mutual-star pull-up, same band only (crossing bands would violate the
-  // grad-always-above rule, and a grad/undergrad concurrent pair isn't
-  // expected in real data anyway)
+  // strict level ordering, and a cross-level concurrent pair isn't expected
+  // in real data anyway)
   const stars = new Map(CATALOG.map((c) => [c.id, new Set(concurrentRefs(c.prereq))]));
   for (const c of CATALOG) {
     for (const q of stars.get(c.id)!) {
-      if (stars.get(q)?.has(c.id) && levelOf(c.id) === levelOf(q)) {
+      if (stars.get(q)?.has(c.id) && bandOf(c.id) === bandOf(q)) {
         const m = Math.max(tiers.get(c.id) ?? 0, tiers.get(q) ?? 0);
         tiers.set(c.id, m); tiers.set(q, m);
       }

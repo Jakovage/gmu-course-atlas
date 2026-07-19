@@ -24,12 +24,25 @@ const LERP = 0.16;                     // per-frame easing toward target positio
 const MAX_SPAN = VW - 2 * PAD;         // a fan can never be wider than the usable canvas
 const MAX_VSPAN = VH - 2 * PAD;        // ...or taller, for very deep chains
 const ROW_CAP = 2 * ROW;               // ceiling on stretched row spacing
+const BOX_PAD = 14;                    // padding around a group's leaves, world units
+const BOX_PAD_STEP = 10;               // extra padding per level of nesting inside it
+const COREQ_GAP = 56;                  // spacing between direct coreq partners, world units
 
 function allRefs(e: Expr | null): string[] {
   if (!e) return [];
   if (e.kind === 'course') return [e.id];
   if (e.kind === 'condition') return [];
   return e.of.flatMap(allRefs);
+}
+
+// refs marked with * (may be taken concurrently) -- used to find direct
+// corequisite partners so the local focus layout can place them beside
+// the active course instead of hanging them in the ordinary before/after fan
+function concurrentRefs(e: Expr | null): string[] {
+  if (!e) return [];
+  if (e.kind === 'course') return e.concurrent ? [e.id] : [];
+  if (e.kind === 'condition') return [];
+  return e.of.flatMap(concurrentRefs);
 }
 
 // depth 1 (direct neighbor) = full opacity, depth 2 = half, depth 3+ = flat quarter
@@ -55,6 +68,20 @@ function bfsTree(start: string, adj: Map<string, string[]>) {
     }
   }
   return { dist, children };
+}
+
+// every descendant of `root` within a BFS tree's children map (root itself
+// excluded) -- used to drag a coreq partner's whole branch along with it
+// when it gets relocated to sit parallel to the active course.
+function collectSubtree(root: string, children: Map<string, string[]>): string[] {
+  const out: string[] = [];
+  const stack = [...(children.get(root) ?? [])];
+  while (stack.length) {
+    const id = stack.pop()!;
+    out.push(id);
+    stack.push(...(children.get(id) ?? []));
+  }
+  return out;
 }
 
 // classic tree x-layout: leaves get sequential slots, each parent centers
@@ -114,6 +141,45 @@ function placeFan(
   return raw;
 }
 
+// Boxes for the active course's own DIRECT prerequisite expression only
+// (no recursion into other courses' prereqs -- that stays the flat fan).
+// Rule: draw a box only where one is needed to disambiguate --
+//   - operator is OR: always needs a box (dashed)
+//   - operator is AND but sits directly inside an OR: needs a box (solid)
+//   - otherwise: no box, just bare edges (this is why most courses need none)
+// A box's own padding grows with how many box levels are nested inside it,
+// so nested boxes never touch their parent's border.
+interface BoxInstr { x0: number; y0: number; y1: number; x1: number; dashed: boolean }
+
+function collectBoxes(
+  expr: Expr, parentIsOr: boolean, posOf: (id: string) => Pos | undefined, boxes: BoxInstr[],
+): { leaves: string[]; innerLevels: number } {
+  if (expr.kind === 'course') return { leaves: [expr.id], innerLevels: 0 };
+  if (expr.kind === 'condition') return { leaves: [], innerLevels: 0 };
+
+  const leaves: string[] = [];
+  let innerMax = 0;
+  for (const child of expr.of) {
+    const res = collectBoxes(child, expr.kind === 'or', posOf, boxes);
+    leaves.push(...res.leaves);
+    innerMax = Math.max(innerMax, res.innerLevels);
+  }
+
+  const needsBox = expr.kind === 'or' || parentIsOr;
+  const points = leaves.map(posOf).filter((p): p is Pos => p !== undefined);
+  if (needsBox && points.length >= 2) {
+    const pad = BOX_PAD + innerMax * BOX_PAD_STEP;
+    boxes.push({
+      x0: Math.min(...points.map((p) => p.x)) - pad,
+      x1: Math.max(...points.map((p) => p.x)) + pad,
+      y0: Math.min(...points.map((p) => p.y)) - pad,
+      y1: Math.max(...points.map((p) => p.y)) + pad,
+      dashed: expr.kind === 'or',
+    });
+  }
+  return { leaves, innerLevels: needsBox && points.length >= 2 ? innerMax + 1 : innerMax };
+}
+
 interface Camera { x: number; y: number; scale: number }
 type Pos = { x: number; y: number };
 
@@ -132,33 +198,84 @@ export default function Galaxy() {
     () => (showGrad ? CATALOG : CATALOG.filter((c) => levelOf(c.id) !== 'grad')),
     [showGrad],
   );
-  const visibleIds = useMemo(() => new Set(visible.map((c) => c.id)), [visible]);
+
+  // Immediate-relatives count (direct prereqs + direct unlocks), measured
+  // against the full grad-toggled graph -- deliberately NOT the
+  // relatives-filtered set below, since filtering by a count that the
+  // filter itself changes would be circular. Slider at 1 (rightmost,
+  // default) shows everything; sliding left progressively hides the most
+  // connected hub courses first, until only fully isolated (0-relative)
+  // courses remain at the far left.
+  const { degreeOf, maxDegree } = useMemo(() => {
+    const byId = new Map(visible.map((c) => [c.id, c]));
+    const prereqCount = new Map<string, number>();
+    const unlockCount = new Map<string, number>(visible.map((c) => [c.id, 0]));
+    for (const c of visible) {
+      const refs = [...new Set(allRefs(c.prereq))].filter((r) => byId.has(r));
+      prereqCount.set(c.id, refs.length);
+      for (const r of refs) unlockCount.set(r, (unlockCount.get(r) ?? 0) + 1);
+    }
+    const degreeOf = new Map<string, number>();
+    let maxDegree = 1;
+    for (const c of visible) {
+      const d = (prereqCount.get(c.id) ?? 0) + (unlockCount.get(c.id) ?? 0);
+      degreeOf.set(c.id, d);
+      if (d > maxDegree) maxDegree = d;
+    }
+    return { degreeOf, maxDegree };
+  }, [visible]);
+
+  const [relFilter, setRelFilter] = useState(1); // 0..1; 1 = show everything
+  const filteredVisible = useMemo(() => {
+    if (relFilter >= 1) return visible;
+    const threshold = Math.round(relFilter * maxDegree);
+    return visible.filter((c) => (degreeOf.get(c.id) ?? 0) <= threshold);
+  }, [visible, relFilter, degreeOf, maxDegree]);
+
+  const visibleIds = useMemo(() => new Set(filteredVisible.map((c) => c.id)), [filteredVisible]);
 
   const matches = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return null;
-    return new Set(visible
+    return new Set(filteredVisible
       .filter((c) => c.id.toLowerCase().includes(q)
         || String(c.title ?? '').toLowerCase().includes(q))
       .map((c) => c.id));
-  }, [query, visible]);
+  }, [query, filteredVisible]);
 
-  const { byId, prereqsOf, dependentsOf } = useMemo(() => {
-    const byId = new Map(visible.map((c) => [c.id, c]));
+  const { byId, prereqsOf, dependentsOf, coreqOf } = useMemo(() => {
+    const byId = new Map(filteredVisible.map((c) => [c.id, c]));
     const prereqsOf = new Map<string, string[]>();
-    const dependentsOf = new Map<string, string[]>(visible.map((c) => [c.id, []]));
-    for (const c of visible) {
+    const dependentsOf = new Map<string, string[]>(filteredVisible.map((c) => [c.id, []]));
+    // one-directional: coreqOf.get(X) = courses X's OWN prereq expression
+    // stars. This belongs entirely to X -- if X requires Y but allows Y
+    // concurrently, that's X's own flexibility, not a partnership. Focusing
+    // X pulls Y parallel; focusing Y does NOT pull X parallel, since Y never
+    // made any such allowance itself (Y just renders normally above X in
+    // the unlocks fan, hierarchical like any other dependent).
+    const coreqOf = new Map<string, Set<string>>(filteredVisible.map((c) => [c.id, new Set()]));
+    for (const c of filteredVisible) {
       const refs = [...new Set(allRefs(c.prereq))].filter((r) => byId.has(r));
       prereqsOf.set(c.id, refs);
       for (const r of refs) dependentsOf.get(r)!.push(c.id);
+      for (const r of concurrentRefs(c.prereq)) if (byId.has(r)) coreqOf.get(c.id)!.add(r);
     }
-    return { byId, prereqsOf, dependentsOf };
-  }, [visible]);
+    return { byId, prereqsOf, dependentsOf, coreqOf };
+  }, [filteredVisible]);
 
-  const globalWorldOf = (id: string, maxTier: number): Pos => ({
-    x: PAD + POSITIONS.get(id)! * (VW - 2 * PAD),
+  // x is renormalized to whichever courses are actually visible, not the
+  // full catalog -- otherwise hiding grad courses leaves the undergrad
+  // layout compressed into whatever sliver of [0,1] it originally occupied
+  // alongside grad, with dead space on both sides instead of filling the view.
+  const globalWorldOf = (id: string, maxTier: number, xMin: number, xRange: number): Pos => ({
+    x: PAD + ((POSITIONS.get(id)! - xMin) / xRange) * (VW - 2 * PAD),
     y: VH - PAD - ((TIERS.get(id) ?? 0) / Math.max(maxTier, 1)) * (VH - 2 * PAD),
   });
+  const xRangeOf = (courses: Course[]): [number, number] => {
+    const xs = courses.map((c) => POSITIONS.get(c.id)!);
+    const lo = Math.min(...xs), hi = Math.max(...xs);
+    return [lo, Math.max(hi - lo, 0.001)];
+  };
 
   const fitScale = (w: number, h: number) => Math.min(w / VW, h / VH) * 0.96;
 
@@ -205,12 +322,12 @@ export default function Galaxy() {
   // latest-value cache the render loop reads from, so the loop itself only
   // needs to start once (no restart-on-every-state-change churn)
   const stateRef = useRef({
-    camera, size, hovered, selected, visible, byId, prereqsOf, dependentsOf,
-    matches, effectiveMaxTier,
+    camera, size, hovered, selected, visible: filteredVisible, fullVisible: visible,
+    byId, prereqsOf, dependentsOf, matches, effectiveMaxTier, coreqOf,
   });
   stateRef.current = {
-    camera, size, hovered, selected, visible, byId, prereqsOf, dependentsOf,
-    matches, effectiveMaxTier,
+    camera, size, hovered, selected, visible: filteredVisible, fullVisible: visible,
+    byId, prereqsOf, dependentsOf, matches, effectiveMaxTier, coreqOf,
   };
 
   // animated position of every node; eases toward whatever target() returns
@@ -237,6 +354,7 @@ export default function Galaxy() {
       const dpr = window.devicePixelRatio || 1;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
+      const [xMin, xRange] = xRangeOf(s.fullVisible);
       const active = s.selected ?? s.hovered;
       let down: ReturnType<typeof bfsTree> | null = null;
       let up: ReturnType<typeof bfsTree> | null = null;
@@ -248,16 +366,42 @@ export default function Galaxy() {
         for (const id of down.dist.keys()) lit.add(id);
         for (const id of up.dist.keys()) lit.add(id);
 
-        const anchor = globalWorldOf(active, s.effectiveMaxTier);
+        const anchor = globalWorldOf(active, s.effectiveMaxTier, xMin, xRange);
         localTarget.set(active, anchor);
 
         for (const [id, p] of placeFan(anchor, down, active, 1)) localTarget.set(id, p);
         for (const [id, p] of placeFan(anchor, up, active, -1)) localTarget.set(id, p);
+
+        // direct coreqs render parallel: same row as the active course,
+        // fanning out beside it instead of hanging in the before/after tree.
+        // The partner's own subtree (whatever IT in turn requires/unlocks)
+        // gets shifted by the same delta, as one rigid unit -- otherwise
+        // only the partner teleports sideways while its descendants stay at
+        // their original tiered spot, stretching the connecting edges into
+        // long, near-horizontal lines across the canvas.
+        const partners = [...(s.coreqOf.get(active) ?? [])].sort();
+        partners.forEach((id, i) => {
+          const side = i % 2 === 0 ? 1 : -1;
+          const rank = Math.ceil((i + 1) / 2);
+          const newPos = { x: anchor.x + side * rank * COREQ_GAP, y: anchor.y };
+          const oldPos = localTarget.get(id);
+          if (!oldPos) { localTarget.set(id, newPos); return; }
+          const dx = newPos.x - oldPos.x, dy = newPos.y - oldPos.y;
+          for (const sid of collectSubtree(id, down!.children)) {
+            const p = localTarget.get(sid);
+            if (p) localTarget.set(sid, { x: p.x + dx, y: p.y + dy });
+          }
+          for (const sid of collectSubtree(id, up!.children)) {
+            const p = localTarget.get(sid);
+            if (p) localTarget.set(sid, { x: p.x + dx, y: p.y + dy });
+          }
+          localTarget.set(id, newPos);
+        });
       }
       litRef.current = lit;
 
       const targetOf = (id: string): Pos =>
-        (active && localTarget.has(id)) ? localTarget.get(id)! : globalWorldOf(id, s.effectiveMaxTier);
+        (active && localTarget.has(id)) ? localTarget.get(id)! : globalWorldOf(id, s.effectiveMaxTier, xMin, xRange);
 
       for (const c of s.visible) {
         const t = targetOf(c.id);
@@ -267,15 +411,23 @@ export default function Galaxy() {
           y: cur.y + (t.y - cur.y) * LERP,
         });
       }
-      const posOf = (id: string): Pos => animPos.current.get(id) ?? globalWorldOf(id, s.effectiveMaxTier);
+      const posOf = (id: string): Pos => animPos.current.get(id) ?? globalWorldOf(id, s.effectiveMaxTier, xMin, xRange);
 
-      const dimmed = (id: string) => {
-        if (active !== null) return !lit.has(id);
-        if (s.matches !== null) return !s.matches.has(id);
-        return false;
+      // Unified relevance test: while searching, a node counts only if it
+      // also matches the query -- including while focused, where it must be
+      // BOTH in the lit (focused) set AND match the search, so typing while
+      // pinned narrows within that context instead of being ignored.
+      const passesFilter = (id: string) => {
+        if (active !== null) {
+          return id === active || (lit.has(id) && (s.matches === null || s.matches.has(id)));
+        }
+        if (s.matches !== null) return s.matches.has(id);
+        return true;
       };
+      const dimmed = (id: string) => !passesFilter(id);
       const nodeOpacity = (id: string) => {
-        if (active === null) return dimmed(id) ? DIM_FLOOR : 1;
+        if (!passesFilter(id)) return DIM_FLOOR;
+        if (active === null) return 1;
         if (id === active) return 1;
         if (down!.dist.has(id)) return depthOpacity(down!.dist.get(id)!);
         if (up!.dist.has(id)) return depthOpacity(up!.dist.get(id)!);
@@ -294,15 +446,45 @@ export default function Galaxy() {
         const to = posOf(c.id);
         for (const r of s.prereqsOf.get(c.id) ?? []) {
           const from = posOf(r);
-          let stroke = '#8a8a96', alpha = active === null ? 0.16 : DIM_FLOOR;
+          // While focused, only actual TREE edges render. Two sibling
+          // courses can genuinely share a prereq (e.g. CS 109 and CS 112
+          // both require the same MATH options) -- the BFS tree only picks
+          // one of them as that prereq's parent, but the OTHER real edge
+          // still exists in prereqsOf and would otherwise fall through to
+          // default gray styling (both endpoints are individually lit, just
+          // via different paths), reading as a stray unexplained line. Only
+          // drawing tree-membership edges shows one clean path per node.
+          let stroke = '#8a8a96', alpha = active === null ? 0.16 : 0;
           if (active !== null && down!.children.get(c.id)?.includes(r)) {
             stroke = '#6fb2e0'; alpha = depthOpacity(down!.dist.get(r)!);
           } else if (active !== null && up!.children.get(r)?.includes(c.id)) {
             stroke = '#e0a15a'; alpha = depthOpacity(up!.dist.get(c.id)!);
           }
+          if (!passesFilter(c.id) || !passesFilter(r)) alpha = active !== null ? 0 : DIM_FLOOR;
           ctx.strokeStyle = stroke;
           ctx.globalAlpha = alpha;
           ctx.beginPath(); ctx.moveTo(from.x, from.y); ctx.lineTo(to.x, to.y); ctx.stroke();
+        }
+      }
+
+      // AND/OR boxes for the active course's own direct prereq expression
+      if (active) {
+        const activeCourse = s.byId.get(active);
+        if (activeCourse?.prereq && activeCourse.prereq.kind !== 'course'
+            && activeCourse.prereq.kind !== 'condition') {
+          const boxes: BoxInstr[] = [];
+          collectBoxes(activeCourse.prereq, false, (id) => animPos.current.get(id), boxes);
+          ctx.lineWidth = 1.2 / s.camera.scale;
+          ctx.strokeStyle = '#9a9aa4';
+          ctx.globalAlpha = 0.85;
+          for (const b of boxes) {
+            ctx.setLineDash(b.dashed ? [6, 5] : []);
+            const rx = Math.min(10, (b.x1 - b.x0) / 4, (b.y1 - b.y0) / 4);
+            ctx.beginPath();
+            ctx.roundRect(b.x0, b.y0, b.x1 - b.x0, b.y1 - b.y0, rx);
+            ctx.stroke();
+          }
+          ctx.setLineDash([]);
         }
       }
 
@@ -376,17 +558,22 @@ export default function Galaxy() {
 
   // `restrict`: hovering while a course is pinned can only land on the
   // pinned course's related (lit) set, not the dimmed rest of the graph.
-  // Clicking stays unrestricted so you can still re-pin elsewhere or click
-  // empty space to release the pin.
+  // Clicking stays unrestricted there so you can still re-pin elsewhere or
+  // click empty space to release the pin. A search query is a separate,
+  // stronger restriction that applies to BOTH hover and click regardless of
+  // pin state -- you can only interact with courses currently on screen as
+  // matches, combined (AND) with the pin restriction when both are active.
   const pickAt = (sx: number, sy: number, restrict: boolean): string | null => {
     if (!camera) return null;
     const w = toWorld(sx, sy, camera);
     const threshold = 12 / camera.scale;
-    const limited = restrict && selected !== null;
+    const limitedToLit = restrict && selected !== null;
+    const [xMin, xRange] = xRangeOf(visible);
     let best: string | null = null, bestD = threshold;
-    for (const c of visible) {
-      if (limited && !litRef.current.has(c.id)) continue;
-      const p = animPos.current.get(c.id) ?? globalWorldOf(c.id, effectiveMaxTier);
+    for (const c of filteredVisible) {
+      if (limitedToLit && !litRef.current.has(c.id)) continue;
+      if (matches !== null && !matches.has(c.id)) continue;
+      const p = animPos.current.get(c.id) ?? globalWorldOf(c.id, effectiveMaxTier, xMin, xRange);
       const d = Math.hypot(p.x - w.x, p.y - w.y);
       if (d < bestD) { bestD = d; best = c.id; }
     }
@@ -477,6 +664,24 @@ export default function Galaxy() {
         show graduate (500+) courses
       </label>
       <div style={{
+        position: 'fixed', top: 98, left: 14, zIndex: 10,
+        background: '#16161e', border: '1px solid #34343e', borderRadius: 8,
+        padding: '8px 12px', color: '#e6e6ee', fontSize: 12,
+        fontFamily: 'system-ui, sans-serif', width: 220,
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+          <span>immediate relatives</span>
+          <span style={{ color: '#8a8a94' }}>
+            {relFilter >= 1 ? 'all' : `\u2264 ${Math.round(relFilter * maxDegree)}`}
+          </span>
+        </div>
+        <input
+          type="range" min={0} max={1} step={0.01} value={relFilter}
+          onChange={(e) => setRelFilter(parseFloat(e.target.value))}
+          style={{ width: '100%' }}
+        />
+      </div>
+      <div style={{
         position: 'fixed', bottom: 14, left: 14, zIndex: 10, color: '#8a8a94',
         fontSize: 11, fontFamily: 'system-ui, sans-serif', pointerEvents: 'none',
       }}>
@@ -513,6 +718,14 @@ export default function Galaxy() {
               {exprLines(course.prereq).map((line, i) => (
                 <div key={i} style={{ marginTop: 1 }}>{line}</div>
               ))}
+            </div>
+          )}
+          {(coreqOf.get(course.id)?.size ?? 0) > 0 && (
+            <div style={{ marginTop: 6 }}>
+              <div style={{ color: '#7f7f8a', fontSize: 10, textTransform: 'uppercase' }}>Corequisites</div>
+              <div style={{ color: '#a8a8b4' }}>
+                {[...(coreqOf.get(course.id) ?? [])].sort().join(', ')}
+              </div>
             </div>
           )}
           {(dependentsOf.get(course.id) ?? []).length > 0 && (

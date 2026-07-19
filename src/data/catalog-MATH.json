@@ -1,0 +1,719 @@
+{
+  "courses": [
+    {
+      "id": "MATH 104",
+      "title": "Trigonometry and Transcendental Functions",
+      "prereq": "(?Math Placement Algebra II >= 07 | MATH 103)"
+    },
+    {
+      "id": "MATH 105",
+      "title": "Precalculus Mathematics",
+      "prereq": "(?Math Placement Aleks >= 55 | MATH 103)"
+    },
+    {
+      "id": "MATH 106",
+      "title": "Quantitative Reasoning",
+      "prereq": null
+    },
+    {
+      "id": "MATH 108",
+      "title": "Introductory Calculus with Business Applications",
+      "prereq": "(?Math Placement Aleks >= 55 | MATH 103)"
+    },
+    {
+      "id": "MATH 110",
+      "title": "Introductory Probability",
+      "prereq": null
+    },
+    {
+      "id": "MATH 111",
+      "title": "Linear Mathematical Modeling",
+      "prereq": null
+    },
+    {
+      "id": "MATH 113",
+      "title": "Analytic Geometry and Calculus I",
+      "prereq": "(?Math Placement Aleks >= 80 | MATH 104 | MATH 105)"
+    },
+    {
+      "id": "MATH 114",
+      "title": "Analytic Geometry and Calculus II",
+      "prereq": "(MATH 113 | (MATH 123 & MATH 124) | MATH 115:C)"
+    },
+    {
+      "id": "MATH 115",
+      "title": "Analytic Geometry and Calculus I (Honors)",
+      "prereq": "(?Math Placement Aleks >= 80 | ?Math Placement Transcendentals >= 65)"
+    },
+    {
+      "id": "MATH 116",
+      "title": "Analytic Geometry and Calculus II (Honors)",
+      "prereq": "(MATH 113 | MATH 115)"
+    },
+    {
+      "id": "MATH 123",
+      "title": "Calculus with Algebra/Trigonometry, Part A",
+      "prereq": "(?Math Placement Aleks >= 65 | MATH 104 | MATH 105)"
+    },
+    {
+      "id": "MATH 124",
+      "title": "Calculus with Algebra/Trigonometry, Part B",
+      "prereq": "MATH 123"
+    },
+    {
+      "id": "MATH 125",
+      "title": "Discrete Mathematics I",
+      "prereq": "(?Math Placement Aleks >= 65 | MATH 103 | MATH 105 | MATH 108 | MATH 113 | MATH 115:C | MATH 123:C)"
+    },
+    {
+      "id": "MATH 175",
+      "title": "Mathematics of Cryptography: An Introduction",
+      "prereq": null
+    },
+    {
+      "id": "MATH 203",
+      "title": "Linear Algebra",
+      "prereq": "(MATH 114 | MATH 116)"
+    },
+    {
+      "id": "MATH 213",
+      "title": "Analytic Geometry and Calculus III",
+      "prereq": "(MATH 114 | MATH 116)"
+    },
+    {
+      "id": "MATH 214",
+      "title": "Elementary Differential Equations",
+      "prereq": "(MATH 114 | MATH 116)"
+    },
+    {
+      "id": "MATH 215",
+      "title": "Analytic Geometry and Calculus III (Honors)",
+      "prereq": "(MATH 114 | MATH 116)"
+    },
+    {
+      "id": "MATH 216",
+      "title": "Theory of Differential Equations",
+      "prereq": "(MATH 203 & (MATH 213 | MATH 215))"
+    },
+    {
+      "id": "MATH 271",
+      "title": "Mathematics for the Elementary School Teachers I",
+      "prereq": null
+    },
+    {
+      "id": "MATH 272",
+      "title": "Mathematics for the Elementary School Teachers II",
+      "prereq": "MATH 271"
+    },
+    {
+      "id": "MATH 300",
+      "title": "Introduction to Advanced Mathematics",
+      "prereq": "((MATH 114 | MATH 116:C) & (MATH 125 | MATH 175:C))"
+    },
+    {
+      "id": "MATH 301",
+      "title": "Number Theory",
+      "prereq": null
+    },
+    {
+      "id": "MATH 302",
+      "title": "Foundations of Geometry",
+      "prereq": "(MATH 114 | MATH 116)"
+    },
+    {
+      "id": "MATH 307",
+      "title": "Mathematical Modeling",
+      "prereq": "(MATH 203 & (MATH 214 | MATH 216:C))"
+    },
+    {
+      "id": "MATH 312",
+      "title": "Geometry",
+      "prereq": "(MATH 114 | MATH 116)"
+    },
+    {
+      "id": "MATH 313",
+      "title": "Introduction to Applied Analysis",
+      "prereq": "(MATH 213 | MATH 215)"
+    },
+    {
+      "id": "MATH 314",
+      "title": "Advanced Differential Equations",
+      "prereq": "(MATH 214 | MATH 216)"
+    },
+    {
+      "id": "MATH 315",
+      "title": "Advanced Calculus I",
+      "prereq": "(MATH 300 & (MATH 213 | MATH 215))"
+    },
+    {
+      "id": "MATH 316",
+      "title": "Advanced Calculus II",
+      "prereq": "MATH 315"
+    },
+    {
+      "id": "MATH 321",
+      "title": "Abstract Algebra",
+      "prereq": "(MATH 300 & (MATH 213 | MATH 215))"
+    },
+    {
+      "id": "MATH 322",
+      "title": "Advanced Linear Algebra",
+      "prereq": "(MATH 203 & MATH 300)"
+    },
+    {
+      "id": "MATH 325",
+      "title": "Discrete Mathematics II",
+      "prereq": "MATH 125"
+    },
+    {
+      "id": "MATH 351",
+      "title": "Probability",
+      "prereq": "(MATH 213 | MATH 215)"
+    },
+    {
+      "id": "MATH 352",
+      "title": "Statistics",
+      "prereq": "MATH 351"
+    },
+    {
+      "id": "MATH 400",
+      "title": "History of Math (Topic Varies)",
+      "prereq": "MATH 300"
+    },
+    {
+      "id": "MATH 401",
+      "title": "Mathematics through 3D Printing",
+      "prereq": null
+    },
+    {
+      "id": "MATH 405",
+      "title": "Honors Thesis in Mathematics I",
+      "prereq": null
+    },
+    {
+      "id": "MATH 406",
+      "title": "RS: Honors Thesis in Mathematics II",
+      "prereq": null
+    },
+    {
+      "id": "MATH 411",
+      "title": "Functions of a Complex Variable",
+      "prereq": "(MATH 214 | MATH 216)"
+    },
+    {
+      "id": "MATH 413",
+      "title": "Modern Applied Mathematics I",
+      "prereq": "(MATH 203 & (MATH 214 | MATH 216))"
+    },
+    {
+      "id": "MATH 414",
+      "title": "Modern Applied Mathematics II",
+      "prereq": "MATH 413"
+    },
+    {
+      "id": "MATH 421",
+      "title": "Abstract Algebra II",
+      "prereq": "MATH 321"
+    },
+    {
+      "id": "MATH 431",
+      "title": "Topology",
+      "prereq": "MATH 315"
+    },
+    {
+      "id": "MATH 432",
+      "title": "Differential Geometry",
+      "prereq": "MATH 315"
+    },
+    {
+      "id": "MATH 433",
+      "title": "Algebraic Geometry",
+      "prereq": "MATH 321"
+    },
+    {
+      "id": "MATH 441",
+      "title": "Deterministic Optimization",
+      "prereq": "MATH 203"
+    },
+    {
+      "id": "MATH 442",
+      "title": "Stochastic Models",
+      "prereq": "MATH 351"
+    },
+    {
+      "id": "MATH 446",
+      "title": "Numerical Analysis I",
+      "prereq": "(CS 112 & MATH 203)"
+    },
+    {
+      "id": "MATH 447",
+      "title": "Numerical Analysis II",
+      "prereq": "(MATH 446 & (MATH 214 | MATH 216))"
+    },
+    {
+      "id": "MATH 453",
+      "title": "Advanced Mathematical Statistics",
+      "prereq": "(MATH 352 | STAT 356:C)"
+    },
+    {
+      "id": "MATH 462",
+      "title": "Mathematics of Machine Learning and Industrial Applications I",
+      "prereq": "(CS 112 & MATH 203 & MATH 213)"
+    },
+    {
+      "id": "MATH 463",
+      "title": "Mathematics of Machine Learning and Industrial Applications II",
+      "prereq": "MATH 462*"
+    },
+    {
+      "id": "MATH 464",
+      "title": "Linear Algebra with Data Applications",
+      "prereq": "CS 112"
+    },
+    {
+      "id": "MATH 465",
+      "title": "Mathematics of Data Science",
+      "prereq": "(CS 112 & MATH 214 & MATH 322)"
+    },
+    {
+      "id": "MATH 478",
+      "title": "Introduction to Partial Differential Equations with Numerical Methods",
+      "prereq": "(MATH 203 & (MATH 214 | MATH 216))"
+    },
+    {
+      "id": "MATH 490",
+      "title": "Internship",
+      "prereq": null
+    },
+    {
+      "id": "MATH 491",
+      "title": "Reading and Undergraduate Research in Mathematics",
+      "prereq": null
+    },
+    {
+      "id": "MATH 493",
+      "title": "Topics in Applicable Mathematics",
+      "prereq": null
+    },
+    {
+      "id": "MATH 494",
+      "title": "Topics in Pure Mathematics",
+      "prereq": null
+    },
+    {
+      "id": "MATH 495",
+      "title": "Undergraduate Seminar",
+      "prereq": null
+    },
+    {
+      "id": "MATH 515",
+      "title": "Advanced Calculus I",
+      "prereq": null
+    },
+    {
+      "id": "MATH 521",
+      "title": "Abstract Algebra",
+      "prereq": null
+    },
+    {
+      "id": "MATH 531",
+      "title": "Topology",
+      "prereq": null
+    },
+    {
+      "id": "MATH 546",
+      "title": "Numerical Analysis I",
+      "prereq": null
+    },
+    {
+      "id": "MATH 551",
+      "title": "Regression and Time Series",
+      "prereq": null
+    },
+    {
+      "id": "MATH 553",
+      "title": "Advanced Mathematical Statistics in Actuarial Sciences",
+      "prereq": "(MATH 352 | MATH 554 | STAT 356)"
+    },
+    {
+      "id": "MATH 554",
+      "title": "Financial Mathematics",
+      "prereq": null
+    },
+    {
+      "id": "MATH 555",
+      "title": "Actuarial Modeling I",
+      "prereq": null
+    },
+    {
+      "id": "MATH 556",
+      "title": "Actuarial Modeling II",
+      "prereq": null
+    },
+    {
+      "id": "MATH 557",
+      "title": "Financial Derivatives",
+      "prereq": null
+    },
+    {
+      "id": "MATH 600",
+      "title": "Special Topics in Mathematics",
+      "prereq": null
+    },
+    {
+      "id": "MATH 601",
+      "title": "Analysis I for Teachers",
+      "prereq": null
+    },
+    {
+      "id": "MATH 602",
+      "title": "Analysis II for Teachers",
+      "prereq": null
+    },
+    {
+      "id": "MATH 604",
+      "title": "Geometry for Teachers",
+      "prereq": null
+    },
+    {
+      "id": "MATH 605",
+      "title": "Discrete/Finite Mathematics for Teachers",
+      "prereq": null
+    },
+    {
+      "id": "MATH 607",
+      "title": "Algebraic Structure for Teachers",
+      "prereq": null
+    },
+    {
+      "id": "MATH 608",
+      "title": "Problem Solving in Mathematics",
+      "prereq": null
+    },
+    {
+      "id": "MATH 610",
+      "title": "Number Systems and Number Theory for K-8 Teachers",
+      "prereq": null
+    },
+    {
+      "id": "MATH 611",
+      "title": "Geometry and Measurement for K-8 Teachers",
+      "prereq": null
+    },
+    {
+      "id": "MATH 612",
+      "title": "Probability and Statistics for K-8 Teachers",
+      "prereq": null
+    },
+    {
+      "id": "MATH 613",
+      "title": "Algebra and Functions for K-8 Teachers",
+      "prereq": null
+    },
+    {
+      "id": "MATH 614",
+      "title": "Rational Numbers and Proportional Reasoning for K-8 Teachers",
+      "prereq": null
+    },
+    {
+      "id": "MATH 619",
+      "title": "Topics in Mathematical Logic",
+      "prereq": null
+    },
+    {
+      "id": "MATH 621",
+      "title": "Algebra I",
+      "prereq": null
+    },
+    {
+      "id": "MATH 624",
+      "title": "Euclidean Geometry",
+      "prereq": null
+    },
+    {
+      "id": "MATH 625",
+      "title": "Numerical Linear Algebra",
+      "prereq": null
+    },
+    {
+      "id": "MATH 629",
+      "title": "Topics in Algebra",
+      "prereq": null
+    },
+    {
+      "id": "MATH 631",
+      "title": "Topology I: Topology of Metric Spaces",
+      "prereq": null
+    },
+    {
+      "id": "MATH 639",
+      "title": "Topics in Geometry and Topology",
+      "prereq": null
+    },
+    {
+      "id": "MATH 641",
+      "title": "Combinatorics and Graph Theory",
+      "prereq": null
+    },
+    {
+      "id": "MATH 642",
+      "title": "Enumerative Graph Theory",
+      "prereq": "MATH 621"
+    },
+    {
+      "id": "MATH 644",
+      "title": "Convex and Discrete Geometry",
+      "prereq": null
+    },
+    {
+      "id": "MATH 649",
+      "title": "Topics in Combinatorics",
+      "prereq": null
+    },
+    {
+      "id": "MATH 653",
+      "title": "Construction and Evaluation of Actuarial Models I",
+      "prereq": null
+    },
+    {
+      "id": "MATH 654",
+      "title": "Construction and Evaluation of Actuarial Models II",
+      "prereq": null
+    },
+    {
+      "id": "MATH 655",
+      "title": "Pension Valuation",
+      "prereq": null
+    },
+    {
+      "id": "MATH 661",
+      "title": "Complex Analysis I",
+      "prereq": null
+    },
+    {
+      "id": "MATH 662",
+      "title": "Mathematics of Machine Learning and Industrial Applications I",
+      "prereq": null
+    },
+    {
+      "id": "MATH 663",
+      "title": "Mathematics of Machine Learning and Industrial Applications II",
+      "prereq": "MATH 662*"
+    },
+    {
+      "id": "MATH 664",
+      "title": "Linear Algebra with Data Applications",
+      "prereq": null
+    },
+    {
+      "id": "MATH 665",
+      "title": "Mathematics of Data Science",
+      "prereq": null
+    },
+    {
+      "id": "MATH 671",
+      "title": "Fourier Analysis",
+      "prereq": null
+    },
+    {
+      "id": "MATH 673",
+      "title": "Dynamical Systems",
+      "prereq": null
+    },
+    {
+      "id": "MATH 674",
+      "title": "Stochastic Differential Equations",
+      "prereq": null
+    },
+    {
+      "id": "MATH 675",
+      "title": "Linear Analysis",
+      "prereq": null
+    },
+    {
+      "id": "MATH 677",
+      "title": "Ordinary Differential Equations",
+      "prereq": null
+    },
+    {
+      "id": "MATH 678",
+      "title": "Partial Differential Equations",
+      "prereq": null
+    },
+    {
+      "id": "MATH 679",
+      "title": "Topics in Analysis and Potential Theory",
+      "prereq": null
+    },
+    {
+      "id": "MATH 680",
+      "title": "Industrial Mathematics",
+      "prereq": null
+    },
+    {
+      "id": "MATH 683",
+      "title": "Modern Optimization Theory",
+      "prereq": null
+    },
+    {
+      "id": "MATH 685",
+      "title": "Numerical Analysis",
+      "prereq": null
+    },
+    {
+      "id": "MATH 686",
+      "title": "Numerical Solutions of Differential Equations",
+      "prereq": null
+    },
+    {
+      "id": "MATH 687",
+      "title": "Variational Methods",
+      "prereq": null
+    },
+    {
+      "id": "MATH 689",
+      "title": "Topics in Applied and Computational Mathematics",
+      "prereq": null
+    },
+    {
+      "id": "MATH 690",
+      "title": "Graduate Internship",
+      "prereq": null
+    },
+    {
+      "id": "MATH 697",
+      "title": "Independent Reading and Research",
+      "prereq": null
+    },
+    {
+      "id": "MATH 720",
+      "title": "Algebraic Combinatorics",
+      "prereq": "MATH 621"
+    },
+    {
+      "id": "MATH 721",
+      "title": "Algebra II",
+      "prereq": null
+    },
+    {
+      "id": "MATH 722",
+      "title": "Algebraic Topology",
+      "prereq": null
+    },
+    {
+      "id": "MATH 723",
+      "title": "Combinatorial Structures",
+      "prereq": null
+    },
+    {
+      "id": "MATH 724",
+      "title": "Commutative Algebra",
+      "prereq": null
+    },
+    {
+      "id": "MATH 725",
+      "title": "Algebraic Geometry",
+      "prereq": "MATH 621"
+    },
+    {
+      "id": "MATH 726",
+      "title": "Homological Algebra",
+      "prereq": null
+    },
+    {
+      "id": "MATH 732",
+      "title": "Topology II: Set-Theoretic Topology",
+      "prereq": null
+    },
+    {
+      "id": "MATH 734",
+      "title": "Commutative Algebra II",
+      "prereq": "(MATH 621:B- & MATH 724:B-)"
+    },
+    {
+      "id": "MATH 735",
+      "title": "Computational and Applied Topology",
+      "prereq": null
+    },
+    {
+      "id": "MATH 740",
+      "title": "Differential Topology",
+      "prereq": null
+    },
+    {
+      "id": "MATH 741",
+      "title": "Lie Groups",
+      "prereq": "MATH 621"
+    },
+    {
+      "id": "MATH 742",
+      "title": "Differential Geometry",
+      "prereq": "MATH 740"
+    },
+    {
+      "id": "MATH 762",
+      "title": "Complex Analysis II",
+      "prereq": null
+    },
+    {
+      "id": "MATH 763",
+      "title": "Functions of Several Complex Variables",
+      "prereq": null
+    },
+    {
+      "id": "MATH 772",
+      "title": "Wavelet Theory",
+      "prereq": null
+    },
+    {
+      "id": "MATH 776",
+      "title": "Measure and Integration",
+      "prereq": null
+    },
+    {
+      "id": "MATH 781",
+      "title": "Advanced Methods in Applied Mathematics",
+      "prereq": null
+    },
+    {
+      "id": "MATH 784",
+      "title": "Nonlinear Functional Analysis",
+      "prereq": null
+    },
+    {
+      "id": "MATH 790",
+      "title": "Classical Potential Theory",
+      "prereq": null
+    },
+    {
+      "id": "MATH 795",
+      "title": "Graduate Seminar",
+      "prereq": null
+    },
+    {
+      "id": "MATH 798",
+      "title": "Directed Reading or Research",
+      "prereq": null
+    },
+    {
+      "id": "MATH 799",
+      "title": "MS Thesis",
+      "prereq": null
+    },
+    {
+      "id": "MATH 800",
+      "title": "Studies for the Doctor of Philosophy in Education",
+      "prereq": null
+    },
+    {
+      "id": "MATH 998",
+      "title": "Doctoral Dissertation Proposal",
+      "prereq": null
+    },
+    {
+      "id": "MATH 999",
+      "title": "Doctoral Dissertation",
+      "prereq": null
+    }
+  ]
+}

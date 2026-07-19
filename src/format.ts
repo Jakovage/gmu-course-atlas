@@ -1,12 +1,12 @@
 // Renders an expression tree as human-readable requirement text.
 import type { Expr } from './parse';
 
+// concurrent-ok is no longer noted inline here: the parallel placement and
+// the dedicated Corequisites tooltip section already show it, so repeating
+// it as a parenthetical on every starred leaf was redundant.
 function leafText(e: Expr & { kind: 'course' }): string {
   let s = e.id;
-  const notes: string[] = [];
-  if (e.minGrade) notes.push(`min ${e.minGrade}`);
-  if (e.concurrent) notes.push('concurrent ok');
-  if (notes.length) s += ` (${notes.join(', ')})`;
+  if (e.minGrade) s += ` (min ${e.minGrade})`;
   return s;
 }
 

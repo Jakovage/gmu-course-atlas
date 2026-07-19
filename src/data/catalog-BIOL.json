@@ -1,0 +1,984 @@
+{
+  "courses": [
+    {
+      "id": "BIOL 101",
+      "title": "Biology Freshman Seminar",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 102",
+      "title": "Introductory Biology I-Survey of Biodiversity and Ecology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 103",
+      "title": "Introductory Biology II-Survey of Cell and Molecular Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 105",
+      "title": "Introductory Biology II Laboratory",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 106",
+      "title": "Introductory Biology I Laboratory",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 107",
+      "title": "Intro Biology II Lecture",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 124",
+      "title": "Human Anatomy and Physiology I",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 125",
+      "title": "Human Anatomy and Physiology II",
+      "prereq": "BIOL 124:C"
+    },
+    {
+      "id": "BIOL 140",
+      "title": "Plants and People",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 177",
+      "title": "Introductory Ecology for Environmental Engineers",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 213",
+      "title": "Cell Structure and Function",
+      "prereq": "((BIOL 103:C | CHEM 211:C | CHEM 271:C) & BIOL 215*:C)"
+    },
+    {
+      "id": "BIOL 214",
+      "title": "Biostatistics for Biology Majors",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 215",
+      "title": "Cell Structure and Function Laboratory",
+      "prereq": "BIOL 213*:C"
+    },
+    {
+      "id": "BIOL 246",
+      "title": "Introductory Microbiology",
+      "prereq": "(BIOL 124:C | BIOL 103:C | BIOL 213:C | GCH 270:C)"
+    },
+    {
+      "id": "BIOL 295",
+      "title": "Summer Research in Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 300",
+      "title": "BioDiversity",
+      "prereq": "BIOL 213:C"
+    },
+    {
+      "id": "BIOL 301",
+      "title": "Biology and Society",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 302",
+      "title": "Alternative Careers in Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 303",
+      "title": "Animal Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 304",
+      "title": "Plant Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 305",
+      "title": "Biology of Microorganisms",
+      "prereq": "BIOL 213:C"
+    },
+    {
+      "id": "BIOL 306",
+      "title": "Biology of Microorganisms Laboratory",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 308",
+      "title": "Foundations of Ecology and Evolution",
+      "prereq": "((BIOL 213:C & BIOL 214:C) | (EVPP 108:C & EVPP 109:C & BIOL 214:C & BIOL 338*:C))"
+    },
+    {
+      "id": "BIOL 309",
+      "title": "Oceanography",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 311",
+      "title": "General Genetics",
+      "prereq": "(BIOL 213:C | BIOL 313*:C)"
+    },
+    {
+      "id": "BIOL 312",
+      "title": "Biostatistics for Bioinformatics",
+      "prereq": "(BIOL 214:C & CDS 130:C)"
+    },
+    {
+      "id": "BIOL 313",
+      "title": "General Genetics Laboratory",
+      "prereq": "((BIOL 213:C | BIOL 215:C) & BIOL 311*:C)"
+    },
+    {
+      "id": "BIOL 314",
+      "title": "Introduction to Research Design and Analysis",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 318",
+      "title": "Conservation Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 320",
+      "title": "Comparative Chordate Anatomy",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 322",
+      "title": "Developmental Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 323",
+      "title": "Environmental Effects on Embryonic Development",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 326",
+      "title": "Animal Physiology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 331",
+      "title": "Invertebrate Zoology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 332",
+      "title": "Insect Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 334",
+      "title": "Vertebrate Paleontology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 335",
+      "title": "Forensic Entomology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 336",
+      "title": "Invertebrate Paleontology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 338",
+      "title": "Foundations of Ecology and Evolution Laboratory",
+      "prereq": "BIOL 308*:C"
+    },
+    {
+      "id": "BIOL 340",
+      "title": "Introductory Botany",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 344",
+      "title": "Plant Diversity and Evolution",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 345",
+      "title": "Plant Ecology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 350",
+      "title": "Freshwater Ecosystems",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 351",
+      "title": "Conservation Seminar",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 352",
+      "title": "Monitoring and Assessment of Biodiversity",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 353",
+      "title": "Small Population Management",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 354",
+      "title": "Research in Conservation",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 355",
+      "title": "Ecological Engineering and Ecosystem Restoration",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 356",
+      "title": "Landscape and Macrosystems Ecology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 357",
+      "title": "Ecology Field Skills",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 374",
+      "title": "Biogeography: Space, Time, and Life",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 377",
+      "title": "Applied Ecology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 378",
+      "title": "Applied Ecology Laboratory",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 379",
+      "title": "RS: Ecological Sustainability",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 382",
+      "title": "Introduction to Virology",
+      "prereq": "(BIOL 305:C | BIOL 246:C)"
+    },
+    {
+      "id": "BIOL 385",
+      "title": "Biotechnology and Genetic Engineering",
+      "prereq": "BIOL 311:C"
+    },
+    {
+      "id": "BIOL 400",
+      "title": "News & Views: Selected Topics",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 401",
+      "title": "Phage Discovery",
+      "prereq": "((BIOL 305:C | BIOL 246:C) & BIOL 306:C)"
+    },
+    {
+      "id": "BIOL 402",
+      "title": "Applied and Industrial Microbiology",
+      "prereq": "(BIOL 305:C | BIOL 246:C)"
+    },
+    {
+      "id": "BIOL 403",
+      "title": "Techniques in Applied and Industrial Microbiology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 404",
+      "title": "Medical Microbiology",
+      "prereq": "(BIOL 305:C | BIOL 246:C)"
+    },
+    {
+      "id": "BIOL 405",
+      "title": "Microbial Genetics",
+      "prereq": "(BIOL 305:C | (BIOL 246:C & BIOL 306:C & BIOL 311:C & BIOL 313:C))"
+    },
+    {
+      "id": "BIOL 407",
+      "title": "Microbial Diversity",
+      "prereq": "((BIOL 305:C | BIOL 246:C) & BIOL 306:C)"
+    },
+    {
+      "id": "BIOL 408",
+      "title": "Mushrooms, Molds and Society",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 409",
+      "title": "Medical Mycology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 410",
+      "title": "Biology and Society",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 411",
+      "title": "Advanced General Genetics",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 412",
+      "title": "Phage Genomics",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 413",
+      "title": "Histotechniques",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 417",
+      "title": "Selected Topics in Molecular and Cellular Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 418",
+      "title": "Current Topics in Microbiology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 420",
+      "title": "Vaccines",
+      "prereq": "(BIOL 305:C | BIOL 246:C)"
+    },
+    {
+      "id": "BIOL 421",
+      "title": "Genetics of Human Diseases",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 422",
+      "title": "Stem Cell Biology and Regenerative Medicine",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 423",
+      "title": "Biology of Obesity and Weight Loss",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 424",
+      "title": "Female Reproductive Biology & Health",
+      "prereq": "BIOL 213:C"
+    },
+    {
+      "id": "BIOL 425",
+      "title": "Human Physiology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 426",
+      "title": "Mechanisms of Aging",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 427",
+      "title": "Disease Ecology and Conservation",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 428",
+      "title": "Planetary Health",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 429",
+      "title": "Biological Foundations of Pharmacology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 430",
+      "title": "Advanced Human Anatomy and Physiology I",
+      "prereq": "BIOL 213:C"
+    },
+    {
+      "id": "BIOL 431",
+      "title": "Advanced Human Anatomy and Physiology II",
+      "prereq": "BIOL 430:C"
+    },
+    {
+      "id": "BIOL 432",
+      "title": "Clinical Applications in Human Physiology",
+      "prereq": "((BIOL 124:C & BIOL 125:C) | (BIOL 430:C & BIOL 431:C))"
+    },
+    {
+      "id": "BIOL 433",
+      "title": "Selected Topics in Plant Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 435",
+      "title": "Selected Topics in Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 437",
+      "title": "Ornithology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 438",
+      "title": "Mammalogy",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 439",
+      "title": "Herpetology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 440",
+      "title": "Field Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 442",
+      "title": "Urban Ecosystems and Processes",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 443",
+      "title": "Tropical Ecology",
+      "prereq": "(BIOL 308:C | BIOL 300:C)"
+    },
+    {
+      "id": "BIOL 444",
+      "title": "Tropical Ecology Laboratory",
+      "prereq": "(BIOL 308:C | BIOL 300:C)"
+    },
+    {
+      "id": "BIOL 446",
+      "title": "Ecological and Evolutionary Physiology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 449",
+      "title": "Marine Ecology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 450",
+      "title": "Marine Conservation",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 452",
+      "title": "Immunology",
+      "prereq": "(BIOL 213:C & (BIOL 305:C | BIOL 246:C))"
+    },
+    {
+      "id": "BIOL 453",
+      "title": "Immunology Laboratory",
+      "prereq": "BIOL 306:C"
+    },
+    {
+      "id": "BIOL 454",
+      "title": "Marine Mammal Biology and Conservation",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 457",
+      "title": "Reproductive Strategies",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 459",
+      "title": "Fungi and Ecosystems",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 460",
+      "title": "Infectious Diseases Wildlife",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 465",
+      "title": "Histology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 468",
+      "title": "Vertebrate Natural History",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 471",
+      "title": "Evolution",
+      "prereq": "BIOL 308:C"
+    },
+    {
+      "id": "BIOL 472",
+      "title": "Introductory Animal Behavior",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 473",
+      "title": "Introductory Laboratory in Animal Behavior",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 480",
+      "title": "The Diversity of Fishes",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 482",
+      "title": "Introduction to Molecular Genetics",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 483",
+      "title": "General Biochemistry",
+      "prereq": "(BIOL 213:C & CHEM 313:C)"
+    },
+    {
+      "id": "BIOL 484",
+      "title": "Cell Signaling and Disease",
+      "prereq": "BIOL 311:C"
+    },
+    {
+      "id": "BIOL 485",
+      "title": "Cell Signaling Laboratory",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 486",
+      "title": "Molecular Biology and Biotechnology Laboratory",
+      "prereq": "BIOL 385:C"
+    },
+    {
+      "id": "BIOL 489",
+      "title": "Teaching Practicum",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 491",
+      "title": "Selected Topics in Biology Laboratory Techniques",
+      "prereq": "(BIOL 213:C & BIOL 311:C & (BIOL 305:C | BIOL 246:C) & BIOL 306:C & (CHEM 211:C & CHEM 213:C) & (CHEM 212:C & CHEM 214:C))"
+    },
+    {
+      "id": "BIOL 492",
+      "title": "Senior Seminar",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 493",
+      "title": "Honors Research in Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 494",
+      "title": "Honors Seminar in Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 495",
+      "title": "Directed Studies in Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 497",
+      "title": "Special Problems in Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 498",
+      "title": "Research Seminar",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 499",
+      "title": "RS: Research in Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 501",
+      "title": "Microbial Diversity: An Organismal Approach",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 502",
+      "title": "Adaptation in Biosystems",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 506",
+      "title": "Selected Topics in Microbiology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 507",
+      "title": "Selected Topics in Ecology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 508",
+      "title": "Selected Topics in Animal Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 515",
+      "title": "Developmental Neurobiology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 516",
+      "title": "Mammalian Neurobiology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 518",
+      "title": "Conservation Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 527",
+      "title": "Conservation Medicine",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 528",
+      "title": "Planetary Health",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 532",
+      "title": "Animal Behavior",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 533",
+      "title": "Selected Topics in Plant Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 537",
+      "title": "Ornithology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 538",
+      "title": "Mammalogy",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 539",
+      "title": "Herpetology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 543",
+      "title": "Tropical Ecosystems",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 550",
+      "title": "Waterscape Ecology and Management",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 553",
+      "title": "Advanced Topics in Immunology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 555",
+      "title": "Lab in Waterscape Ecology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 559",
+      "title": "Fungi and Ecosystems",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 560",
+      "title": "Infectious Diseases of Wildlife",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 561",
+      "title": "Comparative Animal Physiology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 562",
+      "title": "Personalized Medicine",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 563",
+      "title": "Virology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 564",
+      "title": "Techniques in Virology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 565",
+      "title": "Medical Microbiology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 566",
+      "title": "Cancer Genomics",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 568",
+      "title": "Advanced Topics in Molecular Genetics",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 572",
+      "title": "Human Genetics",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 573",
+      "title": "Developmental Genetics",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 574",
+      "title": "Population Genetics",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 575",
+      "title": "Selected Topics in Genetics",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 579",
+      "title": "Molecular Evolution and Conservation Genetics",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 580",
+      "title": "Computer Applications for the Life Sciences",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 581",
+      "title": "Estuarine and Coastal Ecology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 582",
+      "title": "Estuarine and Coastal Ecology Laboratory",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 583",
+      "title": "General Biochemistry",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 585",
+      "title": "Eukaryotic Cell Biology Laboratory",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 589",
+      "title": "Teaching Practicum",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 591",
+      "title": "Special Topics",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 607",
+      "title": "Fundamentals of Ecology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 608",
+      "title": "Topics in Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 638",
+      "title": "Sensory Ecology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 639",
+      "title": "Community Ecology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 643",
+      "title": "Microbial Ecology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 644",
+      "title": "Wetland Ecology and Management",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 645",
+      "title": "Freshwater Ecology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 648",
+      "title": "Population Ecology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 649",
+      "title": "Biological Resource Management",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 650",
+      "title": "Environment Analysis and Modeling",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 665",
+      "title": "Environmental Hazards to Human Health",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 666",
+      "title": "Human Genetics Concepts for Health Care",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 667",
+      "title": "Signal Transduction in Cancer",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 668",
+      "title": "Advanced Techniques in Molecular Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 669",
+      "title": "Pathogenic Microbiology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 671",
+      "title": "Fundamental Concepts in Evolution",
+      "prereq": "(BIOL 311:C & BIOL 308:C)"
+    },
+    {
+      "id": "BIOL 675",
+      "title": "Aerosol Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 678",
+      "title": "Cell-Based Assays",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 680",
+      "title": "Experimental Design and Analysis for the Life Sciences",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 682",
+      "title": "Advanced Eukaryotic Cell Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 685",
+      "title": "Emerging Infectious Diseases",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 689",
+      "title": "Interdisciplinary Tools in the Biosciences",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 690",
+      "title": "Introduction to Graduate Studies in Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 691",
+      "title": "Current Topics in Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 692",
+      "title": "Seminar in Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 693",
+      "title": "Directed Studies in Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 695",
+      "title": "Seminar in Molecular, Microbial, and Cellular Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 715",
+      "title": "Microbial Physiology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 718",
+      "title": "Techniques in Microbial Pathogenesis",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 720",
+      "title": "Microbial Metabolism",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 745",
+      "title": "Environmental Toxicology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 793",
+      "title": "Research in Biology",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 798",
+      "title": "Master's Research Project",
+      "prereq": null
+    },
+    {
+      "id": "BIOL 799",
+      "title": "Thesis",
+      "prereq": null
+    }
+  ]
+}

@@ -1,0 +1,439 @@
+{
+  "courses": [
+    {
+      "id": "ME 151",
+      "title": "Practicum in Engineering",
+      "prereq": "((CS 109:C | CS 112:C | ENGR 125*) & (ENGH 100:C | ENGH 101:C | HNRS 110:C))"
+    },
+    {
+      "id": "ME 211",
+      "title": "Statics",
+      "prereq": "(PHYS 160:C & (MATH 114:C | MATH 116:C))"
+    },
+    {
+      "id": "ME 212",
+      "title": "Solid Mechanics",
+      "prereq": "(ENGR 210:C | CEIE 210:C | ME 211:C)"
+    },
+    {
+      "id": "ME 221",
+      "title": "Thermodynamics",
+      "prereq": "(PHYS 160:C & PHYS 161:C & (MATH 114:C | MATH 116:C))"
+    },
+    {
+      "id": "ME 231",
+      "title": "Dynamics",
+      "prereq": "(ME 211:C | CEIE 210:C)"
+    },
+    {
+      "id": "ME 311",
+      "title": "Mechanical Experimentation I",
+      "prereq": "(ME 212:C | CEIE 310:C)"
+    },
+    {
+      "id": "ME 313",
+      "title": "Material Science",
+      "prereq": "(((CHEM 211:C & CHEM 213:C) | CHEM 251:C | (CHEM 271:C & CHEM 272:C)) & (ME 212:C | BENG 230:C | CEIE 310:C))"
+    },
+    {
+      "id": "ME 321",
+      "title": "Mechanical Experimentation II",
+      "prereq": "ME 322:C"
+    },
+    {
+      "id": "ME 322",
+      "title": "Fluid Mechanics",
+      "prereq": "(ME 221:C & ME 231:C & (MATH 214:C | MATH 216:C))"
+    },
+    {
+      "id": "ME 323",
+      "title": "Heat Transfer",
+      "prereq": "ME 322:C"
+    },
+    {
+      "id": "ME 331",
+      "title": "Mechatronics",
+      "prereq": "(ECE 330:C | ECE 286:C)"
+    },
+    {
+      "id": "ME 341",
+      "title": "Design of Mechanical Elements",
+      "prereq": "(ME 151:C & (ME 212:C | CEIE 310:C))"
+    },
+    {
+      "id": "ME 342",
+      "title": "Design of Thermal Systems",
+      "prereq": "(ME 151:C & ME 221:C)"
+    },
+    {
+      "id": "ME 351",
+      "title": "Analytical Methods in Engineering",
+      "prereq": "(ME 151:C & (MATH 214:C | MATH 216:C) & ME 231:C)"
+    },
+    {
+      "id": "ME 352",
+      "title": "Entrepreneurship in Engineering",
+      "prereq": null
+    },
+    {
+      "id": "ME 395",
+      "title": "Mechanical Engineering Internship",
+      "prereq": "(ME 212:C & ME 221:C & ME 231:C)"
+    },
+    {
+      "id": "ME 409",
+      "title": "Data Center Engineering",
+      "prereq": null
+    },
+    {
+      "id": "ME 410",
+      "title": "Biosafety Laboratories",
+      "prereq": "(ME 323:C | BENG 230:C)"
+    },
+    {
+      "id": "ME 413",
+      "title": "A Seat at the Table",
+      "prereq": null
+    },
+    {
+      "id": "ME 414",
+      "title": "Fatigue Analysis",
+      "prereq": "ME 313:C"
+    },
+    {
+      "id": "ME 415",
+      "title": "Composite Materials",
+      "prereq": "ME 313:C"
+    },
+    {
+      "id": "ME 420",
+      "title": "Engineering Decision Making",
+      "prereq": "MATH 214:C"
+    },
+    {
+      "id": "ME 421",
+      "title": "HVAC Design",
+      "prereq": "ME 221:C"
+    },
+    {
+      "id": "ME 422",
+      "title": "Computational Fluid Dynamics (CFD) for Mechanical Engineers",
+      "prereq": "((CS 112:C | CS 109:C | ENGR 125*) & ME 322:C)"
+    },
+    {
+      "id": "ME 423",
+      "title": "Microfluidics",
+      "prereq": "(ME 322:C | BENG 230:C)"
+    },
+    {
+      "id": "ME 425",
+      "title": "Renewable Energy Engineering",
+      "prereq": "PHYS 260:C"
+    },
+    {
+      "id": "ME 432",
+      "title": "System Dynamics and Controls",
+      "prereq": "(ME 351:C & (ECE 286:C | ECE 330:C))"
+    },
+    {
+      "id": "ME 443",
+      "title": "Mechanical Design I",
+      "prereq": "((ME 212:C & ME 313:C & ME 323:C) & (((ME 341:C | ME 342:C) & ME 331:C) | CS 367:C))"
+    },
+    {
+      "id": "ME 444",
+      "title": "Mechanical Design II",
+      "prereq": "ME 443:C"
+    },
+    {
+      "id": "ME 445",
+      "title": "Finite Element Analysis",
+      "prereq": "ME 351:C"
+    },
+    {
+      "id": "ME 446",
+      "title": "Energetics",
+      "prereq": null
+    },
+    {
+      "id": "ME 447",
+      "title": "Computer-Aided Design",
+      "prereq": "(ME 151:C & ME 212:C)"
+    },
+    {
+      "id": "ME 453",
+      "title": "Developing the Societal Engineer",
+      "prereq": "ME 443*:C"
+    },
+    {
+      "id": "ME 454",
+      "title": "Project Mgmt for Engineers",
+      "prereq": null
+    },
+    {
+      "id": "ME 466",
+      "title": "Advanced Materials Engineering",
+      "prereq": "ME 313:C"
+    },
+    {
+      "id": "ME 467",
+      "title": "Nanosensors",
+      "prereq": "(CHEM 211:C | CHEM 271:C)"
+    },
+    {
+      "id": "ME 471",
+      "title": "Introduction to Astronautics",
+      "prereq": "ME 231:C"
+    },
+    {
+      "id": "ME 472",
+      "title": "Spacecraft Subsystems",
+      "prereq": "ME 231:C"
+    },
+    {
+      "id": "ME 473",
+      "title": "Space Systems Propulsion",
+      "prereq": "ME 221:C"
+    },
+    {
+      "id": "ME 475",
+      "title": "Aeronautics I",
+      "prereq": "(ME 212:C & ME 322:C)"
+    },
+    {
+      "id": "ME 476",
+      "title": "Aeronautics II",
+      "prereq": "ME 475:C"
+    },
+    {
+      "id": "ME 477",
+      "title": "Aircraft Propulsion",
+      "prereq": "ME 221:C"
+    },
+    {
+      "id": "ME 480",
+      "title": "Machine Learning for Mechanical Engineers",
+      "prereq": "((CS 112:C | SYST 130:C) & (ME 351:C | STAT 344:C))"
+    },
+    {
+      "id": "ME 490",
+      "title": "FE Exam Review",
+      "prereq": null
+    },
+    {
+      "id": "ME 498",
+      "title": "Independent Study in Mechanical Engineering",
+      "prereq": null
+    },
+    {
+      "id": "ME 499",
+      "title": "Special Topics in Mechanical Engineering",
+      "prereq": null
+    },
+    {
+      "id": "ME 500",
+      "title": "Mechanical Engineering Seminar",
+      "prereq": null
+    },
+    {
+      "id": "ME 521",
+      "title": "Energy Transfer",
+      "prereq": null
+    },
+    {
+      "id": "ME 531",
+      "title": "Energy Transmission",
+      "prereq": null
+    },
+    {
+      "id": "ME 541",
+      "title": "Power Generation",
+      "prereq": null
+    },
+    {
+      "id": "ME 542",
+      "title": "Energy Utilization",
+      "prereq": null
+    },
+    {
+      "id": "ME 551",
+      "title": "Naval Engineering",
+      "prereq": null
+    },
+    {
+      "id": "ME 552",
+      "title": "Fundamentals of Naval Architecture",
+      "prereq": null
+    },
+    {
+      "id": "ME 553",
+      "title": "Ship Design Process and Tools",
+      "prereq": null
+    },
+    {
+      "id": "ME 554",
+      "title": "Naval Project Management",
+      "prereq": null
+    },
+    {
+      "id": "ME 575",
+      "title": "AI Design and Deployment Risks",
+      "prereq": null
+    },
+    {
+      "id": "ME 576",
+      "title": "AI: Ethics, Policy, and Society",
+      "prereq": null
+    },
+    {
+      "id": "ME 577",
+      "title": "Emerging AI & Robotics Tech Seminar",
+      "prereq": null
+    },
+    {
+      "id": "ME 578",
+      "title": "Systems Engineering and Artificial Intelligence",
+      "prereq": null
+    },
+    {
+      "id": "ME 585",
+      "title": "Human Robot Interaction",
+      "prereq": null
+    },
+    {
+      "id": "ME 620",
+      "title": "Mechanical Engineering Decision Making",
+      "prereq": null
+    },
+    {
+      "id": "ME 621",
+      "title": "Foundations of Fluid Mechanics",
+      "prereq": null
+    },
+    {
+      "id": "ME 631",
+      "title": "Advanced Dynamics of Mechanical Systems",
+      "prereq": null
+    },
+    {
+      "id": "ME 641",
+      "title": "Robot System Integration",
+      "prereq": "(ME 631:B- & ECE 521:B- & CS 580:B- & CYSE 550:B-)"
+    },
+    {
+      "id": "ME 698",
+      "title": "Research Study in Selected Mechanical Engineering Topics",
+      "prereq": null
+    },
+    {
+      "id": "ME 699",
+      "title": "Advanced Special Topics in Mechanical Engineering",
+      "prereq": null
+    },
+    {
+      "id": "ME 714",
+      "title": "Fracture Mechanics",
+      "prereq": null
+    },
+    {
+      "id": "ME 715",
+      "title": "Impact Dynamics",
+      "prereq": null
+    },
+    {
+      "id": "ME 721",
+      "title": "Advanced Fluid Mechanics",
+      "prereq": null
+    },
+    {
+      "id": "ME 722",
+      "title": "Introduction to Turbulence",
+      "prereq": null
+    },
+    {
+      "id": "ME 723",
+      "title": "Compressible Flow",
+      "prereq": null
+    },
+    {
+      "id": "ME 724",
+      "title": "Viscoelastic Flow",
+      "prereq": null
+    },
+    {
+      "id": "ME 728",
+      "title": "Foundations of Heat Transfer",
+      "prereq": null
+    },
+    {
+      "id": "ME 732",
+      "title": "Advanced Thermodynamics",
+      "prereq": null
+    },
+    {
+      "id": "ME 740",
+      "title": "Introduction to Continuum Mechanics",
+      "prereq": null
+    },
+    {
+      "id": "ME 741",
+      "title": "Theory of Elasticity",
+      "prereq": null
+    },
+    {
+      "id": "ME 742",
+      "title": "Finite Element Analysis for Solids",
+      "prereq": null
+    },
+    {
+      "id": "ME 745",
+      "title": "Mechanics and Properties of Materials",
+      "prereq": null
+    },
+    {
+      "id": "ME 750",
+      "title": "Nanomaterials Enabled Renewable Energy",
+      "prereq": null
+    },
+    {
+      "id": "ME 751",
+      "title": "Advanced Materials for Water Treatment",
+      "prereq": null
+    },
+    {
+      "id": "ME 753",
+      "title": "Tribology and Surface Engineering",
+      "prereq": null
+    },
+    {
+      "id": "ME 754",
+      "title": "Introduction to Nano-Materials",
+      "prereq": null
+    },
+    {
+      "id": "ME 755",
+      "title": "Optofluidics",
+      "prereq": null
+    },
+    {
+      "id": "ME 762",
+      "title": "Nano Bio Sensors",
+      "prereq": null
+    },
+    {
+      "id": "ME 990",
+      "title": "Dissertation Topic Presentation",
+      "prereq": null
+    },
+    {
+      "id": "ME 998",
+      "title": "Doctoral Dissertation Proposal",
+      "prereq": null
+    },
+    {
+      "id": "ME 999",
+      "title": "Doctoral Dissertation",
+      "prereq": null
+    }
+  ]
+}

@@ -1,0 +1,359 @@
+{
+  "courses": [
+    {
+      "id": "STAT 250",
+      "title": "Introductory Statistics I",
+      "prereq": null
+    },
+    {
+      "id": "STAT 260",
+      "title": "Introduction to Statistical Practice I",
+      "prereq": "(MATH 113*:C | MATH 115*:C | MATH 124*:C)"
+    },
+    {
+      "id": "STAT 334",
+      "title": "Introduction to Probability Models and Simulation",
+      "prereq": "(STAT 260:C & (MATH 114:C | MATH 116:C) & STAT 362*:C)"
+    },
+    {
+      "id": "STAT 344",
+      "title": "Probability and Statistics for Engineers and Scientists I",
+      "prereq": "(MATH 114:C | MATH 116:C)"
+    },
+    {
+      "id": "STAT 346",
+      "title": "Probability for Engineers",
+      "prereq": "(MATH 213:C | MATH 215:C)"
+    },
+    {
+      "id": "STAT 350",
+      "title": "Introductory Statistics II",
+      "prereq": "(STAT 250:C | STAT 260:C)"
+    },
+    {
+      "id": "STAT 354",
+      "title": "Probability and Statistics for Engineers and Scientists II",
+      "prereq": "(STAT 334:C | STAT 344:C | (STAT 346:C & STAT 362:C))"
+    },
+    {
+      "id": "STAT 356",
+      "title": "Statistical Theory",
+      "prereq": "(STAT 334:C | STAT 346:C | MATH 351:C)"
+    },
+    {
+      "id": "STAT 360",
+      "title": "Introduction to Statistical Practice II",
+      "prereq": "((STAT 250:C | STAT 260:C | BENG 241:C) & (MATH 114*:C | MATH 116*:C))"
+    },
+    {
+      "id": "STAT 362",
+      "title": "Introduction to Computer Statistical Packages",
+      "prereq": "(STAT 250:C | STAT 260:C | BUS 310:C | STAT 344:C)"
+    },
+    {
+      "id": "STAT 455",
+      "title": "Experimental Design",
+      "prereq": "(STAT 350:C | STAT 354:C | STAT 360:C)"
+    },
+    {
+      "id": "STAT 456",
+      "title": "Applied Regression Analysis",
+      "prereq": "(STAT 350:C | STAT 354:C | STAT 360:C | BUS 310:C)"
+    },
+    {
+      "id": "STAT 460",
+      "title": "Introduction to Biostatistics",
+      "prereq": "((STAT 350:C | STAT 354:C | STAT 360:C) & STAT 362*:C)"
+    },
+    {
+      "id": "STAT 462",
+      "title": "Applied Multivariate Statistics",
+      "prereq": "(STAT 350:C | STAT 354:C | STAT 360:C)"
+    },
+    {
+      "id": "STAT 463",
+      "title": "Introduction to Exploratory Data Analysis",
+      "prereq": "(STAT 350:C | STAT 354:C | STAT 360:C | BUS 310:C)"
+    },
+    {
+      "id": "STAT 465",
+      "title": "Nonparametric Statistics and Categorical Data Analysis",
+      "prereq": "(STAT 350:C | STAT 354:C | STAT 360:C)"
+    },
+    {
+      "id": "STAT 472",
+      "title": "Introduction to Statistical Learning",
+      "prereq": "STAT 456:C"
+    },
+    {
+      "id": "STAT 474",
+      "title": "Introduction to Survey Sampling",
+      "prereq": "((STAT 350:C | STAT 354:C | STAT 360:C) & STAT 362*:C)"
+    },
+    {
+      "id": "STAT 489",
+      "title": "Pre-Capstone Professional Development",
+      "prereq": "((STAT 354:C | STAT 360:C) & STAT 362:C & ENGH 302:C & (COMM 100:C | COMM 101:C))"
+    },
+    {
+      "id": "STAT 490",
+      "title": "Capstone in Statistics",
+      "prereq": "STAT 489:C"
+    },
+    {
+      "id": "STAT 494",
+      "title": "Internship In Statistics",
+      "prereq": null
+    },
+    {
+      "id": "STAT 498",
+      "title": "Independent Study in Statistics",
+      "prereq": null
+    },
+    {
+      "id": "STAT 499",
+      "title": "Special Topics in Statistics",
+      "prereq": null
+    },
+    {
+      "id": "STAT 500",
+      "title": "Special Topics",
+      "prereq": null
+    },
+    {
+      "id": "STAT 507",
+      "title": "Introduction to Statistical Data Science",
+      "prereq": null
+    },
+    {
+      "id": "STAT 508",
+      "title": "Quantitative Foundation for Statistical Data Science",
+      "prereq": null
+    },
+    {
+      "id": "STAT 515",
+      "title": "Applied Statistics and Visualization for Analytics",
+      "prereq": null
+    },
+    {
+      "id": "STAT 517",
+      "title": "Experimental Design",
+      "prereq": "(STAT 535:B- | STAT 554:B-)"
+    },
+    {
+      "id": "STAT 521",
+      "title": "Applied Probability and Statistical Inference",
+      "prereq": null
+    },
+    {
+      "id": "STAT 522",
+      "title": "Applied Multivariate Statistics",
+      "prereq": "(STAT 535:B- | STAT 554:B-)"
+    },
+    {
+      "id": "STAT 525",
+      "title": "Nonparametric Statistics and Categorical Data Analysis",
+      "prereq": "(STAT 535:B- | STAT 554:B-)"
+    },
+    {
+      "id": "STAT 526",
+      "title": "Applied Regression Analysis",
+      "prereq": "(STAT 535:B- | STAT 554:B-)"
+    },
+    {
+      "id": "STAT 532",
+      "title": "Introduction to Statistical Software Packages",
+      "prereq": null
+    },
+    {
+      "id": "STAT 535",
+      "title": "Analysis of Experimental Data",
+      "prereq": null
+    },
+    {
+      "id": "STAT 539",
+      "title": "Topics in Applied Statistics",
+      "prereq": null
+    },
+    {
+      "id": "STAT 544",
+      "title": "Applied Probability",
+      "prereq": null
+    },
+    {
+      "id": "STAT 554",
+      "title": "Applied Statistics I",
+      "prereq": null
+    },
+    {
+      "id": "STAT 556",
+      "title": "Statistical Computing for Data Analysis",
+      "prereq": null
+    },
+    {
+      "id": "STAT 560",
+      "title": "Biostatistical Methods",
+      "prereq": null
+    },
+    {
+      "id": "STAT 572",
+      "title": "Applied Statistical Learning",
+      "prereq": "(STAT 520:B- | STAT 521:B- | STAT 554:B-)"
+    },
+    {
+      "id": "STAT 574",
+      "title": "Survey Sampling I",
+      "prereq": null
+    },
+    {
+      "id": "STAT 634",
+      "title": "Case Studies in Data Analysis",
+      "prereq": "((STAT 521:B- | STAT 544:B-) & STAT 654:B-)"
+    },
+    {
+      "id": "STAT 646",
+      "title": "Probabilistic Machine Learning",
+      "prereq": null
+    },
+    {
+      "id": "STAT 652",
+      "title": "Statistical Inference",
+      "prereq": "(STAT 544:B- & STAT 554*:B-)"
+    },
+    {
+      "id": "STAT 654",
+      "title": "Applied Statistics II",
+      "prereq": "STAT 554:B-"
+    },
+    {
+      "id": "STAT 656",
+      "title": "Regression Analysis",
+      "prereq": "(STAT 544*:B- & STAT 554:B-)"
+    },
+    {
+      "id": "STAT 657",
+      "title": "Nonparametric Statistics",
+      "prereq": "((STAT 544:B- | STAT 521:B-) & STAT 554:B-)"
+    },
+    {
+      "id": "STAT 658",
+      "title": "Time Series Analysis and Forecasting",
+      "prereq": "((STAT 544:B- | STAT 521:B-) & STAT 554:B-)"
+    },
+    {
+      "id": "STAT 660",
+      "title": "Advanced Biostatistical Methods I",
+      "prereq": "((STAT 652:B- | STAT 521:B-) & STAT 654:B-)"
+    },
+    {
+      "id": "STAT 661",
+      "title": "Advanced Biostatistical Methods II",
+      "prereq": "((STAT 652:B- | STAT 521:B-) & STAT 654:B-)"
+    },
+    {
+      "id": "STAT 662",
+      "title": "Multivariate Analysis and Statistical Learning",
+      "prereq": "((STAT 544:B- | STAT 521:B-) & (STAT 554:B- | STAT 535:B-))"
+    },
+    {
+      "id": "STAT 663",
+      "title": "Statistical Graphics and Data Visualization",
+      "prereq": null
+    },
+    {
+      "id": "STAT 665",
+      "title": "Categorical Data Analysis",
+      "prereq": "(STAT 654:B- & (STAT 544*:B- | STAT 521:B-))"
+    },
+    {
+      "id": "STAT 674",
+      "title": "Survey Sampling II",
+      "prereq": "STAT 574:B-"
+    },
+    {
+      "id": "STAT 676",
+      "title": "Linear Models and Advanced Regression Modeling",
+      "prereq": "(STAT 654:B- | STAT 554:B-)"
+    },
+    {
+      "id": "STAT 689",
+      "title": "Topics in Statistics",
+      "prereq": null
+    },
+    {
+      "id": "STAT 742",
+      "title": "Optimization for Statistical Modeling",
+      "prereq": "STAT 654:B-"
+    },
+    {
+      "id": "STAT 771",
+      "title": "Spatial Data Analysis",
+      "prereq": "(STAT 652:B- & STAT 654:B-)"
+    },
+    {
+      "id": "STAT 778",
+      "title": "Statistical Computing",
+      "prereq": "(STAT 521:B- | STAT 652:B- | CSI 672:B-)"
+    },
+    {
+      "id": "STAT 796",
+      "title": "Independent Studies/Directed Readings",
+      "prereq": null
+    },
+    {
+      "id": "STAT 798",
+      "title": "Master's Research Project",
+      "prereq": null
+    },
+    {
+      "id": "STAT 799",
+      "title": "Master's Thesis",
+      "prereq": null
+    },
+    {
+      "id": "STAT 800",
+      "title": "Statistics Colloquium",
+      "prereq": null
+    },
+    {
+      "id": "STAT 889",
+      "title": "Advanced Topics in Statistics",
+      "prereq": null
+    },
+    {
+      "id": "STAT 896",
+      "title": "Advanced Directed Reading",
+      "prereq": null
+    },
+    {
+      "id": "STAT 971",
+      "title": "Probability Theory",
+      "prereq": "(STAT 544:B & MATH 315:B)"
+    },
+    {
+      "id": "STAT 972",
+      "title": "Mathematical Statistics I",
+      "prereq": "((STAT 652:B- | CSI 672:B-) & (CSI 876*:B- | STAT 971*:B- | CSI 971*:B-))"
+    },
+    {
+      "id": "STAT 973",
+      "title": "Mathematical Statistics II",
+      "prereq": "(STAT 972:B- | CSI 972:B-)"
+    },
+    {
+      "id": "STAT 990",
+      "title": "Preparation for Advancement to Candidacy",
+      "prereq": null
+    },
+    {
+      "id": "STAT 998",
+      "title": "Doctoral Dissertation Proposal",
+      "prereq": null
+    },
+    {
+      "id": "STAT 999",
+      "title": "Doctoral Dissertation",
+      "prereq": null
+    }
+  ]
+}
