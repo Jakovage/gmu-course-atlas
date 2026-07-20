@@ -1,0 +1,148 @@
+{
+  "courses": [
+    {
+      "id": "BUS 100",
+      "title": "Business and Society",
+      "prereq": null,
+      "recommended": "(?Degree status)"
+    },
+    {
+      "id": "BUS 103",
+      "title": "Develop Professional Skills I: Foundational Elements",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "BUS 200",
+      "title": "Global Environment of Business",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "BUS 210",
+      "title": "Business Analytics I",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "BUS 291",
+      "title": "Special Topics in Business",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "BUS 292",
+      "title": "Internship for Academic Credit",
+      "prereq": "BUS 103:B-",
+      "recommended": "(?24 credit hours)"
+    },
+    {
+      "id": "BUS 295",
+      "title": "Business Models For Sustainability",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "BUS 303",
+      "title": "Develop Professional Skills II: Advanced Elements",
+      "prereq": "BUS 103:C",
+      "recommended": null
+    },
+    {
+      "id": "BUS 310",
+      "title": "Business Analytics II",
+      "prereq": "BUS 210:C",
+      "recommended": null
+    },
+    {
+      "id": "BUS 315",
+      "title": "Introduction to the Government Contracting Industry",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "BUS 325",
+      "title": "Creating Value for Business Stakeholders",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "BUS 490",
+      "title": "Professional Readiness through Client Projects & Solutioning",
+      "prereq": null,
+      "recommended": "(?Permission of instructor)"
+    },
+    {
+      "id": "BUS 491",
+      "title": "Special Topics in Business",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "BUS 492",
+      "title": "Internship in Business",
+      "prereq": "(((MIS 301:B- | MIS 303:B-) & (OM 301:B- | OM 303:B-)) | (ACCT 301:B- | ACCT 330:B-) | (MKTG 301:C | MKTG 303:C))",
+      "recommended": "(?75 credit hours)"
+    },
+    {
+      "id": "BUS 498",
+      "title": "Capstone Course: Advanced Business Models",
+      "prereq": "((ACCT 301:C | ACCT 303:C | ACCT 330:C) & (BULE 302:C | BULE 303:C) & (BUS 303:C | SOM 301:C) & (FNAN 301:C | FNAN 303:C) & (MGMT 301:C | MGMT 303:C) & (MIS 301:C | MIS 303:C) & (MKTG 301:C | MKTG 303:C) & (OM 301:C | OM 303:C | OSCM 303:C | DESC 301:C) & BUS 310:C)",
+      "recommended": null
+    },
+    {
+      "id": "BUS 701",
+      "title": "Introduction to Research in Business",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "BUS 702",
+      "title": "Academic Business Writing for PhD Students",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "BUS 703",
+      "title": "Research Project",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "BUS 711",
+      "title": "Proseminar in Business",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "BUS 801",
+      "title": "Field Research in Business",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "BUS 802",
+      "title": "Teaching in the Field of Business",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "BUS 850",
+      "title": "Teaching Practicum",
+      "prereq": null,
+      "recommended": "(BUS 802 | HE 602)"
+    },
+    {
+      "id": "BUS 998",
+      "title": "Doctoral Dissertation Proposal",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "BUS 999",
+      "title": "Doctoral Dissertation Research",
+      "prereq": null,
+      "recommended": null
+    }
+  ]
+}

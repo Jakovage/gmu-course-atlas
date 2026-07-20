@@ -1,0 +1,1216 @@
+{
+  "courses": [
+    {
+      "id": "ENGH 100",
+      "title": "Composition for Multilingual Writers",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 101",
+      "title": "Composition",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 121",
+      "title": "Enhanced Composition For Multilingual Writers of English I",
+      "prereq": null,
+      "recommended": "(?Admission to the Undergraduate International Pathway Program for international students)"
+    },
+    {
+      "id": "ENGH 122",
+      "title": "Enhanced Composition For Multilingual Writers of English II",
+      "prereq": null,
+      "recommended": "(ENGH 121 | ?Satisfactory progress)"
+    },
+    {
+      "id": "ENGH 123",
+      "title": "Language-Enhanced Composition for Multilingual Writers",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 201",
+      "title": "Reading and Writing about Texts",
+      "prereq": null,
+      "recommended": "(?3 credits of 100-level English)"
+    },
+    {
+      "id": "ENGH 202",
+      "title": "Texts and Contexts",
+      "prereq": null,
+      "recommended": "(?3 credits of 100-level English)"
+    },
+    {
+      "id": "ENGH 203",
+      "title": "Western Literary Tradition",
+      "prereq": null,
+      "recommended": "(?3 credits of 100-level English)"
+    },
+    {
+      "id": "ENGH 204",
+      "title": "Western Literary Traditions",
+      "prereq": null,
+      "recommended": "(?3 credits of 100-level English)"
+    },
+    {
+      "id": "ENGH 206",
+      "title": "Literature in the Creation of Just Societies",
+      "prereq": null,
+      "recommended": "(?Lower division composition requirement)"
+    },
+    {
+      "id": "ENGH 210",
+      "title": "Equitable AI",
+      "prereq": null,
+      "recommended": "(?Lower division composition requirement)"
+    },
+    {
+      "id": "ENGH 270",
+      "title": "Introduction to Screen Cultures",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 300",
+      "title": "Cover to Cover",
+      "prereq": null,
+      "recommended": "(ENGH 101)"
+    },
+    {
+      "id": "ENGH 301",
+      "title": "The Fields of English",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 302",
+      "title": "Advanced Composition",
+      "prereq": "((ENGH 100:C- | ENGH 101:C- | ENGH 122:C- | ENGH 123:C- | ENGL 100:C- | ENGL 101:C- | ENGL 122:C- | HNRS 110:C- | NCLC 203:C- | INTS 203:C-) & (ARAB 325:D | ARAB 365:D | CHIN 310:D | CHIN 311:D | CHIN 325:D | CHIN 328:D | CLAS 250:D | CLAS 260:D | CLAS 340:D | CLAS 350:D | CLAS 360:D | CLAS 380:D | ENGH 201:D | ENGH 202:D | ENGH 203:D | ENGH 204:D | FREN 325:D | FREN 329:D | FRLN 330:D | GERM 325:D | ITAL 320:D | ITAL 325:D | JAPA 340:D | KORE 311:D | PHIL 253:D | PHIL 100 | PHIL 173 | PHIL 151 | RELI 235:D | RELI 333:D | RUSS 325:D | RUSS 326:D | RUSS 327:D | SPAN 325:D | ?Any 200-level ENGH course | INTS 101:D | NCLC 101:D | HNRS 131:D | ELED 258:D | HIST 334:D | HIST 381:D | HIST 403:D | RELI 271:D | SEED 370:D | INTS 363:D | RELI 339:D | RELI 334:D | RELI 338:D | ENGH 206:D))",
+      "recommended": "(?Completion of 45 credits)"
+    },
+    {
+      "id": "ENGH 303",
+      "title": "Humanities College to Career",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 304",
+      "title": "Topics: Literary Surveys",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 305",
+      "title": "Dimensions of Writing and Literature",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 307",
+      "title": "English Grammar",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 308",
+      "title": "Theory and Inquiry",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 309",
+      "title": "Topics in Literature",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 310",
+      "title": "Topics: Women and Literature",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 315",
+      "title": "Folklore and Folklife",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 316",
+      "title": "Topics in Myth and Literature",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 318",
+      "title": "Introduction to Cultural Studies",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 319",
+      "title": "Popular Culture",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 320",
+      "title": "Literature of the Middle Ages",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 321",
+      "title": "English Poetry and Prose of the 16th Century",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 322",
+      "title": "Introduction to Shakespeare",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 323",
+      "title": "Studies in Shakespeare",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 324",
+      "title": "English Renaissance Drama",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 325",
+      "title": "English Poetry and Prose of the 17th Century",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 330",
+      "title": "Augustan Age: 1660-1745",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 331",
+      "title": "Age of Sensibility: 1745-1800",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 332",
+      "title": "Restoration and 18th Century Drama",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 333",
+      "title": "British Novel of the 18th Century",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 334",
+      "title": "British Poetry of the Romantic Period",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 335",
+      "title": "Prose and Poetry of the Victorian Period",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 336",
+      "title": "British Novel of the 19th Century",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 340",
+      "title": "Early American Literature",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 341",
+      "title": "Literature of the American Renaissance",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 342",
+      "title": "Post-Civil War American Literature, 1865-1920",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in lower-division composition and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 343",
+      "title": "Development of the American Novel to 1914",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 348",
+      "title": "Beginnings of African American Literature Through 1865",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 349",
+      "title": "African American Literature: Reconstruction to 1903",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 350",
+      "title": "African American Literature Through 1946",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 351",
+      "title": "Contemporary African American Literature",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 352",
+      "title": "Topics in Ethnic American Literature",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 353",
+      "title": "Twentieth-Century Poetry",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 354",
+      "title": "Twentieth-Century Fiction",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 355",
+      "title": "Contemporary Fiction",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 356",
+      "title": "Contemporary Poetry",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 360",
+      "title": "Continental Fiction, 1770-1880",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 361",
+      "title": "Continental Fiction, 1880-1950",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 362",
+      "title": "Global Voices",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 363",
+      "title": "Postcolonial Literature",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 366",
+      "title": "The Idea of a World Literature",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 367",
+      "title": "World Literatures in English",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 368",
+      "title": "Modern Drama",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 370",
+      "title": "Documentary and Non-Fiction Film/Media",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 371",
+      "title": "Global TV",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 372",
+      "title": "Introduction to Film",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 374",
+      "title": "Screening the Global City",
+      "prereq": null,
+      "recommended": "(ENGH 372)"
+    },
+    {
+      "id": "ENGH 375",
+      "title": "Web Authoring and Design",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 376",
+      "title": "Rhetoric and New Media",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 377",
+      "title": "Digital Creative Writing",
+      "prereq": null,
+      "recommended": "(ENGH 396 | ?Permission of instructor)"
+    },
+    {
+      "id": "ENGH 380",
+      "title": "Introduction to Writing and Rhetoric",
+      "prereq": null,
+      "recommended": "(ENGH 302)"
+    },
+    {
+      "id": "ENGH 382",
+      "title": "Rhetoric of the Essay",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 386",
+      "title": "Editing for Audience, Style, and Voice",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 388",
+      "title": "Professional and Technical Writing",
+      "prereq": null,
+      "recommended": "(ENGH 302)"
+    },
+    {
+      "id": "ENGH 389",
+      "title": "Peer Tutoring in Writing across the Disciplines",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 391",
+      "title": "Forms of Poetry",
+      "prereq": null,
+      "recommended": "(ENGH 396)"
+    },
+    {
+      "id": "ENGH 392",
+      "title": "Forms of Fiction",
+      "prereq": null,
+      "recommended": "(ENGH 396)"
+    },
+    {
+      "id": "ENGH 393",
+      "title": "Forms of Nonfiction",
+      "prereq": null,
+      "recommended": "(ENGH 396)"
+    },
+    {
+      "id": "ENGH 396",
+      "title": "Introduction to Creative Writing",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 397",
+      "title": "Poetry Writing",
+      "prereq": null,
+      "recommended": "(ENGH 396 | ?Permission of instructor)"
+    },
+    {
+      "id": "ENGH 398",
+      "title": "Fiction Writing",
+      "prereq": null,
+      "recommended": "(ENGH 396 | ?Permission of instructor)"
+    },
+    {
+      "id": "ENGH 399",
+      "title": "Creative Nonfiction Writing",
+      "prereq": null,
+      "recommended": "(ENGH 382 | ENGH 396 | ?Permission of instructor)"
+    },
+    {
+      "id": "ENGH 400",
+      "title": "Honors Seminar",
+      "prereq": null,
+      "recommended": "(?English department honors student)"
+    },
+    {
+      "id": "ENGH 401",
+      "title": "RS: Honors Thesis Writing Seminar",
+      "prereq": null,
+      "recommended": "(ENGH 400 | ?Acceptance into English honors | ?Permission of department)"
+    },
+    {
+      "id": "ENGH 402",
+      "title": "Honors Independent Study",
+      "prereq": null,
+      "recommended": "(?Admission to honors program in English | ?Permission of instructor)"
+    },
+    {
+      "id": "ENGH 408",
+      "title": "Topics in Criticism",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 409",
+      "title": "Literary Modes",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 412",
+      "title": "Topics in Folklore Studies",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 414",
+      "title": "Folklore and the Supernatural",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 415",
+      "title": "Folk Art and Folk Artists",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 416",
+      "title": "Folklore and Migration",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 417",
+      "title": "RS: Topics in Folklore Research",
+      "prereq": null,
+      "recommended": "(ENGH 305 | ?85 credit hours earned)"
+    },
+    {
+      "id": "ENGH 418",
+      "title": "Cultural Constructions of Sexualities",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 419",
+      "title": "Topics in Popular Literature",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 421",
+      "title": "Topics in Medieval and Renaissance Literature",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 422",
+      "title": "Chaucer",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 428",
+      "title": "Milton",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 431",
+      "title": "Topics: British Literary Periods",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 432",
+      "title": "Topics: British Authors",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 441",
+      "title": "Topics: American Authors",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 442",
+      "title": "Topics: American Literary Periods",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 451",
+      "title": "Science Fiction",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 452",
+      "title": "Critical Study of Children's Literature",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 453",
+      "title": "Topics in Fiction",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 454",
+      "title": "Topics in Poetry",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 455",
+      "title": "Topics in Drama",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 456",
+      "title": "Topics in Literary Nonfiction",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 458",
+      "title": "RS: Topics in Literary Research",
+      "prereq": null,
+      "recommended": "(ENGH 305 | ?85 credit hours earned)"
+    },
+    {
+      "id": "ENGH 459",
+      "title": "Internship",
+      "prereq": null,
+      "recommended": "(ENGH 302 | ?Permission of internship director | ?60 credits | ?English majors need 18 credits of English | ?3 credits of 100-level English | ?3 to 6 credits of 200-level English | ?6 to 9 credits of upper-level English | ?Non-English majors must replace one upper-level English course with an upper-level course in their major)"
+    },
+    {
+      "id": "ENGH 470",
+      "title": "RS: Topics in Screen Cultures Research",
+      "prereq": null,
+      "recommended": "(ENGH 372 | ?Permission of instructor)"
+    },
+    {
+      "id": "ENGH 472",
+      "title": "Topics in Film/Media Theory",
+      "prereq": null,
+      "recommended": "(ENGH 372 | ?Permission of instructor)"
+    },
+    {
+      "id": "ENGH 474",
+      "title": "Topics in Screen Cultures",
+      "prereq": null,
+      "recommended": "(ENGH 372 | ?Permission of instructor)"
+    },
+    {
+      "id": "ENGH 477",
+      "title": "Special Topics in Publishing",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 478",
+      "title": "Practicum in Publishing",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 482",
+      "title": "Community and Public Writing",
+      "prereq": null,
+      "recommended": "(ENGH 380 | ENGH 382)"
+    },
+    {
+      "id": "ENGH 483",
+      "title": "Technical Editing",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 484",
+      "title": "RS: Writing Ethnography",
+      "prereq": null,
+      "recommended": "(ENGH 302)"
+    },
+    {
+      "id": "ENGH 485",
+      "title": "Document Design",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 486",
+      "title": "RS: Writing Nonfiction for the Public",
+      "prereq": null,
+      "recommended": "(ENGH 302 | ?85 credit hours earned)"
+    },
+    {
+      "id": "ENGH 487",
+      "title": "Advanced Technical Writing",
+      "prereq": "ENGH 388:C",
+      "recommended": "(ENGH 302)"
+    },
+    {
+      "id": "ENGH 488",
+      "title": "Topics in Writing and Rhetoric",
+      "prereq": null,
+      "recommended": "(?Satisfaction of University requirements in 100-level English and Mason Core literature)"
+    },
+    {
+      "id": "ENGH 489",
+      "title": "Proposal Writing and Development",
+      "prereq": null,
+      "recommended": "(ENGH 302)"
+    },
+    {
+      "id": "ENGH 492",
+      "title": "Advanced Fiction Writing Workshop",
+      "prereq": null,
+      "recommended": "(ENGL 398 | ENGH 398 | ?Manuscript review)"
+    },
+    {
+      "id": "ENGH 493",
+      "title": "Advanced Workshop in Nonfiction",
+      "prereq": null,
+      "recommended": "(ENGH 396 | ENGH 399)"
+    },
+    {
+      "id": "ENGH 494",
+      "title": "Advanced Poetry Writing Workshop",
+      "prereq": null,
+      "recommended": "(ENGL 397 | ENGH 397 | ?Manuscript review)"
+    },
+    {
+      "id": "ENGH 495",
+      "title": "Capstone and Thesis",
+      "prereq": null,
+      "recommended": "(ENGH 396 | ENGH 391 | ENGH 392 | ENGH 393 | ENGH 397 | ENGH 398 | ENGH 399)"
+    },
+    {
+      "id": "ENGH 497",
+      "title": "Topics in Creative Writing",
+      "prereq": null,
+      "recommended": "(ENGH 396 | ?Equivalent course | ?Manuscript review | ?Enrollment is controlled | ?Contact instructor for manuscript guidelines)"
+    },
+    {
+      "id": "ENGH 499",
+      "title": "Independent Study",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 500",
+      "title": "Research in English Studies",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 501",
+      "title": "Introduction to Professional and Technical Writing",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 502",
+      "title": "Research Methods in Professional and Technical Writing",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 503",
+      "title": "Theory and Practice of Editing",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 504",
+      "title": "Internship",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 505",
+      "title": "Document Design",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 506",
+      "title": "Research for Narrative Writing",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 507",
+      "title": "Web Authoring and Design",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 508",
+      "title": "Digital Rhetoric",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 509",
+      "title": "Proposal Writing and Development",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 511",
+      "title": "Graduate Literature Survey",
+      "prereq": null,
+      "recommended": "(?15 credits of advanced undergraduate work | ?Approval of department | ?Baccalaureate degree)"
+    },
+    {
+      "id": "ENGH 513",
+      "title": "Topics in Literary and Cultural Studies",
+      "prereq": null,
+      "recommended": "(?15 credits of advanced undergraduate English courses | ?Permission of department | ?Baccalaureate degree)"
+    },
+    {
+      "id": "ENGH 526",
+      "title": "Special Topics in the History and Criticism of Children's Literature",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 551",
+      "title": "Introduction to Literary Theory",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 564",
+      "title": "Form of Poetry",
+      "prereq": null,
+      "recommended": "(ENGH 494 | ?Admission to MFA concentration in poetry | ?Equivalent course | ?Permission of instructor)"
+    },
+    {
+      "id": "ENGH 565",
+      "title": "Forms of Nonfiction",
+      "prereq": null,
+      "recommended": "(ENGH 486 | ?Admission to MFA concentration in nonfiction | ?Equivalent course | ?Permission of instructor)"
+    },
+    {
+      "id": "ENGH 566",
+      "title": "Forms of Fiction",
+      "prereq": null,
+      "recommended": "(ENGH 492 | ?Equivalent course | ?Permission of instructor)"
+    },
+    {
+      "id": "ENGH 570",
+      "title": "Graduate Survey in Film and Media Studies",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 590",
+      "title": "Topics in Folk Narrative",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 591",
+      "title": "Topics in Folklore Studies",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 602",
+      "title": "Pedagogical Research",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 604",
+      "title": "Internship in Folklore",
+      "prereq": null,
+      "recommended": "(?Course in folklore that may be taken concurrently)"
+    },
+    {
+      "id": "ENGH 605",
+      "title": "Publishing Practicum: Stillhouse Press",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 606",
+      "title": "Publishing Practicum: Poetry Daily",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 608",
+      "title": "Craft Seminars",
+      "prereq": null,
+      "recommended": "(ENGH 494 | ENGH 492 | ENGH 486 | ?Admission to MFA program | ?Permission of instructor | ?Non-MFA students must submit a manuscript for review before registration)"
+    },
+    {
+      "id": "ENGH 609",
+      "title": "Online Writing",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 610",
+      "title": "Proseminar in Teaching the Reading of Literature",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 611",
+      "title": "Studies in Rhetoric",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 612",
+      "title": "Cultures of Professional Writing",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 613",
+      "title": "Technical Communication",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 614",
+      "title": "Internship in the Teaching of Writing",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 615",
+      "title": "Proseminar in Composition Instruction",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 616",
+      "title": "Nonfiction Writing Workshop",
+      "prereq": null,
+      "recommended": "(ENGH 565* | ?Permission of instructor except for MFA students in the concentration)"
+    },
+    {
+      "id": "ENGH 617",
+      "title": "Poetry Writing Workshop",
+      "prereq": null,
+      "recommended": "(ENGH 564*)"
+    },
+    {
+      "id": "ENGH 618",
+      "title": "Fiction Writing Workshop",
+      "prereq": null,
+      "recommended": "(ENGH 566* | ?Permission of instructor)"
+    },
+    {
+      "id": "ENGH 619",
+      "title": "Special Topics in Writing",
+      "prereq": null,
+      "recommended": "(?Already writing original creative work)"
+    },
+    {
+      "id": "ENGH 620",
+      "title": "Topics in Pedagogy",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 642",
+      "title": "Seminar in British Literature",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 644",
+      "title": "Seminar in American Literature",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 646",
+      "title": "Seminar in Advanced Research",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 661",
+      "title": "Seminar in African-American Literature",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 665",
+      "title": "Seminar in Global Culture",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 670",
+      "title": "Seminar in Film and Media Studies",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 675",
+      "title": "Feminist Theory and Criticism",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 676",
+      "title": "Introduction to Cultural Studies",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 681",
+      "title": "Advanced Topics in Folklore Studies",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 683",
+      "title": "Proseminar in Fiction",
+      "prereq": null,
+      "recommended": "(ENGH 566)"
+    },
+    {
+      "id": "ENGH 684",
+      "title": "Proseminar in Poetry",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 685",
+      "title": "Selected Topics, Movements, or Genres of Literature in English",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 689",
+      "title": "Advanced Proposal Writing",
+      "prereq": null,
+      "recommended": "(ENGH 509)"
+    },
+    {
+      "id": "ENGH 690",
+      "title": "Special Topics in Writing and Rhetoric",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 695",
+      "title": "Northern Virginia Writing Project Inservice Program",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 696",
+      "title": "Northern Virginia Writing Project Teacher/Research Seminar",
+      "prereq": null,
+      "recommended": "(ENGH 615 | ENGH 695 | ?Other course in the teaching of writing)"
+    },
+    {
+      "id": "ENGH 697",
+      "title": "Composition Theory",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 699",
+      "title": "Visiting Writers",
+      "prereq": null,
+      "recommended": "(?Admission to MFA program | ?Permission of department)"
+    },
+    {
+      "id": "ENGH 702",
+      "title": "Research Methods in Rhetoric and Writing",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 705",
+      "title": "Literary Theory and Criticism",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 710",
+      "title": "Core Readings in Writing Studies",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 720",
+      "title": "Histories of Institutional Rhetorics",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 722",
+      "title": "Composition Pedagogies and Programs in Context",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 724",
+      "title": "Professional Writing Theory and Research",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 726",
+      "title": "Rhetorical Theory and Public Spaces",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 750",
+      "title": "Advanced Workshop in Poetry Writing",
+      "prereq": null,
+      "recommended": "(ENGH 564 | ENGH 617 | ?Admission to MFA concentration in poetry)"
+    },
+    {
+      "id": "ENGH 751",
+      "title": "Advanced Workshop in Fiction Writing",
+      "prereq": null,
+      "recommended": "(ENGH 566 | ENGH 618)"
+    },
+    {
+      "id": "ENGH 752",
+      "title": "Advanced Workshop in Nonfiction Writing",
+      "prereq": null,
+      "recommended": "(ENGH 565 | ENGH 616)"
+    },
+    {
+      "id": "ENGH 790",
+      "title": "Projects in Literary Studies",
+      "prereq": null,
+      "recommended": "(ENGH 500 | ?21 credits in MA coursework | ?Permission of instructor)"
+    },
+    {
+      "id": "ENGH 797",
+      "title": "Projects in Professional and Technical Writing",
+      "prereq": null,
+      "recommended": "(?21 credits in MA coursework including core, theory, PWR, and writing requirements | ?Permission of instructor)"
+    },
+    {
+      "id": "ENGH 798",
+      "title": "Directed Reading and Research",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 799",
+      "title": "Thesis",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 820",
+      "title": "Studies in Rhetorical Theory and Practice",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 821",
+      "title": "Writing Program Design and Administration",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 822",
+      "title": "Studies in Composition",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 824",
+      "title": "Studies in Professional Writing",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 826",
+      "title": "Studies in Public Rhetorics",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 897",
+      "title": "Directed Research",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 898",
+      "title": "Qualifying Exams Seminar",
+      "prereq": null,
+      "recommended": "(?Completion of 36 credits in the writing and rhetoric PhD program)"
+    },
+    {
+      "id": "ENGH 998",
+      "title": "Doctoral Dissertation Proposal",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ENGH 999",
+      "title": "Doctoral Dissertation",
+      "prereq": null,
+      "recommended": "(ENGH 898)"
+    }
+  ]
+}

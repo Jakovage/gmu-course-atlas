@@ -1,0 +1,166 @@
+{
+  "courses": [
+    {
+      "id": "SWE 205",
+      "title": "Software Usability Analysis and Design",
+      "prereq": "(ENGH 100:C | ENGH 101:C | HNRS 110:C | HNRS 302:C | HNRS 310:C)",
+      "recommended": null
+    },
+    {
+      "id": "SWE 301",
+      "title": "Internship Preparation",
+      "prereq": null,
+      "recommended": "(?ACS or CS major | ?Junior standing | ?Permission of instructor)"
+    },
+    {
+      "id": "SWE 401",
+      "title": "Internship Reflection",
+      "prereq": "SWE 301",
+      "recommended": "(?Completion of internship)"
+    },
+    {
+      "id": "SWE 419",
+      "title": "Object-Oriented Software Design and Implementation",
+      "prereq": "(CS 310:C & MATH 125:C)",
+      "recommended": null
+    },
+    {
+      "id": "SWE 432",
+      "title": "Web Application Development",
+      "prereq": "(MATH 125:C & CS 321:C)",
+      "recommended": null
+    },
+    {
+      "id": "SWE 437",
+      "title": "Software Testing and Maintenance",
+      "prereq": "(MATH 125:C & CS 310:C)",
+      "recommended": null
+    },
+    {
+      "id": "SWE 443",
+      "title": "Software Architectures",
+      "prereq": "(CS 321:C | CS 421:C | SWE 321:C | SWE 421:C)",
+      "recommended": null
+    },
+    {
+      "id": "SWE 510",
+      "title": "Object-Oriented Programming in Java",
+      "prereq": null,
+      "recommended": "(?Undergraduate coursework or equivalent knowledge in a high-level programming language)"
+    },
+    {
+      "id": "SWE 619",
+      "title": "Object-Oriented Software Specification and Construction",
+      "prereq": null,
+      "recommended": "(?SWE foundation courses or equivalent)"
+    },
+    {
+      "id": "SWE 621",
+      "title": "Software Design and Architecture",
+      "prereq": null,
+      "recommended": "(?SWE foundation courses or equivalent)"
+    },
+    {
+      "id": "SWE 622",
+      "title": "Distributed Software Engineering",
+      "prereq": null,
+      "recommended": "(?SWE foundation courses or equivalent)"
+    },
+    {
+      "id": "SWE 625",
+      "title": "Software Project Management",
+      "prereq": null,
+      "recommended": "(?SWE foundation courses or equivalent)"
+    },
+    {
+      "id": "SWE 626",
+      "title": "Software Project Laboratory",
+      "prereq": null,
+      "recommended": "(SWE 619 | SWE 620 | SWE 621 | ?Permission of instructor)"
+    },
+    {
+      "id": "SWE 631",
+      "title": "Software Design Patterns",
+      "prereq": null,
+      "recommended": "(SWE 621)"
+    },
+    {
+      "id": "SWE 632",
+      "title": "User Interface Design and Development",
+      "prereq": null,
+      "recommended": "(SWE 621 | CS 531 | ?Permission of instructor)"
+    },
+    {
+      "id": "SWE 637",
+      "title": "Software Testing",
+      "prereq": null,
+      "recommended": "(SWE 619 | CS 530 | ?Permission of instructor)"
+    },
+    {
+      "id": "SWE 642",
+      "title": "Software Engineering for the World Wide Web",
+      "prereq": null,
+      "recommended": "(SWE 619 | CS 531 | ?Permission of instructor)"
+    },
+    {
+      "id": "SWE 645",
+      "title": "Component-Based Software Development",
+      "prereq": null,
+      "recommended": "(SWE 619 | CS 531 | ?Permission of instructor)"
+    },
+    {
+      "id": "SWE 660",
+      "title": "Software Engineering for Real-Time Embedded Systems",
+      "prereq": "(SWE 619:B- | CS 531:B- | COMP 513:B- | CS 571:B-)",
+      "recommended": null
+    },
+    {
+      "id": "SWE 681",
+      "title": "Secure Software Design and Programming",
+      "prereq": null,
+      "recommended": "(SWE 619 | CS 531)"
+    },
+    {
+      "id": "SWE 699",
+      "title": "Special Topics in Software Engineering",
+      "prereq": null,
+      "recommended": "(?Completion of at least two core courses | ?Permission of instructor)"
+    },
+    {
+      "id": "SWE 724",
+      "title": "Program Analysis for Software Testing",
+      "prereq": null,
+      "recommended": "(CS 540 | SWE 637 | ?Compiler class | ?Testing class | ?Permission of instructor)"
+    },
+    {
+      "id": "SWE 795",
+      "title": "Advanced Topics in Software Engineering",
+      "prereq": null,
+      "recommended": "(?12 credits applicable toward MS)"
+    },
+    {
+      "id": "SWE 796",
+      "title": "Directed Readings in Software Engineering",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "SWE 798",
+      "title": "Research Project",
+      "prereq": null,
+      "recommended": "(?18 credits applicable toward MS degree)"
+    },
+    {
+      "id": "SWE 799",
+      "title": "MS Thesis",
+      "prereq": null,
+      "recommended": "(?18 hours of credit applicable toward MS degree)"
+    },
+    {
+      "id": "SWE 821",
+      "title": "Software Engineering Seminar",
+      "prereq": null,
+      "recommended": "(SWE 621)"
+    }
+  ]
+}

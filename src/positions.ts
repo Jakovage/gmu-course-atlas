@@ -1,7 +1,14 @@
 // Horizontal positions via barycenter sweeps (deterministic, no tuning).
 // Repeat: every node moves toward the mean x of its edge-neighbors, then
 // each tier resolves overlaps left-to-right with a minimum gap. y is tiers'.
-import { CATALOG } from './catalog';
+//
+// computeXPositions is the whole algorithm, extracted as a reusable pure
+// function of "which courses are in play" -- POSITIONS below is just the
+// default case (the full catalog). The department filter in Galaxy.tsx
+// calls this SAME function live, on just the currently-filtered subset,
+// for a genuine fresh layout instead of hiding dots within positions that
+// were computed for the full graph (which only rescales, never reflows).
+import { CATALOG, type Course } from './catalog';
 import { TIERS } from './tiers';
 import { DEPT_ORDER, deptOf } from './colors';
 import type { Expr } from './parse';
@@ -13,18 +20,18 @@ function allRefs(e: Expr | null): string[] {
   return e.of.flatMap(allRefs);
 }
 
-export const POSITIONS: Map<string, number> = (() => {
-  const known = new Set(CATALOG.map((c) => c.id));
+export function computeXPositions(courses: Course[]): Map<string, number> {
+  const known = new Set(courses.map((c) => c.id));
   const deptIdx = new Map(DEPT_ORDER.map((d, i) => [d, i]));
 
-  const ids = CATALOG.map((c) => c.id).sort((a, b) => {
-    const da = deptIdx.get(deptOf(a))!, db = deptIdx.get(deptOf(b))!;
+  const ids = courses.map((c) => c.id).sort((a, b) => {
+    const da = deptIdx.get(deptOf(a)) ?? 0, db = deptIdx.get(deptOf(b)) ?? 0;
     return da !== db ? da - db : a < b ? -1 : 1;
   });
   const x = new Map(ids.map((id, i) => [id, (i + 0.5) / ids.length]));
 
   const neighbors = new Map<string, string[]>(ids.map((id) => [id, []]));
-  for (const c of CATALOG)
+  for (const c of courses)
     for (const r of new Set(allRefs(c.prereq)))
       if (known.has(r)) {
         neighbors.get(c.id)!.push(r);
@@ -36,7 +43,7 @@ export const POSITIONS: Map<string, number> = (() => {
     const t = TIERS.get(id) ?? 0;
     byTier.set(t, [...(byTier.get(t) ?? []), id]);
   }
-  const maxRow = Math.max(...[...byTier.values()].map((m) => m.length));
+  const maxRow = Math.max(1, ...[...byTier.values()].map((m) => m.length));
   const minGap = 1 / (maxRow + 1);
 
   for (let it = 0; it < 60; it++) {
@@ -209,4 +216,6 @@ export const POSITIONS: Map<string, number> = (() => {
   for (const id of ids)
     x.set(id, 0.03 + ((x.get(id)! - lo) / (hi - lo || 1)) * 0.94);
   return x;
-})();
+}
+
+export const POSITIONS: Map<string, number> = computeXPositions(CATALOG);

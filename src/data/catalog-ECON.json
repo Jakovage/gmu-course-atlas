@@ -1,0 +1,556 @@
+{
+  "courses": [
+    {
+      "id": "ECON 100",
+      "title": "Economics for the Citizen",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECON 103",
+      "title": "Contemporary Microeconomic Principles",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECON 104",
+      "title": "Contemporary Macroeconomic Principles",
+      "prereq": null,
+      "recommended": "(ECON 103)"
+    },
+    {
+      "id": "ECON 105",
+      "title": "Environmental Economics for the Citizen",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECON 191",
+      "title": "Recitation for Economics",
+      "prereq": null,
+      "recommended": "(ECON 103* | ECON 104*)"
+    },
+    {
+      "id": "ECON 196",
+      "title": "Special Topics in Economics",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECON 296",
+      "title": "Special Topics in Economics",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECON 306",
+      "title": "Intermediate Microeconomics",
+      "prereq": null,
+      "recommended": "(ECON 103 | ECON 104 | MATH 108 | MATH 113)"
+    },
+    {
+      "id": "ECON 308",
+      "title": "Managerial Economics and Strategy",
+      "prereq": null,
+      "recommended": "(ECON 306)"
+    },
+    {
+      "id": "ECON 309",
+      "title": "Economic Problems and Public Policies",
+      "prereq": null,
+      "recommended": "(ECON 100 | ECON 103 | ECON 104 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 310",
+      "title": "Money and Banking",
+      "prereq": null,
+      "recommended": "(ECON 103 | ECON 104 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 311",
+      "title": "Intermediate Macroeconomics",
+      "prereq": null,
+      "recommended": "(ECON 103 | ECON 104 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 321",
+      "title": "Economics of Labor",
+      "prereq": null,
+      "recommended": "(ECON 306)"
+    },
+    {
+      "id": "ECON 330",
+      "title": "Public Finance",
+      "prereq": null,
+      "recommended": "(ECON 306 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 335",
+      "title": "Environmental Economics",
+      "prereq": null,
+      "recommended": "(ECON 103 | ECON 104)"
+    },
+    {
+      "id": "ECON 340",
+      "title": "Introduction to Mathematical Economics",
+      "prereq": "(ECON 306:C & ECON 311:C & MATH 113:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECON 345",
+      "title": "Introduction to Econometrics",
+      "prereq": "((ECON 306:D & ECON 311:D) & ((STAT 250:D & STAT 350:D) | (STAT 344:D & STAT 354:D) | (BUS 210:D & BUS 310:D)))",
+      "recommended": null
+    },
+    {
+      "id": "ECON 355",
+      "title": "The Political Economy of Nonprofit Institutions",
+      "prereq": null,
+      "recommended": "(ECON 103 | ECON 104 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 360",
+      "title": "Economics of Developing Areas",
+      "prereq": null,
+      "recommended": "(ECON 103 | ECON 104 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 361",
+      "title": "Economic Development of Latin America",
+      "prereq": null,
+      "recommended": "(ECON 103 | ECON 104 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 362",
+      "title": "African Economic Development",
+      "prereq": null,
+      "recommended": "(ECON 103 | ECON 104)"
+    },
+    {
+      "id": "ECON 365",
+      "title": "Topics in Economic History",
+      "prereq": null,
+      "recommended": "(ECON 103 | ECON 104)"
+    },
+    {
+      "id": "ECON 367",
+      "title": "Money, Markets, and Economic Policy",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECON 370",
+      "title": "Economics of Industrial Organization",
+      "prereq": null,
+      "recommended": "(ECON 306 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 374",
+      "title": "Health Economics",
+      "prereq": null,
+      "recommended": "(ECON 103 | ECON 104 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 380",
+      "title": "Economies in Transition",
+      "prereq": null,
+      "recommended": "(ECON 103 | ECON 104 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 385",
+      "title": "International Economic Policy",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECON 390",
+      "title": "International Economics",
+      "prereq": null,
+      "recommended": "(ECON 306 | ECON 311 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 395",
+      "title": "Effective Writing in Economics",
+      "prereq": null,
+      "recommended": "(ECON 103 | ECON 104 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 398",
+      "title": "Internship",
+      "prereq": null,
+      "recommended": "(?6 upper-level hours in economics | ?Junior standing | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 403",
+      "title": "Austrian Economics",
+      "prereq": null,
+      "recommended": "(ECON 306 | ECON 311)"
+    },
+    {
+      "id": "ECON 410",
+      "title": "Public Choice",
+      "prereq": null,
+      "recommended": "(ECON 306)"
+    },
+    {
+      "id": "ECON 412",
+      "title": "Game Theory and Economics of Institutions",
+      "prereq": null,
+      "recommended": "(ECON 306 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 415",
+      "title": "Law and Economics",
+      "prereq": null,
+      "recommended": "(ECON 306 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 420",
+      "title": "International Money and Finance",
+      "prereq": null,
+      "recommended": "(ECON 306 | ECON 311 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 421",
+      "title": "Financial Economics",
+      "prereq": null,
+      "recommended": "(ECON 103 | ECON 104 | ECON 306 | ECON 311)"
+    },
+    {
+      "id": "ECON 435",
+      "title": "Economics of Energy",
+      "prereq": null,
+      "recommended": "(ECON 306)"
+    },
+    {
+      "id": "ECON 445",
+      "title": "Design and Analysis of Experiments",
+      "prereq": null,
+      "recommended": "(STAT 250 | STAT 344 | MATH 351 | IT 250 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 460",
+      "title": "Senior Seminar in Philosophy, Politics, and Economics",
+      "prereq": null,
+      "recommended": "(PHIL 358 | ECON 412 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 470",
+      "title": "Economics of Regulation",
+      "prereq": null,
+      "recommended": "(ECON 306)"
+    },
+    {
+      "id": "ECON 471",
+      "title": "Airline Economics",
+      "prereq": null,
+      "recommended": "(ECON 306 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 481",
+      "title": "The Development of Economic Thought",
+      "prereq": null,
+      "recommended": "(ECON 306 | ECON 311 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 485",
+      "title": "Smithian Political Economy I",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECON 486",
+      "title": "Smithian Political Economy II",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECON 491",
+      "title": "Capstone in Economics",
+      "prereq": "(ECON 306:C & ECON 311:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECON 492",
+      "title": "Study Abroad",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECON 493",
+      "title": "Capstone Internship",
+      "prereq": "(ECON 306:C & ECON 311:C)",
+      "recommended": null
+    },
+    {
+      "id": "ECON 494",
+      "title": "Introduction to Independent Research in Economics",
+      "prereq": null,
+      "recommended": "(ECON 306 | ECON 311)"
+    },
+    {
+      "id": "ECON 495",
+      "title": "RS: Honors Thesis in Economics",
+      "prereq": null,
+      "recommended": "(ECON 494:B | ?Permission of instructor | ?Approved research proposal)"
+    },
+    {
+      "id": "ECON 496",
+      "title": "Special Topics in Economics",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECON 499",
+      "title": "Independent Study",
+      "prereq": null,
+      "recommended": "(?Economics major | ?90 credits | ?Permission of department | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 535",
+      "title": "Survey of Applied Econometrics",
+      "prereq": null,
+      "recommended": "(OM 210 | STAT 250 | STAT 350 | ECON 306 | ECON 311 | MATH 113 | ?Admission to master's program in economics | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 611",
+      "title": "Microeconomic Theory",
+      "prereq": null,
+      "recommended": "(ECON 306 | ECON 311 | MATH 113 | ?Admission to master's program in economics | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 612",
+      "title": "Microeconomic Theory II",
+      "prereq": null,
+      "recommended": "(ECON 611)"
+    },
+    {
+      "id": "ECON 615",
+      "title": "Macroeconomic Theory",
+      "prereq": null,
+      "recommended": "(ECON 306 | ECON 311 | MATH 113 | ?Admission to master's program in economics | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 623",
+      "title": "American Economic History",
+      "prereq": null,
+      "recommended": "(ECON 611 | ECON 615 | ECON 715* | ECON 811* | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 630",
+      "title": "Mathematical Economics I",
+      "prereq": null,
+      "recommended": "(ECON 306 | ECON 311 | MATH 113 | ?Admission to master's program in economics | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 637",
+      "title": "Econometrics I",
+      "prereq": null,
+      "recommended": "(?Acceptance to PhD program in economics | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 676",
+      "title": "Comparative Economic Systems",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECON 690",
+      "title": "MA Economics Capstone",
+      "prereq": "(ECON 535:B- & ECON 611:B- & ECON 612:B- & ECON 615:B- & ECON 630:B-)",
+      "recommended": "(?Admission to master's program in economics)"
+    },
+    {
+      "id": "ECON 695",
+      "title": "Special Topics in Economics",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECON 715",
+      "title": "Macroeconomic Theory I",
+      "prereq": null,
+      "recommended": "(?Admission to doctoral program in economics | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 799",
+      "title": "Master's Thesis",
+      "prereq": null,
+      "recommended": "(?Admission to MA economics program | ?Permission of thesis advisor)"
+    },
+    {
+      "id": "ECON 811",
+      "title": "Microeconomic Theory I",
+      "prereq": null,
+      "recommended": "(?Admission to doctoral program in economics | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 812",
+      "title": "Microeconomic Theory II",
+      "prereq": null,
+      "recommended": "(ECON 811)"
+    },
+    {
+      "id": "ECON 816",
+      "title": "Macroeconomic Theory II",
+      "prereq": null,
+      "recommended": "(ECON 715 | ECON 811 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 817",
+      "title": "Monetary Theory and Policy",
+      "prereq": null,
+      "recommended": "(ECON 615 | ECON 715 | ECON 535 | ECON 637 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 823",
+      "title": "Topics in Economic History",
+      "prereq": null,
+      "recommended": "(ECON 611 | ECON 615 | ECON 715 | ECON 811 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 827",
+      "title": "Economic Philosophy",
+      "prereq": null,
+      "recommended": "(ECON 611 | ECON 811 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 829",
+      "title": "Economics of Institutions",
+      "prereq": null,
+      "recommended": "(ECON 611 | ECON 811 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 830",
+      "title": "Mathematical Economics I",
+      "prereq": null,
+      "recommended": "(ECON 306 | ECON 311 | MATH 113 | MATH 114 | ?Admission to doctoral program in economics | ?Familiarity with elementary differential calculus, elementary integration, basic matrix or linear algebra, univariate optimization, and logarithms | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 831",
+      "title": "Mathematical Economics II",
+      "prereq": null,
+      "recommended": "(ECON 306 | ECON 311 | MATH 113 | ?Admission to doctoral program in economics | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 838",
+      "title": "Econometrics II",
+      "prereq": null,
+      "recommended": "(ECON 637 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 840",
+      "title": "Law and Economics I",
+      "prereq": null,
+      "recommended": "(ECON 611 | ECON 811 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 841",
+      "title": "Law and Economics II",
+      "prereq": null,
+      "recommended": "(ECON 611 | ECON 811 | ECON 535 | ECON 637 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 843",
+      "title": "Smithian Political Economy I",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECON 844",
+      "title": "Industrial Organization and Public Policy I",
+      "prereq": null,
+      "recommended": "(ECON 611 | ECON 811 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 845",
+      "title": "Smithian Political Economy II",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECON 846",
+      "title": "Industrial Organization and Public Policy II",
+      "prereq": null,
+      "recommended": "(ECON 844 | ECON 535 | ECON 637 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 852",
+      "title": "Public Choice I",
+      "prereq": null,
+      "recommended": "(ECON 611 | ECON 811 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 854",
+      "title": "Public Choice II",
+      "prereq": null,
+      "recommended": "(ECON 852 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 856",
+      "title": "Non-Market Decision Making",
+      "prereq": null,
+      "recommended": "(ECON 852 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 866",
+      "title": "Economic Development",
+      "prereq": null,
+      "recommended": "(ECON 611 | ECON 615 | ECON 715 | ECON 811 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 871",
+      "title": "International Monetary Economics",
+      "prereq": null,
+      "recommended": "(ECON 615 | ECON 715 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 880",
+      "title": "Theory of the Market Process I",
+      "prereq": null,
+      "recommended": "(ECON 611 | ECON 811 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 881",
+      "title": "Theory of Market Process II",
+      "prereq": null,
+      "recommended": "(ECON 880 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 885",
+      "title": "Experimental Economics",
+      "prereq": null,
+      "recommended": "(ECON 611 | ECON 811 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 886",
+      "title": "Experimental Economics II",
+      "prereq": null,
+      "recommended": "(ECON 885 | ?Permission of instructor)"
+    },
+    {
+      "id": "ECON 895",
+      "title": "Special Topics in Economics",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECON 896",
+      "title": "Directed Reading and Research",
+      "prereq": null,
+      "recommended": null
+    },
+    {
+      "id": "ECON 998",
+      "title": "Doctoral Dissertation Proposal Research.",
+      "prereq": null,
+      "recommended": "(?Admission to PhD economics program | ?At least 48 credits of coursework | ?Passed required doctoral exams | ?Permission of dissertation advisor)"
+    },
+    {
+      "id": "ECON 999",
+      "title": "Doctoral Dissertation Research",
+      "prereq": null,
+      "recommended": null
+    }
+  ]
+}

@@ -85,3 +85,44 @@ export const DEPT_COLOR: Record<string, string> = (() => {
   });
   return out;
 })();
+
+const DEPT_HUE: Record<string, number> = (() => {
+  const out: Record<string, number> = {};
+  DEPT_ORDER.forEach((d, i) => { out[d] = Math.round((360 * i) / DEPT_ORDER.length); });
+  return out;
+})();
+
+// Circular hue average (shortest arc) -- blending 10deg and 350deg should
+// land near 0deg/360deg, not 180deg on the opposite side of the wheel.
+function blendHue(h1: number, h2: number): number {
+  let diff = h2 - h1;
+  if (diff > 180) diff -= 360;
+  if (diff < -180) diff += 360;
+  let mid = h1 + diff / 2;
+  if (mid < 0) mid += 360;
+  if (mid >= 360) mid -= 360;
+  return Math.round(mid);
+}
+
+// A precomputed flat color per department PAIR, used for cross-department
+// edges in place of a live ctx.createLinearGradient call. Gradients are
+// spatially exact (a true source-to-target blend) but allocating one per
+// edge per frame is real, avoidable render-loop cost at scale -- this
+// table is tiny (department-count squared, not edge-count) and computed
+// once, not every frame.
+export const DEPT_PAIR_COLOR: Map<string, string> = (() => {
+  const out = new Map<string, string>();
+  for (const a of DEPT_ORDER) {
+    for (const b of DEPT_ORDER) {
+      if (a >= b) continue;
+      out.set(`${a}|${b}`, `hsl(${blendHue(DEPT_HUE[a], DEPT_HUE[b])} 75% 62%)`);
+    }
+  }
+  return out;
+})();
+
+export function pairColor(deptA: string, deptB: string): string {
+  if (deptA === deptB) return DEPT_COLOR[deptA] ?? '#8a8a94';
+  const [a, b] = deptA < deptB ? [deptA, deptB] : [deptB, deptA];
+  return DEPT_PAIR_COLOR.get(`${a}|${b}`) ?? DEPT_COLOR[deptA] ?? '#8a8a94';
+}

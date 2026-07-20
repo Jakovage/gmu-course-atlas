@@ -9,8 +9,8 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { CATALOG, type Course } from './catalog';
 import { TIERS, MAX_TIER, UNDERGRAD_MAX_TIER, levelOf } from './tiers';
-import { POSITIONS } from './positions';
-import { DEPT_COLOR, deptOf } from './colors';
+import { POSITIONS, computeXPositions } from './positions';
+import { DEPT_COLOR, deptOf, pairColor } from './colors';
 import type { Expr } from './parse';
 import { exprLines } from './format';
 
@@ -314,12 +314,27 @@ export default function Galaxy() {
   // full catalog -- otherwise hiding grad courses leaves the undergrad
   // layout compressed into whatever sliver of [0,1] it originally occupied
   // alongside grad, with dead space on both sides instead of filling the view.
-  const globalWorldOf = (id: string, maxTier: number, xMin: number, xRange: number): Pos => ({
-    x: PAD + ((POSITIONS.get(id)! - xMin) / xRange) * (VW - 2 * PAD),
+  // Department filtering needs a genuinely FRESH layout, not a rescale of
+  // the full-catalog one -- rescaling only stretches the existing gaps
+  // (which are mostly other, now-hidden departments' old slots) instead of
+  // actually pulling the visible courses together. localPositions recomputes
+  // computeXPositions live, but ONLY while a department filter is active;
+  // with no filter, positions stays null and everything falls back to the
+  // static, zero-cost POSITIONS map, unchanged from before.
+  const localPositions = useMemo(
+    () => (deptFilter.size > 0 ? computeXPositions(deptVisible) : null),
+    [deptVisible, deptFilter],
+  );
+  const activePositions = localPositions ?? POSITIONS;
+
+  const globalWorldOf = (
+    id: string, maxTier: number, xMin: number, xRange: number, positions: Map<string, number>,
+  ): Pos => ({
+    x: PAD + ((positions.get(id)! - xMin) / xRange) * (VW - 2 * PAD),
     y: VH - PAD - ((TIERS.get(id) ?? 0) / Math.max(maxTier, 1)) * (VH - 2 * PAD),
   });
-  const xRangeOf = (courses: Course[]): [number, number] => {
-    const xs = courses.map((c) => POSITIONS.get(c.id)!);
+  const xRangeOf = (courses: Course[], positions: Map<string, number>): [number, number] => {
+    const xs = courses.map((c) => positions.get(c.id)!);
     const lo = Math.min(...xs), hi = Math.max(...xs);
     return [lo, Math.max(hi - lo, 0.001)];
   };
@@ -369,11 +384,11 @@ export default function Galaxy() {
   // latest-value cache the render loop reads from, so the loop itself only
   // needs to start once (no restart-on-every-state-change churn)
   const stateRef = useRef({
-    camera, size, hovered, selected, visible: filteredVisible, fullVisible: deptVisible,
+    camera, size, hovered, selected, visible: filteredVisible, fullVisible: deptVisible, positions: activePositions,
     byId, prereqsOf, dependentsOf, matches: effectiveMatches, effectiveMaxTier, coreqOf, recommendedEdge,
   });
   stateRef.current = {
-    camera, size, hovered, selected, visible: filteredVisible, fullVisible: deptVisible,
+    camera, size, hovered, selected, visible: filteredVisible, fullVisible: deptVisible, positions: activePositions,
     byId, prereqsOf, dependentsOf, matches: effectiveMatches, effectiveMaxTier, coreqOf, recommendedEdge,
   };
 
@@ -382,14 +397,17 @@ export default function Galaxy() {
   const lastCanvasSize = useRef({ w: 0, h: 0 });
   const litRef = useRef<Set<string>>(new Set());
 
+  const dirtyRef = useRef(true);
+  const runningRef = useRef(false);
+  const wakeRef = useRef<() => void>(() => {});
+
   useEffect(() => {
     let raf = 0;
     function tick() {
       const s = stateRef.current;
-      raf = requestAnimationFrame(tick);
-      if (!s.camera) return;
+      if (!s.camera) { runningRef.current = false; return; }
       const canvas = ref.current;
-      if (!canvas) return;
+      if (!canvas) { runningRef.current = false; return; }
 
       if (lastCanvasSize.current.w !== s.size.w || lastCanvasSize.current.h !== s.size.h) {
         const dpr = window.devicePixelRatio || 1;
@@ -401,7 +419,7 @@ export default function Galaxy() {
       const dpr = window.devicePixelRatio || 1;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const [xMin, xRange] = xRangeOf(s.fullVisible);
+      const [xMin, xRange] = xRangeOf(s.fullVisible, s.positions);
       const active = s.selected ?? s.hovered;
       let down: ReturnType<typeof bfsTree> | null = null;
       let up: ReturnType<typeof bfsTree> | null = null;
@@ -413,7 +431,7 @@ export default function Galaxy() {
         for (const id of down.dist.keys()) lit.add(id);
         for (const id of up.dist.keys()) lit.add(id);
 
-        const anchor = globalWorldOf(active, s.effectiveMaxTier, xMin, xRange);
+        const anchor = globalWorldOf(active, s.effectiveMaxTier, xMin, xRange, s.positions);
         localTarget.set(active, anchor);
 
         for (const [id, p] of placeFan(anchor, down, active, 1)) localTarget.set(id, p);
@@ -433,36 +451,80 @@ export default function Galaxy() {
         // correctly attributed to active rather than getting silently
         // re-centered around the partner. Only nodes genuinely exclusive to
         // the partner's own subtree get this fresh layout.
-        const partners = [...(s.coreqOf.get(active) ?? [])].sort();
-        partners.forEach((id, i) => {
-          const side = i % 2 === 0 ? 1 : -1;
-          const rank = Math.ceil((i + 1) / 2);
-          const newPos = { x: anchor.x + side * rank * COREQ_GAP, y: anchor.y };
-          localTarget.set(id, newPos);
-          const partnerDown = bfsTree(id, s.prereqsOf);
-          const partnerUp = bfsTree(id, s.dependentsOf);
-          for (const [sid, p] of placeFan(newPos, partnerDown, id, 1)) {
-            if (sid !== active && !localTarget.has(sid)) { localTarget.set(sid, p); lit.add(sid); }
+        //
+        // Grouped by where each partner sits in the prereq/recommended
+        // expression tree -- an AND's direct children are separate groups,
+        // but an OR's members are ONE cohesive group (mutually exclusive
+        // alternatives, meant to be read together). Sides alternate per
+        // GROUP, not per individual partner, and a group's own members
+        // always land consecutively on the same side. Without this, two
+        // OR-alternatives ("MATH 214* or MATH 216*") can end up split
+        // across opposite sides with an unrelated, separately-required
+        // partner (MATH 203) sandwiched between them -- reading as one
+        // continuous chain through all three, and wrongly widening any
+        // OR-box's bounding rectangle to cover the unrelated item too.
+        const activeCourse = s.byId.get(active);
+        const seenPartner = new Set<string>();
+        function concurrentGroups(e: Expr | null): string[][] {
+          if (!e) return [];
+          if (e.kind === 'course') {
+            if (!e.concurrent || !s.coreqOf.get(active!)?.has(e.id) || seenPartner.has(e.id)) return [];
+            seenPartner.add(e.id);
+            return [[e.id]];
           }
-          for (const [sid, p] of placeFan(newPos, partnerUp, id, -1)) {
-            if (sid !== active && !localTarget.has(sid)) { localTarget.set(sid, p); lit.add(sid); }
+          if (e.kind === 'condition') return [];
+          if (e.kind === 'and') return e.of.flatMap(concurrentGroups);
+          const leaves = concurrentRefs(e).filter((id) => {
+            if (!s.coreqOf.get(active!)?.has(id) || seenPartner.has(id)) return false;
+            seenPartner.add(id);
+            return true;
+          });
+          return leaves.length ? [leaves] : [];
+        }
+        const groups = [
+          ...concurrentGroups(activeCourse?.prereq ?? null),
+          ...concurrentGroups(activeCourse?.recommended ?? null),
+        ];
+        let side: 1 | -1 = 1;
+        const rankOnSide = { 1: 0, [-1]: 0 } as Record<1 | -1, number>;
+        for (const group of groups) {
+          for (const id of group) {
+            rankOnSide[side]++;
+            const newPos = { x: anchor.x + side * rankOnSide[side] * COREQ_GAP, y: anchor.y };
+            localTarget.set(id, newPos);
+            const partnerDown = bfsTree(id, s.prereqsOf);
+            const partnerUp = bfsTree(id, s.dependentsOf);
+            for (const [sid, p] of placeFan(newPos, partnerDown, id, 1)) {
+              if (sid !== active && !localTarget.has(sid)) { localTarget.set(sid, p); lit.add(sid); }
+            }
+            for (const [sid, p] of placeFan(newPos, partnerUp, id, -1)) {
+              if (sid !== active && !localTarget.has(sid)) { localTarget.set(sid, p); lit.add(sid); }
+            }
           }
-        });
+          side = side === 1 ? -1 : 1;
+        }
       }
       litRef.current = lit;
 
       const targetOf = (id: string): Pos =>
-        (active && localTarget.has(id)) ? localTarget.get(id)! : globalWorldOf(id, s.effectiveMaxTier, xMin, xRange);
+        (active && localTarget.has(id)) ? localTarget.get(id)! : globalWorldOf(id, s.effectiveMaxTier, xMin, xRange, s.positions);
 
+      // Tracks whether anything actually moved a perceptible amount this
+      // frame -- once every node is within EASE_EPS of its target, the
+      // scene has visually settled and the loop can stop scheduling more
+      // frames entirely, instead of running forever at 60fps regardless of
+      // whether anything on screen is changing.
+      const EASE_EPS = 0.02;
+      let stillEasing = false;
       for (const c of s.visible) {
         const t = targetOf(c.id);
         const cur = animPos.current.get(c.id) ?? t;
-        animPos.current.set(c.id, {
-          x: cur.x + (t.x - cur.x) * LERP,
-          y: cur.y + (t.y - cur.y) * LERP,
-        });
+        const nx = cur.x + (t.x - cur.x) * LERP;
+        const ny = cur.y + (t.y - cur.y) * LERP;
+        if (Math.abs(nx - t.x) > EASE_EPS || Math.abs(ny - t.y) > EASE_EPS) stillEasing = true;
+        animPos.current.set(c.id, { x: nx, y: ny });
       }
-      const posOf = (id: string): Pos => animPos.current.get(id) ?? globalWorldOf(id, s.effectiveMaxTier, xMin, xRange);
+      const posOf = (id: string): Pos => animPos.current.get(id) ?? globalWorldOf(id, s.effectiveMaxTier, xMin, xRange, s.positions);
 
       // Unified relevance test: while searching, a node counts only if it
       // also matches the query -- including while focused, where it must be
@@ -491,39 +553,12 @@ export default function Galaxy() {
       ctx.save();
       ctx.translate(s.camera.x, s.camera.y);
       ctx.scale(s.camera.scale, s.camera.scale);
-
       ctx.lineWidth = 1.4 / s.camera.scale;
       for (const c of s.visible) {
         const to = posOf(c.id);
         for (const r of s.prereqsOf.get(c.id) ?? []) {
           const from = posOf(r);
-          // While focused, only actual TREE edges render. Two sibling
-          // courses can genuinely share a prereq (e.g. CS 109 and CS 112
-          // both require the same MATH options) -- the BFS tree only picks
-          // one of them as that prereq's parent, but the OTHER real edge
-          // still exists in prereqsOf and would otherwise fall through to
-          // default gray styling (both endpoints are individually lit, just
-          // via different paths), reading as a stray unexplained line. Only
-          // drawing tree-membership edges shows one clean path per node.
-          // Global (unfocused) edges are colored by department -- a solid
-          // tint within one department, a gradient blend between the two
-          // when they cross, so you can see at a glance which fields feed
-          // into which. Focus mode's blue/amber tree coloring overrides
-          // this entirely (a different, more specific signal: direction
-          // relative to whatever's focused, not department).
-          let stroke: string | CanvasGradient =
-            deptOf(r) === deptOf(c.id)
-              ? DEPT_COLOR[deptOf(c.id)]
-              : (() => {
-                  const g = ctx.createLinearGradient(from.x, from.y, to.x, to.y);
-                  g.addColorStop(0, DEPT_COLOR[deptOf(r)]);
-                  g.addColorStop(1, DEPT_COLOR[deptOf(c.id)]);
-                  return g;
-                })();
-          // recommended (advisory) edges are dashed and, in global view,
-          // meaningfully dimmer than real prereqs -- they're not actual
-          // structure, and at full catalog scale they shouldn't visually
-          // compete with the graph's real dependency backbone for attention
+          let stroke: string = pairColor(deptOf(r), deptOf(c.id));
           const isRecommended = s.recommendedEdge.has(`${r}>${c.id}`);
           const baseAlpha = active === null ? (isRecommended ? 0.045 : 0.09) : 0;
           let alpha = baseAlpha;
@@ -533,13 +568,10 @@ export default function Galaxy() {
             stroke = '#e0a15a'; alpha = depthOpacity(up!.dist.get(c.id)!);
           }
           if (!passesFilter(c.id) || !passesFilter(r)) alpha = active !== null ? 0 : DIM_FLOOR;
+          if (alpha < 0.003) continue;
           ctx.setLineDash(isRecommended ? [5, 4] : []);
           ctx.strokeStyle = stroke;
           ctx.globalAlpha = alpha;
-          // vertical S-curve: leaves `from` and arrives at `to` moving
-          // mostly straight up/down before bending, which reads as natural
-          // "flow" given the layout's tiers are fundamentally vertical
-          // (same convention as git graphs / dependency diagrams)
           const midY = (from.y + to.y) / 2;
           ctx.beginPath();
           ctx.moveTo(from.x, from.y);
@@ -627,11 +659,34 @@ export default function Galaxy() {
       }
       ctx.globalAlpha = 1;
       ctx.restore();
+
+      if (dirtyRef.current || stillEasing) {
+        dirtyRef.current = false;
+        raf = requestAnimationFrame(tick);
+      } else {
+        runningRef.current = false;
+      }
     }
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    function wake() {
+      dirtyRef.current = true;
+      if (!runningRef.current) {
+        runningRef.current = true;
+        raf = requestAnimationFrame(tick);
+      }
+    }
+    wakeRef.current = wake;
+    wake();
+    return () => { cancelAnimationFrame(raf); runningRef.current = false; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Runs after every render, i.e. after any state this component tracks
+  // changes (hover, select, camera, search, filters, size...) -- wakes the
+  // loop back up if it had stopped, without needing to enumerate every
+  // individual dependency by hand.
+  useEffect(() => {
+    wakeRef.current();
+  });
 
   const toWorld = (sx: number, sy: number, cam: Camera) => ({
     x: (sx - cam.x) / cam.scale,
@@ -650,12 +705,12 @@ export default function Galaxy() {
     const w = toWorld(sx, sy, camera);
     const threshold = 12 / camera.scale;
     const limitedToLit = restrict && selected !== null;
-    const [xMin, xRange] = xRangeOf(deptVisible);
+    const [xMin, xRange] = xRangeOf(deptVisible, activePositions);
     let best: string | null = null, bestD = threshold;
     for (const c of filteredVisible) {
       if (limitedToLit && !litRef.current.has(c.id)) continue;
       if (effectiveMatches !== null && !effectiveMatches.has(c.id)) continue;
-      const p = animPos.current.get(c.id) ?? globalWorldOf(c.id, effectiveMaxTier, xMin, xRange);
+      const p = animPos.current.get(c.id) ?? globalWorldOf(c.id, effectiveMaxTier, xMin, xRange, activePositions);
       const d = Math.hypot(p.x - w.x, p.y - w.y);
       if (d < bestD) { bestD = d; best = c.id; }
     }
