@@ -1,187 +1,29 @@
-// Galaxy v6: local re-layout on hover/select. The active course's full
-// transitive closure (both directions) gets its own live tree layout, laid
-// out fresh around the active course's anchor point, animated in with a
-// simple per-frame lerp. Everything outside the closure stays put at its
-// global position. Releasing (hover off / click empty space) eases the
-// closure back to its normal global position via the same lerp, since the
-// "target" position just falls back to the global formula once nothing's
-// active.
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { CATALOG, type Course } from './catalog';
-import { TIERS, MAX_TIER, UNDERGRAD_MAX_TIER, levelOf } from './tiers';
+import { TIERS, levelOf } from './tiers';
 import { POSITIONS, computeXPositions } from './positions';
-import { DEPT_COLOR, deptOf, pairColor } from './colors';
-import type { Expr } from './parse';
+import { DEPT_COLOR, deptOf } from './colors';
 import { exprLines } from './format';
+import {
+  allRefs,
+  concurrentRefs,
+  globalWorldOf,
+  xRangeOf,
+  type GraphEdge,
+  type Pos,
+} from './galaxyLayout';
+import {
+  PixiGalaxyRenderer,
+  type GalaxySceneData,
+} from './PixiGalaxyRenderer';
 
-const VW = 1600, VH = 900, PAD = 70;   // fixed virtual canvas
-const MAX_ZOOM_MULT = 8;
-const DRAG_THRESHOLD = 4;              // px of movement before a click becomes a pan
-const DIM_FLOOR = 0.02;                // fully unrelated nodes/edges
-const ROW = 80;                        // local layout: world units per hop, vertically
-const SLOT = 46;                       // local layout: max world units per leaf slot, horizontally
-const LERP = 0.16;                     // per-frame easing toward target position
-const MAX_SPAN = VW - 2 * PAD;         // a fan can never be wider than the usable canvas
-const MAX_VSPAN = VH - 2 * PAD;        // ...or taller, for very deep chains
-const ROW_CAP = 2 * ROW;               // ceiling on stretched row spacing
-const BOX_PAD = 14;                    // padding around a group's leaves, world units
-const BOX_PAD_STEP = 10;               // extra padding per level of nesting inside it
-const COREQ_GAP = 56;                  // spacing between direct coreq partners, world units
-
-function allRefs(e: Expr | null): string[] {
-  if (!e) return [];
-  if (e.kind === 'course') return [e.id];
-  if (e.kind === 'condition') return [];
-  return e.of.flatMap(allRefs);
-}
-
-// refs marked with * (may be taken concurrently) -- used to find direct
-// corequisite partners so the local focus layout can place them beside
-// the active course instead of hanging them in the ordinary before/after fan
-function concurrentRefs(e: Expr | null): string[] {
-  if (!e) return [];
-  if (e.kind === 'course') return e.concurrent ? [e.id] : [];
-  if (e.kind === 'condition') return [];
-  return e.of.flatMap(concurrentRefs);
-}
-
-// depth 1 (direct neighbor) = full opacity, depth 2 = half, depth 3+ = flat quarter
-function depthOpacity(depth: number): number {
-  if (depth <= 1) return 1;
-  //if (depth === 2) return 1 0.5;
-  return .3 //0.25;
-}
-
-// BFS outward from `start`, tracking hop-distance and the tree's parent ->
-// children structure (used both for edge highlighting and for local layout).
-function bfsTree(start: string, adj: Map<string, string[]>) {
-  const dist = new Map<string, number>([[start, 0]]);
-  const children = new Map<string, string[]>();
-  const queue = [start];
-  while (queue.length) {
-    const cur = queue.shift()!;
-    for (const next of adj.get(cur) ?? []) {
-      if (dist.has(next)) continue;
-      dist.set(next, dist.get(cur)! + 1);
-      children.set(cur, [...(children.get(cur) ?? []), next]);
-      queue.push(next);
-    }
-  }
-  return { dist, children };
-}
-
-
-// classic tree x-layout: leaves get sequential slots, each parent centers
-// over the span of its children. Returns relative x (in slot units).
-function treeLayout(root: string, children: Map<string, string[]>) {
-  const relX = new Map<string, number>();
-  let leaf = 0;
-  function visit(id: string) {
-    const kids = children.get(id) ?? [];
-    if (kids.length === 0) { relX.set(id, leaf); leaf++; return; }
-    for (const k of kids) visit(k);
-    const xs = kids.map((k) => relX.get(k)!);
-    relX.set(id, (Math.min(...xs) + Math.max(...xs)) / 2);
-  }
-  visit(root);
-  return { relX, rootX: relX.get(root)!, leafCount: Math.max(leaf, 1) };
-}
-
-// Places a whole BFS-tree fan around an anchor point, then, if the fan would
-// spill past the canvas edge, slides the ENTIRE fan inward as one rigid
-// group (never clamps individual nodes) so relative spacing is preserved and
-// distinct nodes can never collapse onto the same boundary point.
-function placeFan(
-  anchor: Pos, tree: { dist: Map<string, number>; children: Map<string, string[]> },
-  root: string, verticalSign: 1 | -1,
-): Map<string, Pos> {
-  const layout = treeLayout(root, tree.children);
-  const slot = Math.min(SLOT, MAX_SPAN / (layout.leafCount - 1 || 1));
-  const maxDist = Math.max(1, ...tree.dist.values());
-  // stretch to fill whatever room actually exists from the anchor to the
-  // screen edge in this direction, rather than a flat per-hop constant, so a
-  // shallow fan spreads out to use the space instead of clumping near ROW.
-  // Capped: without a ceiling, a tree with very few hops (e.g. one lone
-  // dependent) divides nearly the whole remaining screen by 1 and shoots
-  // that single node all the way to the edge, a long disconnected-looking
-  // line with nothing in between. ROW_CAP keeps shallow trees comfortable.
-  const available = verticalSign === 1 ? (VH - PAD - anchor.y) : (anchor.y - PAD);
-  const rowScale = Math.min(ROW_CAP, Math.max(24, available / maxDist));
-
-  const raw = new Map<string, Pos>();
-  for (const [id, rx] of layout.relX) {
-    if (id === root) continue;
-    raw.set(id, {
-      x: anchor.x + (rx - layout.rootX) * slot,
-      y: anchor.y + verticalSign * tree.dist.get(id)! * rowScale,
-    });
-  }
-  if (raw.size === 0) return raw;
-
-  const xs = [...raw.values()].map((p) => p.x);
-  const ys = [...raw.values()].map((p) => p.y);
-  const shiftX = Math.min(0, VW - PAD - Math.max(...xs)) || Math.max(0, PAD - Math.min(...xs));
-  const shiftY = Math.min(0, VH - PAD - Math.max(...ys)) || Math.max(0, PAD - Math.min(...ys));
-  if (shiftX !== 0 || shiftY !== 0) {
-    for (const [id, p] of raw) raw.set(id, { x: p.x + shiftX, y: p.y + shiftY });
-  }
-  return raw;
-}
-
-// Boxes for the active course's own DIRECT prerequisite expression only
-// (no recursion into other courses' prereqs -- that stays the flat fan).
-// Rule: draw a box only where one is needed to disambiguate --
-//   - operator is OR: always needs a box (dashed)
-//   - operator is AND but sits directly inside an OR: needs a box (solid)
-//   - otherwise: no box, just bare edges (this is why most courses need none)
-// A box's own padding grows with how many box levels are nested inside it,
-// so nested boxes never touch their parent's border.
-interface BoxInstr { x0: number; y0: number; y1: number; x1: number; dashed: boolean }
-
-function collectBoxes(
-  expr: Expr, parentIsOr: boolean, posOf: (id: string) => Pos | undefined, boxes: BoxInstr[],
-): { leaves: string[]; innerLevels: number } {
-  if (expr.kind === 'course') return { leaves: [expr.id], innerLevels: 0 };
-  if (expr.kind === 'condition') return { leaves: [], innerLevels: 0 };
-
-  const leaves: string[] = [];
-  let innerMax = 0;
-  for (const child of expr.of) {
-    const res = collectBoxes(child, expr.kind === 'or', posOf, boxes);
-    leaves.push(...res.leaves);
-    innerMax = Math.max(innerMax, res.innerLevels);
-  }
-
-  const needsBox = expr.kind === 'or' || parentIsOr;
-  const points = leaves.map(posOf).filter((p): p is Pos => p !== undefined);
-  if (needsBox && points.length >= 2) {
-    const pad = BOX_PAD + innerMax * BOX_PAD_STEP;
-    boxes.push({
-      x0: Math.min(...points.map((p) => p.x)) - pad,
-      x1: Math.max(...points.map((p) => p.x)) + pad,
-      y0: Math.min(...points.map((p) => p.y)) - pad,
-      y1: Math.max(...points.map((p) => p.y)) + pad,
-      dashed: expr.kind === 'or',
-    });
-  }
-  return { leaves, innerLevels: needsBox && points.length >= 2 ? innerMax + 1 : innerMax };
-}
-
-interface Camera { x: number; y: number; scale: number }
-type Pos = { x: number; y: number };
-interface GraphEdge { from: string; to: string; recommended: boolean }
-
-// Shared look for every floating UI panel -- semi-transparent + blurred,
-// same as the course tooltip, so the whole UI reads as one consistent
-// language rather than the tooltip being a one-off style.
 const PANEL_STYLE: React.CSSProperties = {
-  background: 'rgba(22,22,30,0.6)', backdropFilter: 'blur(4px)',
-  border: '1px solid #34343e', borderRadius: 8,
+  background: 'rgba(22,22,30,0.6)',
+  backdropFilter: 'blur(4px)',
+  border: '1px solid #34343e',
+  borderRadius: 8,
 };
 
-// A small hoverable (i) glyph that reveals a short description bubble --
-// used in the legend so each symbol can carry a longer explanation without
-// cluttering the panel with paragraphs of text up front.
 function InfoDot({ text }: { text: string }) {
   const [show, setShow] = useState(false);
   return (
@@ -191,17 +33,31 @@ function InfoDot({ text }: { text: string }) {
       onMouseLeave={() => setShow(false)}
     >
       <span style={{
-        width: 13, height: 13, borderRadius: '50%', border: '1px solid #6a6a76',
-        color: '#8a8a94', fontSize: 9, lineHeight: '12px', textAlign: 'center',
-        cursor: 'default', userSelect: 'none',
+        width: 13,
+        height: 13,
+        borderRadius: '50%',
+        border: '1px solid #6a6a76',
+        color: '#8a8a94',
+        fontSize: 9,
+        lineHeight: '12px',
+        textAlign: 'center',
+        cursor: 'default',
+        userSelect: 'none',
       }}>i</span>
       {show && (
         <span style={{
           ...PANEL_STYLE,
-          position: 'absolute', bottom: '150%', left: 0,
-          background: 'rgba(22,22,30,0.9)', padding: '6px 8px',
-          color: '#c8c8d2', fontSize: 11, width: 175, lineHeight: 1.4,
-          pointerEvents: 'none', zIndex: 20,
+          position: 'absolute',
+          bottom: '150%',
+          left: 0,
+          background: 'rgba(22,22,30,0.9)',
+          padding: '6px 8px',
+          color: '#c8c8d2',
+          fontSize: 11,
+          width: 175,
+          lineHeight: 1.4,
+          pointerEvents: 'none',
+          zIndex: 20,
         }}>{text}</span>
       )}
     </span>
@@ -209,775 +65,292 @@ function InfoDot({ text }: { text: string }) {
 }
 
 export default function Galaxy() {
-  const ref = useRef<HTMLCanvasElement>(null);
+  const hostRef = useRef<HTMLDivElement>(null);
+  const rendererRef = useRef<PixiGalaxyRenderer | null>(null);
+  const latestSceneRef = useRef<GalaxySceneData | null>(null);
+
   const [hovered, setHovered] = useState<string | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const [query, setQuery] = useState('');
-  const [size, setSize] = useState({ w: window.innerWidth, h: window.innerHeight });
   const [showGrad, setShowGrad] = useState(false);
-  const [camera, setCamera] = useState<Camera | null>(null);
+  const [deptFilter, setDeptFilter] = useState<Set<string>>(new Set());
+  const [relFilter, setRelFilter] = useState(1);
+  const [searchSuspended, setSearchSuspended] = useState(false);
+
+  const hoveredStateRef = useRef<string | null>(null);
+  hoveredStateRef.current = hovered;
+
+  const hoverTooltipOriginRef = useRef<{ left: number; top: number } | null>(null);
+  const selectedTooltipOriginRef = useRef<{ left: number; top: number } | null>(null);
 
   const visible = useMemo(
-    () => (showGrad ? CATALOG : CATALOG.filter((c) => levelOf(c.id) !== 'grad')),
+    () => (showGrad ? CATALOG : CATALOG.filter((course) => levelOf(course.id) !== 'grad')),
     [showGrad],
   );
 
-  // Department filter: empty set = show everything (default). Checking one
-  // or more narrows to those departments' own courses PLUS their immediate
-  // (one-hop) prereqs/unlocks, even across an unchecked department -- so
-  // cross-department context at the boundary isn't lost, just not followed
-  // transitively. Needs its OWN adjacency built from `visible` directly,
-  // since the "real" prereqsOf/dependentsOf further down are computed FROM
-  // the filtered result of this step, not before it.
-  const departments = useMemo(() => [...new Set(CATALOG.map((c) => deptOf(c.id)))].sort(), []);
-  const [deptFilter, setDeptFilter] = useState<Set<string>>(new Set());
+  const departments = useMemo(
+    () => [...new Set(CATALOG.map((course) => deptOf(course.id)))].sort(),
+    [],
+  );
+
   const deptVisible = useMemo(() => {
     if (deptFilter.size === 0) return visible;
-    const byId = new Map(visible.map((c) => [c.id, c]));
+
+    const byId = new Map(visible.map((course) => [course.id, course]));
     const prereqsOfAll = new Map<string, string[]>();
-    const dependentsOfAll = new Map<string, string[]>(visible.map((c) => [c.id, []]));
-    for (const c of visible) {
-      const refs = [...new Set(allRefs(c.prereq))].filter((r) => byId.has(r));
-      prereqsOfAll.set(c.id, refs);
-      for (const r of refs) dependentsOfAll.get(r)!.push(c.id);
+    const dependentsOfAll = new Map<string, string[]>(visible.map((course) => [course.id, []]));
+
+    for (const course of visible) {
+      const refs = [...new Set(allRefs(course.prereq))].filter((id) => byId.has(id));
+      prereqsOfAll.set(course.id, refs);
+      for (const ref of refs) dependentsOfAll.get(ref)!.push(course.id);
     }
-    const selected = visible.filter((c) => deptFilter.has(deptOf(c.id)));
-    const keep = new Set(selected.map((c) => c.id));
-    for (const c of selected) {
-      for (const r of prereqsOfAll.get(c.id) ?? []) keep.add(r);
-      for (const r of dependentsOfAll.get(c.id) ?? []) keep.add(r);
+
+    const selectedDepartments = visible.filter((course) => deptFilter.has(deptOf(course.id)));
+    const keep = new Set(selectedDepartments.map((course) => course.id));
+    for (const course of selectedDepartments) {
+      for (const ref of prereqsOfAll.get(course.id) ?? []) keep.add(ref);
+      for (const ref of dependentsOfAll.get(course.id) ?? []) keep.add(ref);
     }
-    return visible.filter((c) => keep.has(c.id));
+    return visible.filter((course) => keep.has(course.id));
   }, [visible, deptFilter]);
 
-  // The y-scale is always the tallest tier among whatever's ACTUALLY
-  // visible right now (grad toggle + department filter combined), not a
-  // fixed catalog-wide constant -- filtering to a small department that
-  // only reaches tier 3 shouldn't leave the top two-thirds of the canvas
-  // empty. With no department filter active this reduces to exactly the
-  // old showGrad ? MAX_TIER : UNDERGRAD_MAX_TIER behavior.
-  const effectiveMaxTier = Math.max(0, ...deptVisible.map((c) => TIERS.get(c.id) ?? 0));
+  const effectiveMaxTier = Math.max(
+    0,
+    ...deptVisible.map((course) => TIERS.get(course.id) ?? 0),
+  );
 
-  // Immediate-relatives count (direct prereqs + direct unlocks), measured
-  // against the department-filtered graph -- deliberately NOT the
-  // relatives-filtered set below, since filtering by a count that the
-  // filter itself changes would be circular. Slider at 1 (rightmost,
-  // default) shows everything; sliding left progressively hides the most
-  // connected hub courses first, until only fully isolated (0-relative)
-  // courses remain at the far left.
   const { degreeOf, maxDegree } = useMemo(() => {
-    const byId = new Map(deptVisible.map((c) => [c.id, c]));
+    const byId = new Map(deptVisible.map((course) => [course.id, course]));
     const prereqCount = new Map<string, number>();
-    const unlockCount = new Map<string, number>(deptVisible.map((c) => [c.id, 0]));
-    for (const c of deptVisible) {
-      const refs = [...new Set(allRefs(c.prereq))].filter((r) => byId.has(r));
-      prereqCount.set(c.id, refs.length);
-      for (const r of refs) unlockCount.set(r, (unlockCount.get(r) ?? 0) + 1);
+    const unlockCount = new Map<string, number>(deptVisible.map((course) => [course.id, 0]));
+
+    for (const course of deptVisible) {
+      const refs = [...new Set(allRefs(course.prereq))].filter((id) => byId.has(id));
+      prereqCount.set(course.id, refs.length);
+      for (const ref of refs) unlockCount.set(ref, (unlockCount.get(ref) ?? 0) + 1);
     }
-    const degreeOf = new Map<string, number>();
-    let maxDegree = 1;
-    for (const c of deptVisible) {
-      const d = (prereqCount.get(c.id) ?? 0) + (unlockCount.get(c.id) ?? 0);
-      degreeOf.set(c.id, d);
-      if (d > maxDegree) maxDegree = d;
+
+    const degree = new Map<string, number>();
+    let maximum = 1;
+    for (const course of deptVisible) {
+      const count = (prereqCount.get(course.id) ?? 0) + (unlockCount.get(course.id) ?? 0);
+      degree.set(course.id, count);
+      maximum = Math.max(maximum, count);
     }
-    return { degreeOf, maxDegree };
+    return { degreeOf: degree, maxDegree: maximum };
   }, [deptVisible]);
 
-  const [relFilter, setRelFilter] = useState(1); // 0..1; 1 = show everything
   const filteredVisible = useMemo(() => {
     if (relFilter >= 1) return deptVisible;
     const threshold = Math.round(relFilter * maxDegree);
-    return deptVisible.filter((c) => (degreeOf.get(c.id) ?? 0) <= threshold);
+    return deptVisible.filter((course) => (degreeOf.get(course.id) ?? 0) <= threshold);
   }, [deptVisible, relFilter, degreeOf, maxDegree]);
 
-  const visibleIds = useMemo(() => new Set(filteredVisible.map((c) => c.id)), [filteredVisible]);
+  const visibleIds = useMemo(
+    () => new Set(filteredVisible.map((course) => course.id)),
+    [filteredVisible],
+  );
 
   const matches = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return null;
-    return new Set(filteredVisible
-      .filter((c) => c.id.toLowerCase().includes(q)
-        || String(c.title ?? '').toLowerCase().includes(q))
-      .map((c) => c.id));
+    const normalized = query.trim().toLowerCase();
+    if (!normalized) return null;
+    return new Set(
+      filteredVisible
+        .filter((course) => course.id.toLowerCase().includes(normalized)
+          || String(course.title ?? '').toLowerCase().includes(normalized))
+        .map((course) => course.id),
+    );
   }, [query, filteredVisible]);
 
-  // Clicking to focus a course suspends the search filter (the query text
-  // stays in the box, it just stops narrowing anything) until you type
-  // again -- so pinning a result doesn't also hide its full neighborhood.
-  const [searchSuspended, setSearchSuspended] = useState(false);
   const effectiveMatches = searchSuspended ? null : matches;
 
-  const { byId, prereqsOf, dependentsOf, coreqOf, recommendedEdge, recommendedIds } = useMemo(() => {
-    const byId = new Map(filteredVisible.map((c) => [c.id, c]));
-    // prereqsOf/dependentsOf now carry BOTH real prereqs and recommended
-    // refs together -- recommended courses need to sit inside the same
-    // tree/BFS layout as everything else (positioned via placeFan, subject
-    // to the same tree-only-edges rule, same distance falloff), or they
-    // fall back to wherever their raw global position is and the dashed
-    // lines shoot across the whole canvas to reach them. recommendedEdge
-    // tags which specific (from, to) pairs came from `recommended` rather
-    // than `prereq`, purely so the draw pass can render them dashed --
-    // it's a styling flag, not a separate graph.
-    // tiers.ts / positions.ts / impact.ts / the AND-OR boxes all read only
-    // c.prereq directly, never this merged view, so a recommendation still
-    // can't affect tier depth, the relatives count, or gate logic.
-    const prereqsOf = new Map<string, string[]>();
-    const dependentsOf = new Map<string, string[]>(filteredVisible.map((c) => [c.id, []]));
-    const recommendedEdge = new Set<string>();
-    const recommendedIds = new Map<string, string[]>(); // for the tooltip's own list
-    // one-directional: coreqOf.get(X) = courses X's OWN prereq (or
-    // recommended) expression stars. Belongs entirely to X -- if X allows Y
-    // concurrently, that's X's own flexibility, not a partnership.
-    const coreqOf = new Map<string, Set<string>>(filteredVisible.map((c) => [c.id, new Set()]));
-    for (const c of filteredVisible) {
-      const prereqRefs = [...new Set(allRefs(c.prereq))].filter((r) => byId.has(r));
-      const recRefs = [...new Set(allRefs(c.recommended))]
-        .filter((r) => byId.has(r) && r !== c.id && !prereqRefs.includes(r));
-      prereqsOf.set(c.id, [...prereqRefs, ...recRefs]);
-      for (const r of prereqRefs) dependentsOf.get(r)!.push(c.id);
-      for (const r of recRefs) {
-        dependentsOf.get(r)!.push(c.id);
-        recommendedEdge.add(`${r}>${c.id}`);
+  const {
+    byId,
+    prereqsOf,
+    dependentsOf,
+    coreqOf,
+    recommendedEdge,
+    recommendedIds,
+  } = useMemo(() => {
+    const byCourseId = new Map(filteredVisible.map((course) => [course.id, course]));
+    const prereqs = new Map<string, string[]>();
+    const dependents = new Map<string, string[]>(filteredVisible.map((course) => [course.id, []]));
+    const recommendedEdges = new Set<string>();
+    const recommendedByCourse = new Map<string, string[]>();
+    const corequisites = new Map<string, Set<string>>(
+      filteredVisible.map((course) => [course.id, new Set()]),
+    );
+
+    for (const course of filteredVisible) {
+      const prereqRefs = [...new Set(allRefs(course.prereq))]
+        .filter((id) => byCourseId.has(id));
+      const recRefs = [...new Set(allRefs(course.recommended))]
+        .filter((id) => byCourseId.has(id) && id !== course.id && !prereqRefs.includes(id));
+
+      prereqs.set(course.id, [...prereqRefs, ...recRefs]);
+      for (const ref of prereqRefs) dependents.get(ref)!.push(course.id);
+      for (const ref of recRefs) {
+        dependents.get(ref)!.push(course.id);
+        recommendedEdges.add(`${ref}>${course.id}`);
       }
-      recommendedIds.set(c.id, recRefs);
-      for (const r of concurrentRefs(c.prereq)) if (byId.has(r)) coreqOf.get(c.id)!.add(r);
-      for (const r of concurrentRefs(c.recommended)) if (byId.has(r)) coreqOf.get(c.id)!.add(r);
+      recommendedByCourse.set(course.id, recRefs);
+      for (const ref of concurrentRefs(course.prereq)) {
+        if (byCourseId.has(ref)) corequisites.get(course.id)!.add(ref);
+      }
+      for (const ref of concurrentRefs(course.recommended)) {
+        if (byCourseId.has(ref)) corequisites.get(course.id)!.add(ref);
+      }
     }
-    return { byId, prereqsOf, dependentsOf, coreqOf, recommendedEdge, recommendedIds };
+
+    return {
+      byId: byCourseId,
+      prereqsOf: prereqs,
+      dependentsOf: dependents,
+      coreqOf: corequisites,
+      recommendedEdge: recommendedEdges,
+      recommendedIds: recommendedByCourse,
+    };
   }, [filteredVisible]);
 
   const graphEdges = useMemo<GraphEdge[]>(() => {
     const edges: GraphEdge[] = [];
-    for (const c of filteredVisible) {
-      for (const r of prereqsOf.get(c.id) ?? []) {
+    for (const course of filteredVisible) {
+      for (const ref of prereqsOf.get(course.id) ?? []) {
         edges.push({
-          from: r,
-          to: c.id,
-          recommended: recommendedEdge.has(`${r}>${c.id}`),
+          from: ref,
+          to: course.id,
+          recommended: recommendedEdge.has(`${ref}>${course.id}`),
         });
       }
     }
     return edges;
   }, [filteredVisible, prereqsOf, recommendedEdge]);
 
-  // x is renormalized to whichever courses are actually visible, not the
-  // full catalog -- otherwise hiding grad courses leaves the undergrad
-  // layout compressed into whatever sliver of [0,1] it originally occupied
-  // alongside grad, with dead space on both sides instead of filling the view.
-  // Department filtering needs a genuinely FRESH layout, not a rescale of
-  // the full-catalog one -- rescaling only stretches the existing gaps
-  // (which are mostly other, now-hidden departments' old slots) instead of
-  // actually pulling the visible courses together. localPositions recomputes
-  // computeXPositions live, but ONLY while a department filter is active;
-  // with no filter, positions stays null and everything falls back to the
-  // static, zero-cost POSITIONS map, unchanged from before.
   const localPositions = useMemo(
     () => (deptFilter.size > 0 ? computeXPositions(deptVisible) : null),
     [deptVisible, deptFilter],
   );
   const activePositions = localPositions ?? POSITIONS;
 
-  const globalWorldOf = (
-    id: string, maxTier: number, xMin: number, xRange: number, positions: Map<string, number>,
-  ): Pos => ({
-    x: PAD + ((positions.get(id)! - xMin) / xRange) * (VW - 2 * PAD),
-    y: VH - PAD - ((TIERS.get(id) ?? 0) / Math.max(maxTier, 1)) * (VH - 2 * PAD),
-  });
-  const xRangeOf = (courses: Course[], positions: Map<string, number>): [number, number] => {
-    const xs = courses.map((c) => positions.get(c.id)!);
-    const lo = Math.min(...xs), hi = Math.max(...xs);
-    return [lo, Math.max(hi - lo, 0.001)];
-  };
-
   const globalPositions = useMemo(() => {
     const [xMin, xRange] = xRangeOf(deptVisible, activePositions);
     const result = new Map<string, Pos>();
-    for (const c of filteredVisible) {
+    for (const course of filteredVisible) {
       result.set(
-        c.id,
-        globalWorldOf(c.id, effectiveMaxTier, xMin, xRange, activePositions),
+        course.id,
+        globalWorldOf(
+          course.id,
+          effectiveMaxTier,
+          xMin,
+          xRange,
+          activePositions,
+          TIERS,
+        ),
       );
     }
     return result;
   }, [deptVisible, filteredVisible, activePositions, effectiveMaxTier]);
 
-  const fitScale = (w: number, h: number) => Math.min(w / VW, h / VH) * 0.96;
-
-  function clampCamera(cam: Camera, w: number, h: number): Camera {
-    const fit = fitScale(w, h);
-    const scale = Math.min(Math.max(cam.scale, fit), fit * MAX_ZOOM_MULT);
-    const contentW = VW * scale, contentH = VH * scale;
-    const clampAxis = (t: number, content: number, viewport: number) => {
-      if (content <= viewport) return (viewport - content) / 2;
-      return Math.min(0, Math.max(viewport - content, t));
-    };
-    return { scale, x: clampAxis(cam.x, contentW, w), y: clampAxis(cam.y, contentH, h) };
-  }
+  const sceneData = useMemo<GalaxySceneData>(() => ({
+    courses: filteredVisible,
+    byId,
+    prereqsOf,
+    dependentsOf,
+    coreqOf,
+    recommendedEdge,
+    graphEdges,
+    globalPositions,
+    matches: effectiveMatches,
+    selected,
+    hovered,
+  }), [
+    filteredVisible,
+    byId,
+    prereqsOf,
+    dependentsOf,
+    coreqOf,
+    recommendedEdge,
+    graphEdges,
+    globalPositions,
+    effectiveMatches,
+    selected,
+    hovered,
+  ]);
+  latestSceneRef.current = sceneData;
 
   useEffect(() => {
-    const onResize = () => setSize({ w: window.innerWidth, h: window.innerHeight });
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
-  }, []);
-  useEffect(() => {
-    setCamera((prev) => {
-      const fit = fitScale(size.w, size.h);
-      const base = prev ?? { x: (size.w - VW * fit) / 2, y: (size.h - VH * fit) / 2, scale: fit };
-      return clampCamera(base, size.w, size.h);
+    const host = hostRef.current;
+    if (!host) return undefined;
+
+    let cancelled = false;
+    let created: PixiGalaxyRenderer | null = null;
+
+    void PixiGalaxyRenderer.create(host, {
+      onHover: (id, clientX, clientY) => {
+        setMouse({ x: clientX, y: clientY });
+        setHovered(id);
+      },
+      onSelect: (id, clientX, clientY) => {
+        setMouse({ x: clientX, y: clientY });
+        if (id) {
+          selectedTooltipOriginRef.current =
+            hoveredStateRef.current === id && hoverTooltipOriginRef.current
+              ? { ...hoverTooltipOriginRef.current }
+              : { left: clientX, top: clientY };
+        }
+        setSelected(id);
+        if (id) setSearchSuspended(true);
+      },
+      onPointerMove: (clientX, clientY) => {
+        if (hoveredStateRef.current) setMouse({ x: clientX, y: clientY });
+      },
+    }).then((renderer) => {
+      if (cancelled) {
+        renderer.destroy();
+        return;
+      }
+      created = renderer;
+      rendererRef.current = renderer;
+      if (latestSceneRef.current) renderer.setScene(latestSceneRef.current);
     });
-  }, [size]);
-  const firstRun = useRef(true);
+
+    return () => {
+      cancelled = true;
+      created?.destroy();
+      if (rendererRef.current === created) rendererRef.current = null;
+    };
+  }, []);
+
   useEffect(() => {
-    if (firstRun.current) { firstRun.current = false; return; }
-    const fit = fitScale(size.w, size.h);
-    setCamera({ x: (size.w - VW * fit) / 2, y: (size.h - VH * fit) / 2, scale: fit });
+    rendererRef.current?.setScene(sceneData);
+  }, [sceneData]);
+
+  const firstLayoutReset = useRef(true);
+  useEffect(() => {
+    if (firstLayoutReset.current) {
+      firstLayoutReset.current = false;
+      return;
+    }
+    rendererRef.current?.resetCamera();
   }, [showGrad, deptFilter]);
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setSelected(null); };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setSelected(null);
+    };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
+
   useEffect(() => {
     if (selected && !visibleIds.has(selected)) setSelected(null);
     if (hovered && !visibleIds.has(hovered)) setHovered(null);
-  }, [visibleIds]);
+  }, [visibleIds, selected, hovered]);
 
-  // latest-value cache the render loop reads from, so the loop itself only
-  // needs to start once (no restart-on-every-state-change churn)
-  const stateRef = useRef({
-    camera, size, hovered, selected, visible: filteredVisible, fullVisible: deptVisible, positions: activePositions,
-    byId, prereqsOf, dependentsOf, matches: effectiveMatches, effectiveMaxTier, coreqOf, recommendedEdge,
-    graphEdges, globalPositions,
-  });
-  stateRef.current = {
-    camera, size, hovered, selected, visible: filteredVisible, fullVisible: deptVisible, positions: activePositions,
-    byId, prereqsOf, dependentsOf, matches: effectiveMatches, effectiveMaxTier, coreqOf, recommendedEdge,
-    graphEdges, globalPositions,
-  };
-
-  // animated position of every node; eases toward whatever target() returns
-  const animPos = useRef<Map<string, Pos>>(new Map());
-  const lastCanvasSize = useRef({ w: 0, h: 0 });
-  const litRef = useRef<Set<string>>(new Set());
-
-  // Preserve the actual on-screen position of the hover tooltip before it
-  // unmounts on selection. This matters near viewport edges, where the
-  // tooltip may have flipped left and/or upward away from the mouse.
-  const hoverTooltipOriginRef = useRef<{ left: number; top: number } | null>(null);
-  const selectedTooltipOriginRef = useRef<{ left: number; top: number } | null>(null);
-
-  // When focus is released, only the formerly focused closure moves. Cache
-  // every edge whose endpoints are outside that closure so those static
-  // edges are painted once instead of rebuilt on every return-animation frame.
-  const previousActiveRef = useRef<string | null>(null);
-  const returningIdsRef = useRef<Set<string>>(new Set());
-  const returningEdgesRef = useRef<GraphEdge[]>([]);
-  const staticEdgeLayerRef = useRef<HTMLCanvasElement | null>(null);
-  const staticEdgeKeyRef = useRef('');
-
-  const dirtyRef = useRef(true);
-  const runningRef = useRef(false);
-  const wakeRef = useRef<() => void>(() => {});
-
-  useEffect(() => {
-    let raf = 0;
-    function tick() {
-      const s = stateRef.current;
-      if (!s.camera) { runningRef.current = false; return; }
-      const canvas = ref.current;
-      if (!canvas) { runningRef.current = false; return; }
-
-      if (lastCanvasSize.current.w !== s.size.w || lastCanvasSize.current.h !== s.size.h) {
-        const dpr = window.devicePixelRatio || 1;
-        canvas.width = s.size.w * dpr; canvas.height = s.size.h * dpr;
-        canvas.style.width = `${s.size.w}px`; canvas.style.height = `${s.size.h}px`;
-        lastCanvasSize.current = { w: s.size.w, h: s.size.h };
-      }
-      const ctx = canvas.getContext('2d')!;
-      const dpr = window.devicePixelRatio || 1;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      const active = s.selected ?? s.hovered;
-
-      // Capture the previous focus closure exactly when focus is released.
-      // Those are the only nodes that need to animate back to global mode.
-      if (previousActiveRef.current !== null && active === null) {
-        const returning = new Set(litRef.current);
-        returningIdsRef.current = returning;
-        returningEdgesRef.current = s.graphEdges.filter(
-          (edge) => returning.has(edge.from) || returning.has(edge.to),
-        );
-        staticEdgeKeyRef.current = '';
-      } else if (active !== null) {
-        returningIdsRef.current.clear();
-        returningEdgesRef.current = [];
-        staticEdgeKeyRef.current = '';
-      }
-      previousActiveRef.current = active;
-
-      let down: ReturnType<typeof bfsTree> | null = null;
-      let up: ReturnType<typeof bfsTree> | null = null;
-      const lit = new Set<string>();
-      const localTarget = new Map<string, Pos>();
-      const focusEdges: GraphEdge[] = [];
-      if (active) {
-        down = bfsTree(active, s.prereqsOf);
-        up = bfsTree(active, s.dependentsOf);
-        for (const id of down.dist.keys()) lit.add(id);
-        for (const id of up.dist.keys()) lit.add(id);
-
-        const seenFocusEdges = new Set<string>();
-        const addFocusEdge = (from: string, to: string) => {
-          const key = `${from}>${to}`;
-          if (seenFocusEdges.has(key)) return;
-          seenFocusEdges.add(key);
-          focusEdges.push({
-            from,
-            to,
-            recommended: s.recommendedEdge.has(key),
-          });
-        };
-        for (const [to, refs] of down.children) {
-          for (const from of refs) addFocusEdge(from, to);
-        }
-        for (const [from, dependents] of up.children) {
-          for (const to of dependents) addFocusEdge(from, to);
-        }
-
-        const anchor = s.globalPositions.get(active)!;
-        localTarget.set(active, anchor);
-
-        for (const [id, p] of placeFan(anchor, down, active, 1)) localTarget.set(id, p);
-        for (const [id, p] of placeFan(anchor, up, active, -1)) localTarget.set(id, p);
-
-        // direct coreqs render parallel: same row as the active course,
-        // fanning out beside it instead of hanging in the before/after tree.
-        // The partner's own subtree gets an INDEPENDENT layout rooted at its
-        // new position -- not a rigid drag of its old one, which would land
-        // a deep subtree's descendants on top of active's OTHER, unrelated
-        // branches (spacing was computed assuming the partner stayed one
-        // row below active, not beside it). BUT: a coreq partner often
-        // shares most of its own foundation with active's own tree (e.g. a
-        // partner two courses share nearly the same prereq chain) -- for
-        // any node already placed by active's own down/up fan, that
-        // placement wins and is left untouched, so shared requirements stay
-        // correctly attributed to active rather than getting silently
-        // re-centered around the partner. Only nodes genuinely exclusive to
-        // the partner's own subtree get this fresh layout.
-        //
-        // Grouped by where each partner sits in the prereq/recommended
-        // expression tree -- an AND's direct children are separate groups,
-        // but an OR's members are ONE cohesive group (mutually exclusive
-        // alternatives, meant to be read together). Sides alternate per
-        // GROUP, not per individual partner, and a group's own members
-        // always land consecutively on the same side. Without this, two
-        // OR-alternatives ("MATH 214* or MATH 216*") can end up split
-        // across opposite sides with an unrelated, separately-required
-        // partner (MATH 203) sandwiched between them -- reading as one
-        // continuous chain through all three, and wrongly widening any
-        // OR-box's bounding rectangle to cover the unrelated item too.
-        const activeCourse = s.byId.get(active);
-        const seenPartner = new Set<string>();
-        function concurrentGroups(e: Expr | null): string[][] {
-          if (!e) return [];
-          if (e.kind === 'course') {
-            if (!e.concurrent || !s.coreqOf.get(active!)?.has(e.id) || seenPartner.has(e.id)) return [];
-            seenPartner.add(e.id);
-            return [[e.id]];
-          }
-          if (e.kind === 'condition') return [];
-          if (e.kind === 'and') return e.of.flatMap(concurrentGroups);
-          const leaves = concurrentRefs(e).filter((id) => {
-            if (!s.coreqOf.get(active!)?.has(id) || seenPartner.has(id)) return false;
-            seenPartner.add(id);
-            return true;
-          });
-          return leaves.length ? [leaves] : [];
-        }
-        const groups = [
-          ...concurrentGroups(activeCourse?.prereq ?? null),
-          ...concurrentGroups(activeCourse?.recommended ?? null),
-        ];
-        let side: 1 | -1 = 1;
-        const rankOnSide = { 1: 0, [-1]: 0 } as Record<1 | -1, number>;
-        for (const group of groups) {
-          for (const id of group) {
-            rankOnSide[side]++;
-            const newPos = { x: anchor.x + side * rankOnSide[side] * COREQ_GAP, y: anchor.y };
-            localTarget.set(id, newPos);
-            const partnerDown = bfsTree(id, s.prereqsOf);
-            const partnerUp = bfsTree(id, s.dependentsOf);
-            for (const [sid, p] of placeFan(newPos, partnerDown, id, 1)) {
-              if (sid !== active && !localTarget.has(sid)) { localTarget.set(sid, p); lit.add(sid); }
-            }
-            for (const [sid, p] of placeFan(newPos, partnerUp, id, -1)) {
-              if (sid !== active && !localTarget.has(sid)) { localTarget.set(sid, p); lit.add(sid); }
-            }
-          }
-          side = side === 1 ? -1 : 1;
-        }
-      }
-      litRef.current = lit;
-
-      const targetOf = (id: string): Pos =>
-        (active && localTarget.has(id)) ? localTarget.get(id)! : s.globalPositions.get(id)!;
-
-      // Tracks whether anything actually moved a perceptible amount this
-      // frame -- once every node is within EASE_EPS of its target, the
-      // scene has visually settled and the loop can stop scheduling more
-      // frames entirely, instead of running forever at 60fps regardless of
-      // whether anything on screen is changing.
-      const EASE_EPS = 0.02;
-      let stillEasing = false;
-      const returningIds = returningIdsRef.current;
-
-      const easeNode = (id: string) => {
-        const t = targetOf(id);
-        if (!t) return;
-        const cur = animPos.current.get(id) ?? t;
-        const nx = cur.x + (t.x - cur.x) * LERP;
-        const ny = cur.y + (t.y - cur.y) * LERP;
-        if (Math.abs(nx - t.x) > EASE_EPS || Math.abs(ny - t.y) > EASE_EPS) stillEasing = true;
-        animPos.current.set(id, { x: nx, y: ny });
-      };
-
-      // On the expensive focused -> global transition, every node outside
-      // the previous focus closure is already at its final global position.
-      // Update only the nodes that can actually move.
-      if (active === null && returningIds.size > 0) {
-        for (const id of returningIds) easeNode(id);
-      } else {
-        for (const c of s.visible) easeNode(c.id);
-      }
-
-      const posOf = (id: string): Pos => animPos.current.get(id) ?? s.globalPositions.get(id)!;
-      const returningToGlobal =
-        active === null && stillEasing && returningIds.size > 0;
-
-      // Once the return animation settles, discard the temporary cache.
-      // The normal draw pass below paints the complete graph on this frame.
-      if (active === null && !stillEasing && returningIds.size > 0) {
-        returningIdsRef.current.clear();
-        returningEdgesRef.current = [];
-        staticEdgeKeyRef.current = '';
-      }
-
-      // Unified relevance test: while searching, a node counts only if it
-      // also matches the query -- including while focused, where it must be
-      // BOTH in the lit (focused) set AND match the search, so typing while
-      // pinned narrows within that context instead of being ignored.
-      const passesFilter = (id: string) => {
-        if (active !== null) {
-          return id === active || (lit.has(id) && (s.matches === null || s.matches.has(id)));
-        }
-        if (s.matches !== null) return s.matches.has(id);
-        return true;
-      };
-      const dimmed = (id: string) => !passesFilter(id);
-      const nodeOpacity = (id: string) => {
-        if (!passesFilter(id)) return DIM_FLOOR;
-        if (active === null) return 1;
-        if (id === active) return 1;
-        if (down!.dist.has(id)) return depthOpacity(down!.dist.get(id)!);
-        if (up!.dist.has(id)) return depthOpacity(up!.dist.get(id)!);
-        return DIM_FLOOR;
-      };
-
-      ctx.fillStyle = '#0b0b10';
-      ctx.fillRect(0, 0, s.size.w, s.size.h);
-
-      // During the focused -> global transition, cache all edges that do not
-      // touch a returning node. The main pass then redraws only dynamic edges.
-      if (returningToGlobal) {
-        const cacheKey = [
-          s.size.w, s.size.h, dpr,
-          s.camera.x, s.camera.y, s.camera.scale,
-          s.visible.length, returningIds.size,
-        ].join('|');
-
-        if (!staticEdgeLayerRef.current || staticEdgeKeyRef.current !== cacheKey) {
-          const layer = staticEdgeLayerRef.current ?? document.createElement('canvas');
-          layer.width = Math.round(s.size.w * dpr);
-          layer.height = Math.round(s.size.h * dpr);
-
-          const layerCtx = layer.getContext('2d')!;
-          layerCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-          layerCtx.clearRect(0, 0, s.size.w, s.size.h);
-          layerCtx.save();
-          layerCtx.translate(s.camera.x, s.camera.y);
-          layerCtx.scale(s.camera.scale, s.camera.scale);
-          layerCtx.lineWidth = 1.4 / s.camera.scale;
-
-          for (const edge of s.graphEdges) {
-            if (returningIds.has(edge.from) || returningIds.has(edge.to)) continue;
-            const from = s.globalPositions.get(edge.from)!;
-            const to = s.globalPositions.get(edge.to)!;
-            let alpha = edge.recommended ? 0.045 : 0.09;
-            if (!passesFilter(edge.to) || !passesFilter(edge.from)) alpha = DIM_FLOOR;
-            if (alpha < 0.003) continue;
-
-            layerCtx.setLineDash(edge.recommended ? [5, 4] : []);
-            layerCtx.strokeStyle = pairColor(deptOf(edge.from), deptOf(edge.to));
-            layerCtx.globalAlpha = alpha;
-
-            const midY = (from.y + to.y) / 2;
-            layerCtx.beginPath();
-            layerCtx.moveTo(from.x, from.y);
-            layerCtx.bezierCurveTo(from.x, midY, to.x, midY, to.x, to.y);
-            layerCtx.stroke();
-          }
-
-          layerCtx.setLineDash([]);
-          layerCtx.globalAlpha = 1;
-          layerCtx.restore();
-          staticEdgeLayerRef.current = layer;
-          staticEdgeKeyRef.current = cacheKey;
-        }
-
-        // The cache is already rendered at device-pixel resolution.
-        ctx.save();
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-        ctx.drawImage(staticEdgeLayerRef.current!, 0, 0);
-        ctx.restore();
-      }
-
-      ctx.save();
-      ctx.translate(s.camera.x, s.camera.y);
-      ctx.scale(s.camera.scale, s.camera.scale);
-      ctx.lineWidth = 1.4 / s.camera.scale;
-      const edgesToDraw = returningToGlobal
-        ? returningEdgesRef.current
-        : active !== null
-          ? focusEdges
-          : s.graphEdges;
-
-      for (const edge of edgesToDraw) {
-        const from = posOf(edge.from);
-        const to = posOf(edge.to);
-        let stroke: string = pairColor(deptOf(edge.from), deptOf(edge.to));
-        const baseAlpha = active === null ? (edge.recommended ? 0.045 : 0.09) : 0;
-        let alpha = baseAlpha;
-        if (active !== null && down!.children.get(edge.to)?.includes(edge.from)) {
-          stroke = '#6fb2e0'; alpha = depthOpacity(down!.dist.get(edge.from)!);
-        } else if (active !== null && up!.children.get(edge.from)?.includes(edge.to)) {
-          stroke = '#e0a15a'; alpha = depthOpacity(up!.dist.get(edge.to)!);
-        }
-        if (!passesFilter(edge.to) || !passesFilter(edge.from)) alpha = active !== null ? 0 : DIM_FLOOR;
-        if (alpha < 0.003) continue;
-        ctx.setLineDash(edge.recommended ? [5, 4] : []);
-        ctx.strokeStyle = stroke;
-        ctx.globalAlpha = alpha;
-        const midY = (from.y + to.y) / 2;
-        ctx.beginPath();
-        ctx.moveTo(from.x, from.y);
-        ctx.bezierCurveTo(from.x, midY, to.x, midY, to.x, to.y);
-        ctx.stroke();
-      }
-      ctx.setLineDash([]);
-
-      // AND/OR boxes for the active course's own direct prereq expression
-      if (active) {
-        const activeCourse = s.byId.get(active);
-        if (activeCourse?.prereq && activeCourse.prereq.kind !== 'course'
-            && activeCourse.prereq.kind !== 'condition') {
-          const boxes: BoxInstr[] = [];
-          collectBoxes(activeCourse.prereq, false, (id) => animPos.current.get(id), boxes);
-          ctx.lineWidth = 1.2 / s.camera.scale;
-          ctx.strokeStyle = '#9a9aa4';
-          ctx.globalAlpha = 0.85;
-          for (const b of boxes) {
-            ctx.setLineDash(b.dashed ? [6, 5] : []);
-            const rx = Math.min(10, (b.x1 - b.x0) / 4, (b.y1 - b.y0) / 4);
-            ctx.beginPath();
-            ctx.roundRect(b.x0, b.y0, b.x1 - b.x0, b.y1 - b.y0, rx);
-            ctx.stroke();
-          }
-          ctx.setLineDash([]);
-        }
-      }
-
-      for (const c of s.visible) {
-        const p = posOf(c.id);
-        ctx.globalAlpha = nodeOpacity(c.id);
-        ctx.fillStyle = DEPT_COLOR[deptOf(c.id)];
-        const r = (c.id === s.selected ? 7 : c.id === s.hovered ? 6 : 4) / Math.sqrt(s.camera.scale);
-        ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.fill();
-      }
-
-      ctx.font = `${10 / s.camera.scale}px system-ui, sans-serif`;
-      ctx.textAlign = 'center';
-      const wantsLabel = active !== null
-        ? s.visible.filter((c) => lit.has(c.id))
-        : s.matches ? s.visible.filter((c) => s.matches!.has(c.id)) : [];
-      // row key: when active, group by side+hop-distance (matches the new
-      // visual bands); otherwise fall back to the global tier as before
-      const rowKeyOf = (id: string): string => {
-        if (active && lit.has(id)) {
-          if (id === active) return 'active';
-          if (down!.dist.has(id)) return `d${down!.dist.get(id)}`;
-          return `u${up!.dist.get(id)}`;
-        }
-        return `t${TIERS.get(id) ?? 0}`;
-      };
-      const byRow = new Map<string, typeof wantsLabel>();
-      for (const c of wantsLabel) byRow.set(rowKeyOf(c.id), [...(byRow.get(rowKeyOf(c.id)) ?? []), c]);
-      const gap = 6 / s.camera.scale;
-      const laneHeight = 13 / s.camera.scale;
-      const maxLanes = 4;
-      for (const row of byRow.values()) {
-        row.sort((a, b) => posOf(a.id).x - posOf(b.id).x);
-        const laneLastRight = new Array(maxLanes).fill(-Infinity);
-        for (const c of row) {
-          const p = posOf(c.id);
-          const w = ctx.measureText(c.id).width;
-          let lane = c.id === active ? 0 : -1;
-          if (lane === -1) {
-            for (let i = 0; i < maxLanes; i++) {
-              if (p.x - w / 2 >= laneLastRight[i] + gap) { lane = i; break; }
-            }
-          }
-          if (lane === -1) continue;
-          laneLastRight[lane] = Math.max(laneLastRight[lane], p.x + w / 2);
-
-          const r = (c.id === s.selected ? 7 : c.id === s.hovered ? 6 : 4) / Math.sqrt(s.camera.scale);
-          const ty = p.y - r - 4 / s.camera.scale - lane * laneHeight;
-          ctx.globalAlpha = nodeOpacity(c.id);
-          if (lane > 0) {
-            ctx.strokeStyle = '#4a4a54';
-            ctx.lineWidth = 1 / s.camera.scale;
-            ctx.beginPath(); ctx.moveTo(p.x, p.y - r); ctx.lineTo(p.x, ty + 3 / s.camera.scale); ctx.stroke();
-          }
-          ctx.fillStyle = '#e6e6ee';
-          ctx.fillText(c.id, p.x, ty);
-        }
-      }
-      ctx.globalAlpha = 1;
-      ctx.restore();
-
-      if (dirtyRef.current || stillEasing) {
-        dirtyRef.current = false;
-        raf = requestAnimationFrame(tick);
-      } else {
-        runningRef.current = false;
-      }
-    }
-    function wake() {
-      dirtyRef.current = true;
-      if (!runningRef.current) {
-        runningRef.current = true;
-        raf = requestAnimationFrame(tick);
-      }
-    }
-    wakeRef.current = wake;
-    wake();
-    return () => { cancelAnimationFrame(raf); runningRef.current = false; };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Runs after every render, i.e. after any state this component tracks
-  // changes (hover, select, camera, search, filters, size...) -- wakes the
-  // loop back up if it had stopped, without needing to enumerate every
-  // individual dependency by hand.
-  useEffect(() => {
-    wakeRef.current();
-  });
-
-  const toWorld = (sx: number, sy: number, cam: Camera) => ({
-    x: (sx - cam.x) / cam.scale,
-    y: (sy - cam.y) / cam.scale,
-  });
-
-  // `restrict`: while a course is pinned, BOTH hover and click can only
-  // land on the pinned course's related (lit) set, not the dimmed rest of
-  // the graph -- clicking a node outside the current tree is treated the
-  // same as clicking empty space (pickAt returns null for it, since it's
-  // excluded from consideration entirely, not just deprioritized), so it
-  // unfocuses back to global mode rather than jumping focus to an unrelated
-  // course. Only a node genuinely within the tree can be clicked to re-pin
-  // focus onto it instead. A search query is a separate, stronger
-  // restriction that applies to BOTH hover and click regardless of pin
-  // state -- you can only interact with courses currently on screen as
-  // matches, combined (AND) with the pin restriction when both are active.
-  const pickAt = (sx: number, sy: number, restrict: boolean): string | null => {
-    if (!camera) return null;
-    const w = toWorld(sx, sy, camera);
-    const threshold = 12 / camera.scale;
-    const limitedToLit = restrict && selected !== null;
-    const [xMin, xRange] = xRangeOf(deptVisible, activePositions);
-    let best: string | null = null, bestD = threshold;
-    for (const c of filteredVisible) {
-      if (limitedToLit && !litRef.current.has(c.id)) continue;
-      if (effectiveMatches !== null && !effectiveMatches.has(c.id)) continue;
-      const p = animPos.current.get(c.id) ?? globalWorldOf(c.id, effectiveMaxTier, xMin, xRange, activePositions);
-      const d = Math.hypot(p.x - w.x, p.y - w.y);
-      if (d < bestD) { bestD = d; best = c.id; }
-    }
-    return best;
-  };
-
-  const drag = useRef<{ x: number; y: number; moved: boolean } | null>(null);
-
-  const onDown = (ev: React.MouseEvent) => {
-    drag.current = { x: ev.clientX, y: ev.clientY, moved: false };
-  };
-  const onMove = (ev: React.MouseEvent) => {
-    setMouse({ x: ev.clientX, y: ev.clientY });
-    if (drag.current && camera) {
-      const dx = ev.clientX - drag.current.x, dy = ev.clientY - drag.current.y;
-      if (Math.abs(dx) + Math.abs(dy) > DRAG_THRESHOLD) drag.current.moved = true;
-      if (drag.current.moved) {
-        setCamera(clampCamera({ ...camera, x: camera.x + dx, y: camera.y + dy }, size.w, size.h));
-        drag.current = { x: ev.clientX, y: ev.clientY, moved: true };
-        setHovered(null);
-        return;
-      }
-    }
-    const rect = ref.current!.getBoundingClientRect();
-    setHovered(pickAt(ev.clientX - rect.left, ev.clientY - rect.top, true));
-  };
-  const onUp = (ev: React.MouseEvent) => {
-    if (drag.current && !drag.current.moved) {
-      const rect = ref.current!.getBoundingClientRect();
-      const picked = pickAt(ev.clientX - rect.left, ev.clientY - rect.top, true);
-      if (picked) {
-        // Start the pinned-panel animation from the hover tooltip's real
-        // top-left corner. Falling back to the click point covers keyboard
-        // or unusually fast interactions where no hover box was measured.
-        selectedTooltipOriginRef.current =
-          hovered === picked && hoverTooltipOriginRef.current
-            ? { ...hoverTooltipOriginRef.current }
-            : { left: ev.clientX, top: ev.clientY };
-      }
-      setSelected(picked);
-      if (picked) setSearchSuspended(true); // clicking empty space (deselect) leaves it as-is
-    }
-    drag.current = null;
-  };
-  const onWheel = (ev: React.WheelEvent) => {
-    if (!camera) return;
-    ev.preventDefault();
-    const rect = ref.current!.getBoundingClientRect();
-    const sx = ev.clientX - rect.left, sy = ev.clientY - rect.top;
-    const before = toWorld(sx, sy, camera);
-    const factor = Math.exp(-ev.deltaY * 0.0016);
-    const fit = fitScale(size.w, size.h);
-    const newScale = Math.min(Math.max(camera.scale * factor, fit), fit * MAX_ZOOM_MULT);
-    const next = { scale: newScale, x: sx - before.x * newScale, y: sy - before.y * newScale };
-    setCamera(clampCamera(next, size.w, size.h));
-  };
-
-  // Two independent tooltips once something's pinned: the pinned course
-  // gets a permanent home in the fixed bottom-right panel and never changes
-  // regardless of what you hover; hovering any OTHER course still gets its
-  // own normal mouse-following preview alongside it, same as unfocused
-  // hover always has. Hovering the pinned course itself shows nothing
-  // extra -- it's already covered by the fixed panel.
-  const selectedCourse: Course | undefined = selected ? byId.get(selected) : undefined;
-  const hoveredCourse: Course | undefined =
-    (hovered && hovered !== selected) ? byId.get(hovered) : undefined;
+  const selectedCourse = selected ? byId.get(selected) : undefined;
+  const hoveredCourse = hovered && hovered !== selected ? byId.get(hovered) : undefined;
 
   const tooltipRef = useRef<HTMLDivElement>(null);
   const [tipPos, setTipPos] = useState({ left: 0, top: 0 });
@@ -997,10 +370,6 @@ export default function Galaxy() {
     setTipPos({ left, top });
   }, [hoveredCourse, mouse]);
 
-  // The pinned-course panel flies from the hover tooltip's ACTUAL rendered
-  // position into its bottom-right resting spot. The rendered course is kept
-  // separately from `selected`, allowing the panel to fade out after focus
-  // is cleared instead of disappearing in the same render.
   const selectedTooltipRef = useRef<HTMLDivElement>(null);
   const [displayedSelectedCourse, setDisplayedSelectedCourse] = useState<Course | null>(null);
   const [selectedPos, setSelectedPos] = useState<{
@@ -1027,7 +396,9 @@ export default function Galaxy() {
     if (!selectedCourse) {
       prevSelectedRef.current = null;
       if (displayedSelectedCourse) {
-        setSelectedPos((prev) => prev ? { ...prev, animate: true, opacity: 0 } : prev);
+        setSelectedPos((previous) => previous
+          ? { ...previous, animate: true, opacity: 0 }
+          : previous);
         selectedFadeTimerRef.current = window.setTimeout(() => {
           setDisplayedSelectedCourse(null);
           setSelectedPos(null);
@@ -1037,7 +408,7 @@ export default function Galaxy() {
       return;
     }
 
-    if (prevSelectedRef.current === selected) return; // same course still pinned; don't re-trigger
+    if (prevSelectedRef.current === selected) return;
     prevSelectedRef.current = selected;
     setDisplayedSelectedCourse(selectedCourse);
 
@@ -1045,14 +416,11 @@ export default function Galaxy() {
     selectedTooltipOriginRef.current = null;
     setSelectedPos({ ...origin, animate: false, opacity: 1 });
 
-    // The first frame mounts and measures the panel; the second enables the
-    // transition. This prevents the browser from interpolating while its
-    // size/content is still being established.
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        const el = selectedTooltipRef.current;
-        if (!el) return;
-        const rect = el.getBoundingClientRect();
+        const element = selectedTooltipRef.current;
+        if (!element) return;
+        const rect = element.getBoundingClientRect();
         setSelectedPos({
           left: window.innerWidth - 14 - rect.width,
           top: window.innerHeight - 14 - rect.height,
@@ -1064,42 +432,40 @@ export default function Galaxy() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
 
-  // Shared content for both tooltips, so the layout/fields only need to be
-  // written once.
-  const tooltipBody = (c: Course) => (
+  const tooltipBody = (course: Course) => (
     <>
-      <div style={{ fontWeight: 700 }}>{c.id}</div>
-      {Object.entries(c)
-        .filter(([k, v]) => k !== 'id' && k !== 'prereq'
-          && (typeof v === 'string' || typeof v === 'number'))
-        .map(([k, v]) => (
-          <div key={k} style={{ color: '#a8a8b4', marginTop: 2 }}>
-            {k === 'title' ? String(v) : `${k}: ${v}`}
+      <div style={{ fontWeight: 700 }}>{course.id}</div>
+      {Object.entries(course)
+        .filter(([key, value]) => key !== 'id' && key !== 'prereq'
+          && (typeof value === 'string' || typeof value === 'number'))
+        .map(([key, value]) => (
+          <div key={key} style={{ color: '#a8a8b4', marginTop: 2 }}>
+            {key === 'title' ? String(value) : `${key}: ${value}`}
           </div>
         ))}
-      {c.prereq && (
+      {course.prereq && (
         <div style={{ marginTop: 6 }}>
           <div style={{ color: '#7f7f8a', fontSize: 10, textTransform: 'uppercase' }}>Requires</div>
-          {exprLines(c.prereq).map((line, i) => (
-            <div key={i} style={{ marginTop: 1 }}>{line}</div>
+          {exprLines(course.prereq).map((line, index) => (
+            <div key={index} style={{ marginTop: 1 }}>{line}</div>
           ))}
         </div>
       )}
-      {(recommendedIds.get(c.id) ?? []).length > 0 && (
+      {(recommendedIds.get(course.id) ?? []).length > 0 && (
         <div style={{ marginTop: 6 }}>
           <div style={{ color: '#7f7f8a', fontSize: 10, textTransform: 'uppercase' }}>Recommended</div>
           <div style={{ color: '#a8a8b4' }}>
-            {(recommendedIds.get(c.id) ?? []).join(', ')}
+            {(recommendedIds.get(course.id) ?? []).join(', ')}
           </div>
         </div>
       )}
-      {(dependentsOf.get(c.id) ?? []).length > 0 && (
+      {(dependentsOf.get(course.id) ?? []).length > 0 && (
         <div style={{ marginTop: 6 }}>
           <div style={{ color: '#7f7f8a', fontSize: 10, textTransform: 'uppercase' }}>Unlocks</div>
           <div style={{ color: '#a8a8b4' }}>
-            {(dependentsOf.get(c.id) ?? []).slice(0, 10).join(', ')}
-            {(dependentsOf.get(c.id) ?? []).length > 10 &&
-              ` +${(dependentsOf.get(c.id) ?? []).length - 10} more`}
+            {(dependentsOf.get(course.id) ?? []).slice(0, 10).join(', ')}
+            {(dependentsOf.get(course.id) ?? []).length > 10
+              && ` +${(dependentsOf.get(course.id) ?? []).length - 10} more`}
           </div>
         </div>
       )}
@@ -1107,58 +473,109 @@ export default function Galaxy() {
   );
 
   const tooltipPanelStyle: React.CSSProperties = {
-    background: 'rgba(22,22,30,0.5)', border: '1px solid #34343e', borderRadius: 8,
-    padding: '8px 12px', color: '#e6e6ee', fontFamily: 'system-ui, sans-serif',
-    fontSize: 12, pointerEvents: 'none', maxWidth: 320, backdropFilter: 'blur(3px)',
+    background: 'rgba(22,22,30,0.5)',
+    border: '1px solid #34343e',
+    borderRadius: 8,
+    padding: '8px 12px',
+    color: '#e6e6ee',
+    fontFamily: 'system-ui, sans-serif',
+    fontSize: 12,
+    pointerEvents: 'none',
+    maxWidth: 320,
+    backdropFilter: 'blur(3px)',
   };
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden' }}>
+      <div
+        ref={hostRef}
+        style={{ position: 'fixed', inset: 0, background: '#0b0b10' }}
+      />
       <input
         value={query}
-        onChange={(e) => { setQuery(e.target.value); setSearchSuspended(false); }}
+        onChange={(event) => {
+          setQuery(event.target.value);
+          setSearchSuspended(false);
+        }}
         placeholder="search courses..."
         style={{
           ...PANEL_STYLE,
-          position: 'fixed', top: 14, left: 14, zIndex: 10,
-          padding: '7px 12px', color: '#e6e6ee', fontSize: 13, width: 220,
-          outline: 'none', fontFamily: 'system-ui, sans-serif',
+          position: 'fixed',
+          top: 14,
+          left: 14,
+          zIndex: 10,
+          padding: '7px 12px',
+          color: '#e6e6ee',
+          fontSize: 13,
+          width: 220,
+          outline: 'none',
+          fontFamily: 'system-ui, sans-serif',
         }}
       />
       <label style={{
         ...PANEL_STYLE,
-        position: 'fixed', top: 56, left: 14, zIndex: 10,
-        padding: '6px 12px', color: '#e6e6ee', fontSize: 12.5,
-        fontFamily: 'system-ui, sans-serif', display: 'flex', alignItems: 'center',
-        gap: 6, cursor: 'pointer', userSelect: 'none',
+        position: 'fixed',
+        top: 56,
+        left: 14,
+        zIndex: 10,
+        padding: '6px 12px',
+        color: '#e6e6ee',
+        fontSize: 12.5,
+        fontFamily: 'system-ui, sans-serif',
+        display: 'flex',
+        alignItems: 'center',
+        gap: 6,
+        cursor: 'pointer',
+        userSelect: 'none',
       }}>
-        <input type="checkbox" checked={showGrad} onChange={(e) => setShowGrad(e.target.checked)} />
+        <input
+          type="checkbox"
+          checked={showGrad}
+          onChange={(event) => setShowGrad(event.target.checked)}
+        />
         show graduate (500+) courses
       </label>
       <div style={{
         ...PANEL_STYLE,
-        position: 'fixed', top: 98, left: 14, zIndex: 10,
-        padding: '8px 12px', color: '#e6e6ee', fontSize: 12,
-        fontFamily: 'system-ui, sans-serif', width: 220,
+        position: 'fixed',
+        top: 98,
+        left: 14,
+        zIndex: 10,
+        padding: '8px 12px',
+        color: '#e6e6ee',
+        fontSize: 12,
+        fontFamily: 'system-ui, sans-serif',
+        width: 220,
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
           <span>immediate relatives</span>
           <span style={{ color: '#8a8a94' }}>
-            {relFilter >= 1 ? 'all' : `\u2264 ${Math.round(relFilter * maxDegree)}`}
+            {relFilter >= 1 ? 'all' : `≤ ${Math.round(relFilter * maxDegree)}`}
           </span>
         </div>
         <input
-          type="range" min={0} max={1} step={0.01} value={relFilter}
-          onChange={(e) => setRelFilter(parseFloat(e.target.value))}
+          type="range"
+          min={0}
+          max={1}
+          step={0.01}
+          value={relFilter}
+          onChange={(event) => setRelFilter(Number.parseFloat(event.target.value))}
           style={{ width: '100%' }}
         />
       </div>
       <div style={{
         ...PANEL_STYLE,
-        position: 'fixed', top: 14, right: 14, zIndex: 10,
-        padding: '10px 12px', color: '#e6e6ee', fontSize: 12.5,
-        fontFamily: 'system-ui, sans-serif', width: 200,
-        maxHeight: 'calc(100vh - 28px)', overflowY: 'auto',
+        position: 'fixed',
+        top: 14,
+        right: 14,
+        zIndex: 10,
+        padding: '10px 12px',
+        color: '#e6e6ee',
+        fontSize: 12.5,
+        fontFamily: 'system-ui, sans-serif',
+        width: 200,
+        maxHeight: 'calc(100vh - 28px)',
+        overflowY: 'auto',
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
           <span style={{ fontWeight: 600 }}>departments</span>
@@ -1166,47 +583,68 @@ export default function Galaxy() {
             <button
               onClick={() => setDeptFilter(new Set())}
               style={{
-                background: 'transparent', border: 'none', color: '#7f9fd1', fontSize: 11,
-                cursor: 'pointer', padding: 0,
+                background: 'transparent',
+                border: 'none',
+                color: '#7f9fd1',
+                fontSize: 11,
+                cursor: 'pointer',
+                padding: 0,
               }}
             >clear</button>
           )}
         </div>
-        {departments.map((d) => (
+        {departments.map((department) => (
           <label
-            key={d}
+            key={department}
             style={{
-              display: 'flex', alignItems: 'center', gap: 7, padding: '3px 0',
-              cursor: 'pointer', userSelect: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 7,
+              padding: '3px 0',
+              cursor: 'pointer',
+              userSelect: 'none',
             }}
           >
             <input
               type="checkbox"
-              checked={deptFilter.has(d)}
-              onChange={(e) => {
+              checked={deptFilter.has(department)}
+              onChange={(event) => {
                 const next = new Set(deptFilter);
-                if (e.target.checked) next.add(d); else next.delete(d);
+                if (event.target.checked) next.add(department);
+                else next.delete(department);
                 setDeptFilter(next);
               }}
             />
             <span style={{
-              width: 9, height: 9, borderRadius: '50%', flexShrink: 0,
-              background: DEPT_COLOR[d] ?? '#8a8a94',
+              width: 9,
+              height: 9,
+              borderRadius: '50%',
+              flexShrink: 0,
+              background: DEPT_COLOR[department] ?? '#8a8a94',
             }} />
-            <span>{d}</span>
+            <span>{department}</span>
           </label>
         ))}
       </div>
       <div style={{
         ...PANEL_STYLE,
-        position: 'fixed', bottom: 14, left: 14, zIndex: 10,
-        padding: '8px 10px', color: '#e6e6ee', fontSize: 11.5,
-        fontFamily: 'system-ui, sans-serif', display: 'flex', flexDirection: 'column', gap: 5,
+        position: 'fixed',
+        bottom: 14,
+        left: 14,
+        zIndex: 10,
+        padding: '8px 10px',
+        color: '#e6e6ee',
+        fontSize: 11.5,
+        fontFamily: 'system-ui, sans-serif',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 5,
       }}>
         {[
           {
             swatch: <span style={{ width: 9, height: 9, borderRadius: '50%', background: '#8a8a94', display: 'inline-block' }} />,
-            label: 'Course', info: 'A single course. Color indicates department.',
+            label: 'Course',
+            info: 'A single course. Color indicates department.',
           },
           {
             swatch: <span style={{ width: 20, height: 2, background: '#6fb2e0', display: 'inline-block' }} />,
@@ -1233,8 +671,8 @@ export default function Galaxy() {
             label: 'AND group',
             info: 'All courses inside this solid box are required together (shown nested inside an OR group).',
           },
-        ].map((item, i) => (
-          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+        ].map((item, index) => (
+          <div key={index} style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
             <span style={{ width: 20, display: 'flex', justifyContent: 'center' }}>{item.swatch}</span>
             <span style={{ minWidth: 76 }}>{item.label}</span>
             <InfoDot text={item.info} />
@@ -1242,15 +680,6 @@ export default function Galaxy() {
         ))}
         <div style={{ color: '#8a8a94', fontSize: 10.5, marginTop: 1 }}>fainter = farther away</div>
       </div>
-      <canvas
-        ref={ref}
-        onMouseDown={onDown}
-        onMouseMove={onMove}
-        onMouseUp={onUp}
-        onMouseLeave={() => { setHovered(null); drag.current = null; }}
-        onWheel={onWheel}
-        style={{ display: 'block', background: '#0b0b10', cursor: hovered ? 'pointer' : 'grab' }}
-      />
       {displayedSelectedCourse && selectedPos && (
         <div ref={selectedTooltipRef} style={{
           ...tooltipPanelStyle,
@@ -1268,7 +697,10 @@ export default function Galaxy() {
       )}
       {hoveredCourse && (
         <div ref={tooltipRef} style={{
-          ...tooltipPanelStyle, position: 'fixed', left: tipPos.left, top: tipPos.top,
+          ...tooltipPanelStyle,
+          position: 'fixed',
+          left: tipPos.left,
+          top: tipPos.top,
         }}>
           {tooltipBody(hoveredCourse)}
         </div>
