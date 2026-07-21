@@ -169,6 +169,7 @@ function collectBoxes(
 
 interface Camera { x: number; y: number; scale: number }
 type Pos = { x: number; y: number };
+interface GraphEdge { from: string; to: string; recommended: boolean }
 
 // Shared look for every floating UI panel -- semi-transparent + blurred,
 // same as the course tooltip, so the whole UI reads as one consistent
@@ -347,6 +348,20 @@ export default function Galaxy() {
     return { byId, prereqsOf, dependentsOf, coreqOf, recommendedEdge, recommendedIds };
   }, [filteredVisible]);
 
+  const graphEdges = useMemo<GraphEdge[]>(() => {
+    const edges: GraphEdge[] = [];
+    for (const c of filteredVisible) {
+      for (const r of prereqsOf.get(c.id) ?? []) {
+        edges.push({
+          from: r,
+          to: c.id,
+          recommended: recommendedEdge.has(`${r}>${c.id}`),
+        });
+      }
+    }
+    return edges;
+  }, [filteredVisible, prereqsOf, recommendedEdge]);
+
   // x is renormalized to whichever courses are actually visible, not the
   // full catalog -- otherwise hiding grad courses leaves the undergrad
   // layout compressed into whatever sliver of [0,1] it originally occupied
@@ -375,6 +390,18 @@ export default function Galaxy() {
     const lo = Math.min(...xs), hi = Math.max(...xs);
     return [lo, Math.max(hi - lo, 0.001)];
   };
+
+  const globalPositions = useMemo(() => {
+    const [xMin, xRange] = xRangeOf(deptVisible, activePositions);
+    const result = new Map<string, Pos>();
+    for (const c of filteredVisible) {
+      result.set(
+        c.id,
+        globalWorldOf(c.id, effectiveMaxTier, xMin, xRange, activePositions),
+      );
+    }
+    return result;
+  }, [deptVisible, filteredVisible, activePositions, effectiveMaxTier]);
 
   const fitScale = (w: number, h: number) => Math.min(w / VW, h / VH) * 0.96;
 
@@ -423,10 +450,12 @@ export default function Galaxy() {
   const stateRef = useRef({
     camera, size, hovered, selected, visible: filteredVisible, fullVisible: deptVisible, positions: activePositions,
     byId, prereqsOf, dependentsOf, matches: effectiveMatches, effectiveMaxTier, coreqOf, recommendedEdge,
+    graphEdges, globalPositions,
   });
   stateRef.current = {
     camera, size, hovered, selected, visible: filteredVisible, fullVisible: deptVisible, positions: activePositions,
     byId, prereqsOf, dependentsOf, matches: effectiveMatches, effectiveMaxTier, coreqOf, recommendedEdge,
+    graphEdges, globalPositions,
   };
 
   // animated position of every node; eases toward whatever target() returns
@@ -434,11 +463,18 @@ export default function Galaxy() {
   const lastCanvasSize = useRef({ w: 0, h: 0 });
   const litRef = useRef<Set<string>>(new Set());
 
+  // Preserve the actual on-screen position of the hover tooltip before it
+  // unmounts on selection. This matters near viewport edges, where the
+  // tooltip may have flipped left and/or upward away from the mouse.
+  const hoverTooltipOriginRef = useRef<{ left: number; top: number } | null>(null);
+  const selectedTooltipOriginRef = useRef<{ left: number; top: number } | null>(null);
+
   // When focus is released, only the formerly focused closure moves. Cache
   // every edge whose endpoints are outside that closure so those static
   // edges are painted once instead of rebuilt on every return-animation frame.
   const previousActiveRef = useRef<string | null>(null);
   const returningIdsRef = useRef<Set<string>>(new Set());
+  const returningEdgesRef = useRef<GraphEdge[]>([]);
   const staticEdgeLayerRef = useRef<HTMLCanvasElement | null>(null);
   const staticEdgeKeyRef = useRef('');
 
@@ -464,41 +500,54 @@ export default function Galaxy() {
       const dpr = window.devicePixelRatio || 1;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const [xMin, xRange] = xRangeOf(s.fullVisible, s.positions);
       const active = s.selected ?? s.hovered;
 
       // Capture the previous focus closure exactly when focus is released.
       // Those are the only nodes that need to animate back to global mode.
       if (previousActiveRef.current !== null && active === null) {
-        returningIdsRef.current = new Set(litRef.current);
+        const returning = new Set(litRef.current);
+        returningIdsRef.current = returning;
+        returningEdgesRef.current = s.graphEdges.filter(
+          (edge) => returning.has(edge.from) || returning.has(edge.to),
+        );
         staticEdgeKeyRef.current = '';
       } else if (active !== null) {
         returningIdsRef.current.clear();
+        returningEdgesRef.current = [];
         staticEdgeKeyRef.current = '';
       }
       previousActiveRef.current = active;
-
-      // Global coordinates are constant for this frame. Precomputing them
-      // avoids repeating the same normalization math for every target/edge.
-      const globalPositions = new Map<string, Pos>();
-      for (const c of s.visible) {
-        globalPositions.set(
-          c.id,
-          globalWorldOf(c.id, s.effectiveMaxTier, xMin, xRange, s.positions),
-        );
-      }
 
       let down: ReturnType<typeof bfsTree> | null = null;
       let up: ReturnType<typeof bfsTree> | null = null;
       const lit = new Set<string>();
       const localTarget = new Map<string, Pos>();
+      const focusEdges: GraphEdge[] = [];
       if (active) {
         down = bfsTree(active, s.prereqsOf);
         up = bfsTree(active, s.dependentsOf);
         for (const id of down.dist.keys()) lit.add(id);
         for (const id of up.dist.keys()) lit.add(id);
 
-        const anchor = globalWorldOf(active, s.effectiveMaxTier, xMin, xRange, s.positions);
+        const seenFocusEdges = new Set<string>();
+        const addFocusEdge = (from: string, to: string) => {
+          const key = `${from}>${to}`;
+          if (seenFocusEdges.has(key)) return;
+          seenFocusEdges.add(key);
+          focusEdges.push({
+            from,
+            to,
+            recommended: s.recommendedEdge.has(key),
+          });
+        };
+        for (const [to, refs] of down.children) {
+          for (const from of refs) addFocusEdge(from, to);
+        }
+        for (const [from, dependents] of up.children) {
+          for (const to of dependents) addFocusEdge(from, to);
+        }
+
+        const anchor = s.globalPositions.get(active)!;
         localTarget.set(active, anchor);
 
         for (const [id, p] of placeFan(anchor, down, active, 1)) localTarget.set(id, p);
@@ -574,7 +623,7 @@ export default function Galaxy() {
       litRef.current = lit;
 
       const targetOf = (id: string): Pos =>
-        (active && localTarget.has(id)) ? localTarget.get(id)! : globalPositions.get(id)!;
+        (active && localTarget.has(id)) ? localTarget.get(id)! : s.globalPositions.get(id)!;
 
       // Tracks whether anything actually moved a perceptible amount this
       // frame -- once every node is within EASE_EPS of its target, the
@@ -583,16 +632,28 @@ export default function Galaxy() {
       // whether anything on screen is changing.
       const EASE_EPS = 0.02;
       let stillEasing = false;
-      for (const c of s.visible) {
-        const t = targetOf(c.id);
-        const cur = animPos.current.get(c.id) ?? t;
+      const returningIds = returningIdsRef.current;
+
+      const easeNode = (id: string) => {
+        const t = targetOf(id);
+        if (!t) return;
+        const cur = animPos.current.get(id) ?? t;
         const nx = cur.x + (t.x - cur.x) * LERP;
         const ny = cur.y + (t.y - cur.y) * LERP;
         if (Math.abs(nx - t.x) > EASE_EPS || Math.abs(ny - t.y) > EASE_EPS) stillEasing = true;
-        animPos.current.set(c.id, { x: nx, y: ny });
+        animPos.current.set(id, { x: nx, y: ny });
+      };
+
+      // On the expensive focused -> global transition, every node outside
+      // the previous focus closure is already at its final global position.
+      // Update only the nodes that can actually move.
+      if (active === null && returningIds.size > 0) {
+        for (const id of returningIds) easeNode(id);
+      } else {
+        for (const c of s.visible) easeNode(c.id);
       }
-      const posOf = (id: string): Pos => animPos.current.get(id) ?? globalPositions.get(id)!;
-      const returningIds = returningIdsRef.current;
+
+      const posOf = (id: string): Pos => animPos.current.get(id) ?? s.globalPositions.get(id)!;
       const returningToGlobal =
         active === null && stillEasing && returningIds.size > 0;
 
@@ -600,6 +661,7 @@ export default function Galaxy() {
       // The normal draw pass below paints the complete graph on this frame.
       if (active === null && !stillEasing && returningIds.size > 0) {
         returningIdsRef.current.clear();
+        returningEdgesRef.current = [];
         staticEdgeKeyRef.current = '';
       }
 
@@ -649,28 +711,23 @@ export default function Galaxy() {
           layerCtx.scale(s.camera.scale, s.camera.scale);
           layerCtx.lineWidth = 1.4 / s.camera.scale;
 
-          for (const c of s.visible) {
-            if (returningIds.has(c.id)) continue;
-            const to = globalPositions.get(c.id)!;
+          for (const edge of s.graphEdges) {
+            if (returningIds.has(edge.from) || returningIds.has(edge.to)) continue;
+            const from = s.globalPositions.get(edge.from)!;
+            const to = s.globalPositions.get(edge.to)!;
+            let alpha = edge.recommended ? 0.045 : 0.09;
+            if (!passesFilter(edge.to) || !passesFilter(edge.from)) alpha = DIM_FLOOR;
+            if (alpha < 0.003) continue;
 
-            for (const r of s.prereqsOf.get(c.id) ?? []) {
-              if (returningIds.has(r)) continue;
-              const from = globalPositions.get(r)!;
-              const isRecommended = s.recommendedEdge.has(`${r}>${c.id}`);
-              let alpha = isRecommended ? 0.045 : 0.09;
-              if (!passesFilter(c.id) || !passesFilter(r)) alpha = DIM_FLOOR;
-              if (alpha < 0.003) continue;
+            layerCtx.setLineDash(edge.recommended ? [5, 4] : []);
+            layerCtx.strokeStyle = pairColor(deptOf(edge.from), deptOf(edge.to));
+            layerCtx.globalAlpha = alpha;
 
-              layerCtx.setLineDash(isRecommended ? [5, 4] : []);
-              layerCtx.strokeStyle = pairColor(deptOf(r), deptOf(c.id));
-              layerCtx.globalAlpha = alpha;
-
-              const midY = (from.y + to.y) / 2;
-              layerCtx.beginPath();
-              layerCtx.moveTo(from.x, from.y);
-              layerCtx.bezierCurveTo(from.x, midY, to.x, midY, to.x, to.y);
-              layerCtx.stroke();
-            }
+            const midY = (from.y + to.y) / 2;
+            layerCtx.beginPath();
+            layerCtx.moveTo(from.x, from.y);
+            layerCtx.bezierCurveTo(from.x, midY, to.x, midY, to.x, to.y);
+            layerCtx.stroke();
           }
 
           layerCtx.setLineDash([]);
@@ -691,40 +748,33 @@ export default function Galaxy() {
       ctx.translate(s.camera.x, s.camera.y);
       ctx.scale(s.camera.scale, s.camera.scale);
       ctx.lineWidth = 1.4 / s.camera.scale;
-      for (const c of s.visible) {
-        const to = posOf(c.id);
-        for (const r of s.prereqsOf.get(c.id) ?? []) {
-          // Static-to-static edges already exist in the cached layer while
-          // returning to global mode. Only incident edges remain dynamic.
-          if (
-            returningToGlobal
-            && !returningIds.has(c.id)
-            && !returningIds.has(r)
-          ) {
-            continue;
-          }
+      const edgesToDraw = returningToGlobal
+        ? returningEdgesRef.current
+        : active !== null
+          ? focusEdges
+          : s.graphEdges;
 
-          const from = posOf(r);
-          let stroke: string = pairColor(deptOf(r), deptOf(c.id));
-          const isRecommended = s.recommendedEdge.has(`${r}>${c.id}`);
-          const baseAlpha = active === null ? (isRecommended ? 0.045 : 0.09) : 0;
-          let alpha = baseAlpha;
-          if (active !== null && down!.children.get(c.id)?.includes(r)) {
-            stroke = '#6fb2e0'; alpha = depthOpacity(down!.dist.get(r)!);
-          } else if (active !== null && up!.children.get(r)?.includes(c.id)) {
-            stroke = '#e0a15a'; alpha = depthOpacity(up!.dist.get(c.id)!);
-          }
-          if (!passesFilter(c.id) || !passesFilter(r)) alpha = active !== null ? 0 : DIM_FLOOR;
-          if (alpha < 0.003) continue;
-          ctx.setLineDash(isRecommended ? [5, 4] : []);
-          ctx.strokeStyle = stroke;
-          ctx.globalAlpha = alpha;
-          const midY = (from.y + to.y) / 2;
-          ctx.beginPath();
-          ctx.moveTo(from.x, from.y);
-          ctx.bezierCurveTo(from.x, midY, to.x, midY, to.x, to.y);
-          ctx.stroke();
+      for (const edge of edgesToDraw) {
+        const from = posOf(edge.from);
+        const to = posOf(edge.to);
+        let stroke: string = pairColor(deptOf(edge.from), deptOf(edge.to));
+        const baseAlpha = active === null ? (edge.recommended ? 0.045 : 0.09) : 0;
+        let alpha = baseAlpha;
+        if (active !== null && down!.children.get(edge.to)?.includes(edge.from)) {
+          stroke = '#6fb2e0'; alpha = depthOpacity(down!.dist.get(edge.from)!);
+        } else if (active !== null && up!.children.get(edge.from)?.includes(edge.to)) {
+          stroke = '#e0a15a'; alpha = depthOpacity(up!.dist.get(edge.to)!);
         }
+        if (!passesFilter(edge.to) || !passesFilter(edge.from)) alpha = active !== null ? 0 : DIM_FLOOR;
+        if (alpha < 0.003) continue;
+        ctx.setLineDash(edge.recommended ? [5, 4] : []);
+        ctx.strokeStyle = stroke;
+        ctx.globalAlpha = alpha;
+        const midY = (from.y + to.y) / 2;
+        ctx.beginPath();
+        ctx.moveTo(from.x, from.y);
+        ctx.bezierCurveTo(from.x, midY, to.x, midY, to.x, to.y);
+        ctx.stroke();
       }
       ctx.setLineDash([]);
 
@@ -892,6 +942,15 @@ export default function Galaxy() {
     if (drag.current && !drag.current.moved) {
       const rect = ref.current!.getBoundingClientRect();
       const picked = pickAt(ev.clientX - rect.left, ev.clientY - rect.top, true);
+      if (picked) {
+        // Start the pinned-panel animation from the hover tooltip's real
+        // top-left corner. Falling back to the click point covers keyboard
+        // or unusually fast interactions where no hover box was measured.
+        selectedTooltipOriginRef.current =
+          hovered === picked && hoverTooltipOriginRef.current
+            ? { ...hoverTooltipOriginRef.current }
+            : { left: ev.clientX, top: ev.clientY };
+      }
       setSelected(picked);
       if (picked) setSearchSuspended(true); // clicking empty space (deselect) leaves it as-is
     }
@@ -923,7 +982,10 @@ export default function Galaxy() {
   const tooltipRef = useRef<HTMLDivElement>(null);
   const [tipPos, setTipPos] = useState({ left: 0, top: 0 });
   useLayoutEffect(() => {
-    if (!hoveredCourse || !tooltipRef.current) return;
+    if (!hoveredCourse || !tooltipRef.current) {
+      hoverTooltipOriginRef.current = null;
+      return;
+    }
     const rect = tooltipRef.current.getBoundingClientRect();
     let left = mouse.x + 14;
     let top = mouse.y + 14;
@@ -931,30 +993,72 @@ export default function Galaxy() {
     if (top + rect.height > window.innerHeight - 8) top = mouse.y - 14 - rect.height;
     left = Math.max(8, left);
     top = Math.max(8, top);
+    hoverTooltipOriginRef.current = { left, top };
     setTipPos({ left, top });
   }, [hoveredCourse, mouse]);
 
-  // The pinned-course panel flies into its bottom-right resting spot rather
-  // than teleporting there. Two steps: land it at the click location first
-  // (no transition, so it appears right where you just clicked), then --
-  // once its real rendered size is known -- set the actual corner position
-  // WITH a transition enabled, so the browser animates the move.
+  // The pinned-course panel flies from the hover tooltip's ACTUAL rendered
+  // position into its bottom-right resting spot. The rendered course is kept
+  // separately from `selected`, allowing the panel to fade out after focus
+  // is cleared instead of disappearing in the same render.
   const selectedTooltipRef = useRef<HTMLDivElement>(null);
-  const [selectedPos, setSelectedPos] = useState<{ left: number; top: number; animate: boolean } | null>(null);
+  const [displayedSelectedCourse, setDisplayedSelectedCourse] = useState<Course | null>(null);
+  const [selectedPos, setSelectedPos] = useState<{
+    left: number;
+    top: number;
+    animate: boolean;
+    opacity: number;
+  } | null>(null);
   const prevSelectedRef = useRef<string | null>(null);
+  const selectedFadeTimerRef = useRef<number | null>(null);
+
+  useEffect(() => () => {
+    if (selectedFadeTimerRef.current !== null) {
+      window.clearTimeout(selectedFadeTimerRef.current);
+    }
+  }, []);
+
   useLayoutEffect(() => {
-    if (!selectedCourse) { prevSelectedRef.current = null; setSelectedPos(null); return; }
+    if (selectedFadeTimerRef.current !== null) {
+      window.clearTimeout(selectedFadeTimerRef.current);
+      selectedFadeTimerRef.current = null;
+    }
+
+    if (!selectedCourse) {
+      prevSelectedRef.current = null;
+      if (displayedSelectedCourse) {
+        setSelectedPos((prev) => prev ? { ...prev, animate: true, opacity: 0 } : prev);
+        selectedFadeTimerRef.current = window.setTimeout(() => {
+          setDisplayedSelectedCourse(null);
+          setSelectedPos(null);
+          selectedFadeTimerRef.current = null;
+        }, 180);
+      }
+      return;
+    }
+
     if (prevSelectedRef.current === selected) return; // same course still pinned; don't re-trigger
     prevSelectedRef.current = selected;
-    setSelectedPos({ left: mouse.x, top: mouse.y, animate: false });
+    setDisplayedSelectedCourse(selectedCourse);
+
+    const origin = selectedTooltipOriginRef.current ?? { left: mouse.x, top: mouse.y };
+    selectedTooltipOriginRef.current = null;
+    setSelectedPos({ ...origin, animate: false, opacity: 1 });
+
+    // The first frame mounts and measures the panel; the second enables the
+    // transition. This prevents the browser from interpolating while its
+    // size/content is still being established.
     requestAnimationFrame(() => {
-      const el = selectedTooltipRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      setSelectedPos({
-        left: window.innerWidth - 14 - rect.width,
-        top: window.innerHeight - 14 - rect.height,
-        animate: true,
+      requestAnimationFrame(() => {
+        const el = selectedTooltipRef.current;
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        setSelectedPos({
+          left: window.innerWidth - 14 - rect.width,
+          top: window.innerHeight - 14 - rect.height,
+          animate: true,
+          opacity: 1,
+        });
       });
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1147,12 +1251,19 @@ export default function Galaxy() {
         onWheel={onWheel}
         style={{ display: 'block', background: '#0b0b10', cursor: hovered ? 'pointer' : 'grab' }}
       />
-      {selectedCourse && selectedPos && (
+      {displayedSelectedCourse && selectedPos && (
         <div ref={selectedTooltipRef} style={{
-          ...tooltipPanelStyle, position: 'fixed', left: selectedPos.left, top: selectedPos.top,
-          transition: selectedPos.animate ? 'left 0.28s ease, top 0.28s ease' : 'none',
+          ...tooltipPanelStyle,
+          position: 'fixed',
+          left: selectedPos.left,
+          top: selectedPos.top,
+          opacity: selectedPos.opacity,
+          transition: selectedPos.animate
+            ? 'left 0.28s ease, top 0.28s ease, opacity 0.18s ease'
+            : 'none',
+          willChange: 'left, top, opacity',
         }}>
-          {tooltipBody(selectedCourse)}
+          {tooltipBody(displayedSelectedCourse)}
         </div>
       )}
       {hoveredCourse && (
