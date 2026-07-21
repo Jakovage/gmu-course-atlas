@@ -170,6 +170,43 @@ function collectBoxes(
 interface Camera { x: number; y: number; scale: number }
 type Pos = { x: number; y: number };
 
+// Shared look for every floating UI panel -- semi-transparent + blurred,
+// same as the course tooltip, so the whole UI reads as one consistent
+// language rather than the tooltip being a one-off style.
+const PANEL_STYLE: React.CSSProperties = {
+  background: 'rgba(22,22,30,0.6)', backdropFilter: 'blur(4px)',
+  border: '1px solid #34343e', borderRadius: 8,
+};
+
+// A small hoverable (i) glyph that reveals a short description bubble --
+// used in the legend so each symbol can carry a longer explanation without
+// cluttering the panel with paragraphs of text up front.
+function InfoDot({ text }: { text: string }) {
+  const [show, setShow] = useState(false);
+  return (
+    <span
+      style={{ position: 'relative', display: 'inline-flex', flexShrink: 0 }}
+      onMouseEnter={() => setShow(true)}
+      onMouseLeave={() => setShow(false)}
+    >
+      <span style={{
+        width: 13, height: 13, borderRadius: '50%', border: '1px solid #6a6a76',
+        color: '#8a8a94', fontSize: 9, lineHeight: '12px', textAlign: 'center',
+        cursor: 'default', userSelect: 'none',
+      }}>i</span>
+      {show && (
+        <span style={{
+          ...PANEL_STYLE,
+          position: 'absolute', bottom: '150%', left: 0,
+          background: 'rgba(22,22,30,0.9)', padding: '6px 8px',
+          color: '#c8c8d2', fontSize: 11, width: 175, lineHeight: 1.4,
+          pointerEvents: 'none', zIndex: 20,
+        }}>{text}</span>
+      )}
+    </span>
+  );
+}
+
 export default function Galaxy() {
   const ref = useRef<HTMLCanvasElement>(null);
   const [hovered, setHovered] = useState<string | null>(null);
@@ -397,6 +434,14 @@ export default function Galaxy() {
   const lastCanvasSize = useRef({ w: 0, h: 0 });
   const litRef = useRef<Set<string>>(new Set());
 
+  // When focus is released, only the formerly focused closure moves. Cache
+  // every edge whose endpoints are outside that closure so those static
+  // edges are painted once instead of rebuilt on every return-animation frame.
+  const previousActiveRef = useRef<string | null>(null);
+  const returningIdsRef = useRef<Set<string>>(new Set());
+  const staticEdgeLayerRef = useRef<HTMLCanvasElement | null>(null);
+  const staticEdgeKeyRef = useRef('');
+
   const dirtyRef = useRef(true);
   const runningRef = useRef(false);
   const wakeRef = useRef<() => void>(() => {});
@@ -421,6 +466,28 @@ export default function Galaxy() {
 
       const [xMin, xRange] = xRangeOf(s.fullVisible, s.positions);
       const active = s.selected ?? s.hovered;
+
+      // Capture the previous focus closure exactly when focus is released.
+      // Those are the only nodes that need to animate back to global mode.
+      if (previousActiveRef.current !== null && active === null) {
+        returningIdsRef.current = new Set(litRef.current);
+        staticEdgeKeyRef.current = '';
+      } else if (active !== null) {
+        returningIdsRef.current.clear();
+        staticEdgeKeyRef.current = '';
+      }
+      previousActiveRef.current = active;
+
+      // Global coordinates are constant for this frame. Precomputing them
+      // avoids repeating the same normalization math for every target/edge.
+      const globalPositions = new Map<string, Pos>();
+      for (const c of s.visible) {
+        globalPositions.set(
+          c.id,
+          globalWorldOf(c.id, s.effectiveMaxTier, xMin, xRange, s.positions),
+        );
+      }
+
       let down: ReturnType<typeof bfsTree> | null = null;
       let up: ReturnType<typeof bfsTree> | null = null;
       const lit = new Set<string>();
@@ -507,7 +574,7 @@ export default function Galaxy() {
       litRef.current = lit;
 
       const targetOf = (id: string): Pos =>
-        (active && localTarget.has(id)) ? localTarget.get(id)! : globalWorldOf(id, s.effectiveMaxTier, xMin, xRange, s.positions);
+        (active && localTarget.has(id)) ? localTarget.get(id)! : globalPositions.get(id)!;
 
       // Tracks whether anything actually moved a perceptible amount this
       // frame -- once every node is within EASE_EPS of its target, the
@@ -524,7 +591,17 @@ export default function Galaxy() {
         if (Math.abs(nx - t.x) > EASE_EPS || Math.abs(ny - t.y) > EASE_EPS) stillEasing = true;
         animPos.current.set(c.id, { x: nx, y: ny });
       }
-      const posOf = (id: string): Pos => animPos.current.get(id) ?? globalWorldOf(id, s.effectiveMaxTier, xMin, xRange, s.positions);
+      const posOf = (id: string): Pos => animPos.current.get(id) ?? globalPositions.get(id)!;
+      const returningIds = returningIdsRef.current;
+      const returningToGlobal =
+        active === null && stillEasing && returningIds.size > 0;
+
+      // Once the return animation settles, discard the temporary cache.
+      // The normal draw pass below paints the complete graph on this frame.
+      if (active === null && !stillEasing && returningIds.size > 0) {
+        returningIdsRef.current.clear();
+        staticEdgeKeyRef.current = '';
+      }
 
       // Unified relevance test: while searching, a node counts only if it
       // also matches the query -- including while focused, where it must be
@@ -550,6 +627,66 @@ export default function Galaxy() {
       ctx.fillStyle = '#0b0b10';
       ctx.fillRect(0, 0, s.size.w, s.size.h);
 
+      // During the focused -> global transition, cache all edges that do not
+      // touch a returning node. The main pass then redraws only dynamic edges.
+      if (returningToGlobal) {
+        const cacheKey = [
+          s.size.w, s.size.h, dpr,
+          s.camera.x, s.camera.y, s.camera.scale,
+          s.visible.length, returningIds.size,
+        ].join('|');
+
+        if (!staticEdgeLayerRef.current || staticEdgeKeyRef.current !== cacheKey) {
+          const layer = staticEdgeLayerRef.current ?? document.createElement('canvas');
+          layer.width = Math.round(s.size.w * dpr);
+          layer.height = Math.round(s.size.h * dpr);
+
+          const layerCtx = layer.getContext('2d')!;
+          layerCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          layerCtx.clearRect(0, 0, s.size.w, s.size.h);
+          layerCtx.save();
+          layerCtx.translate(s.camera.x, s.camera.y);
+          layerCtx.scale(s.camera.scale, s.camera.scale);
+          layerCtx.lineWidth = 1.4 / s.camera.scale;
+
+          for (const c of s.visible) {
+            if (returningIds.has(c.id)) continue;
+            const to = globalPositions.get(c.id)!;
+
+            for (const r of s.prereqsOf.get(c.id) ?? []) {
+              if (returningIds.has(r)) continue;
+              const from = globalPositions.get(r)!;
+              const isRecommended = s.recommendedEdge.has(`${r}>${c.id}`);
+              let alpha = isRecommended ? 0.045 : 0.09;
+              if (!passesFilter(c.id) || !passesFilter(r)) alpha = DIM_FLOOR;
+              if (alpha < 0.003) continue;
+
+              layerCtx.setLineDash(isRecommended ? [5, 4] : []);
+              layerCtx.strokeStyle = pairColor(deptOf(r), deptOf(c.id));
+              layerCtx.globalAlpha = alpha;
+
+              const midY = (from.y + to.y) / 2;
+              layerCtx.beginPath();
+              layerCtx.moveTo(from.x, from.y);
+              layerCtx.bezierCurveTo(from.x, midY, to.x, midY, to.x, to.y);
+              layerCtx.stroke();
+            }
+          }
+
+          layerCtx.setLineDash([]);
+          layerCtx.globalAlpha = 1;
+          layerCtx.restore();
+          staticEdgeLayerRef.current = layer;
+          staticEdgeKeyRef.current = cacheKey;
+        }
+
+        // The cache is already rendered at device-pixel resolution.
+        ctx.save();
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.drawImage(staticEdgeLayerRef.current!, 0, 0);
+        ctx.restore();
+      }
+
       ctx.save();
       ctx.translate(s.camera.x, s.camera.y);
       ctx.scale(s.camera.scale, s.camera.scale);
@@ -557,6 +694,16 @@ export default function Galaxy() {
       for (const c of s.visible) {
         const to = posOf(c.id);
         for (const r of s.prereqsOf.get(c.id) ?? []) {
+          // Static-to-static edges already exist in the cached layer while
+          // returning to global mode. Only incident edges remain dynamic.
+          if (
+            returningToGlobal
+            && !returningIds.has(c.id)
+            && !returningIds.has(r)
+          ) {
+            continue;
+          }
+
           const from = posOf(r);
           let stroke: string = pairColor(deptOf(r), deptOf(c.id));
           const isRecommended = s.recommendedEdge.has(`${r}>${c.id}`);
@@ -693,12 +840,16 @@ export default function Galaxy() {
     y: (sy - cam.y) / cam.scale,
   });
 
-  // `restrict`: hovering while a course is pinned can only land on the
-  // pinned course's related (lit) set, not the dimmed rest of the graph.
-  // Clicking stays unrestricted there so you can still re-pin elsewhere or
-  // click empty space to release the pin. A search query is a separate,
-  // stronger restriction that applies to BOTH hover and click regardless of
-  // pin state -- you can only interact with courses currently on screen as
+  // `restrict`: while a course is pinned, BOTH hover and click can only
+  // land on the pinned course's related (lit) set, not the dimmed rest of
+  // the graph -- clicking a node outside the current tree is treated the
+  // same as clicking empty space (pickAt returns null for it, since it's
+  // excluded from consideration entirely, not just deprioritized), so it
+  // unfocuses back to global mode rather than jumping focus to an unrelated
+  // course. Only a node genuinely within the tree can be clicked to re-pin
+  // focus onto it instead. A search query is a separate, stronger
+  // restriction that applies to BOTH hover and click regardless of pin
+  // state -- you can only interact with courses currently on screen as
   // matches, combined (AND) with the pin restriction when both are active.
   const pickAt = (sx: number, sy: number, restrict: boolean): string | null => {
     if (!camera) return null;
@@ -740,7 +891,7 @@ export default function Galaxy() {
   const onUp = (ev: React.MouseEvent) => {
     if (drag.current && !drag.current.moved) {
       const rect = ref.current!.getBoundingClientRect();
-      const picked = pickAt(ev.clientX - rect.left, ev.clientY - rect.top, false);
+      const picked = pickAt(ev.clientX - rect.left, ev.clientY - rect.top, true);
       setSelected(picked);
       if (picked) setSearchSuspended(true); // clicking empty space (deselect) leaves it as-is
     }
@@ -759,16 +910,20 @@ export default function Galaxy() {
     setCamera(clampCamera(next, size.w, size.h));
   };
 
-  // tooltip content follows the live hover even while a course is pinned;
-  // only the graph's layout/highlighting stays locked to the pinned course
-  // (that's `active` inside the render loop, computed as selected ?? hovered)
-  const course: Course | undefined =
-    (hovered ?? selected) ? byId.get((hovered ?? selected)!) : undefined;
+  // Two independent tooltips once something's pinned: the pinned course
+  // gets a permanent home in the fixed bottom-right panel and never changes
+  // regardless of what you hover; hovering any OTHER course still gets its
+  // own normal mouse-following preview alongside it, same as unfocused
+  // hover always has. Hovering the pinned course itself shows nothing
+  // extra -- it's already covered by the fixed panel.
+  const selectedCourse: Course | undefined = selected ? byId.get(selected) : undefined;
+  const hoveredCourse: Course | undefined =
+    (hovered && hovered !== selected) ? byId.get(hovered) : undefined;
 
   const tooltipRef = useRef<HTMLDivElement>(null);
   const [tipPos, setTipPos] = useState({ left: 0, top: 0 });
   useLayoutEffect(() => {
-    if (!course || !tooltipRef.current) return;
+    if (!hoveredCourse || !tooltipRef.current) return;
     const rect = tooltipRef.current.getBoundingClientRect();
     let left = mouse.x + 14;
     let top = mouse.y + 14;
@@ -777,7 +932,81 @@ export default function Galaxy() {
     left = Math.max(8, left);
     top = Math.max(8, top);
     setTipPos({ left, top });
-  }, [course, mouse]);
+  }, [hoveredCourse, mouse]);
+
+  // The pinned-course panel flies into its bottom-right resting spot rather
+  // than teleporting there. Two steps: land it at the click location first
+  // (no transition, so it appears right where you just clicked), then --
+  // once its real rendered size is known -- set the actual corner position
+  // WITH a transition enabled, so the browser animates the move.
+  const selectedTooltipRef = useRef<HTMLDivElement>(null);
+  const [selectedPos, setSelectedPos] = useState<{ left: number; top: number; animate: boolean } | null>(null);
+  const prevSelectedRef = useRef<string | null>(null);
+  useLayoutEffect(() => {
+    if (!selectedCourse) { prevSelectedRef.current = null; setSelectedPos(null); return; }
+    if (prevSelectedRef.current === selected) return; // same course still pinned; don't re-trigger
+    prevSelectedRef.current = selected;
+    setSelectedPos({ left: mouse.x, top: mouse.y, animate: false });
+    requestAnimationFrame(() => {
+      const el = selectedTooltipRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      setSelectedPos({
+        left: window.innerWidth - 14 - rect.width,
+        top: window.innerHeight - 14 - rect.height,
+        animate: true,
+      });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected]);
+
+  // Shared content for both tooltips, so the layout/fields only need to be
+  // written once.
+  const tooltipBody = (c: Course) => (
+    <>
+      <div style={{ fontWeight: 700 }}>{c.id}</div>
+      {Object.entries(c)
+        .filter(([k, v]) => k !== 'id' && k !== 'prereq'
+          && (typeof v === 'string' || typeof v === 'number'))
+        .map(([k, v]) => (
+          <div key={k} style={{ color: '#a8a8b4', marginTop: 2 }}>
+            {k === 'title' ? String(v) : `${k}: ${v}`}
+          </div>
+        ))}
+      {c.prereq && (
+        <div style={{ marginTop: 6 }}>
+          <div style={{ color: '#7f7f8a', fontSize: 10, textTransform: 'uppercase' }}>Requires</div>
+          {exprLines(c.prereq).map((line, i) => (
+            <div key={i} style={{ marginTop: 1 }}>{line}</div>
+          ))}
+        </div>
+      )}
+      {(recommendedIds.get(c.id) ?? []).length > 0 && (
+        <div style={{ marginTop: 6 }}>
+          <div style={{ color: '#7f7f8a', fontSize: 10, textTransform: 'uppercase' }}>Recommended</div>
+          <div style={{ color: '#a8a8b4' }}>
+            {(recommendedIds.get(c.id) ?? []).join(', ')}
+          </div>
+        </div>
+      )}
+      {(dependentsOf.get(c.id) ?? []).length > 0 && (
+        <div style={{ marginTop: 6 }}>
+          <div style={{ color: '#7f7f8a', fontSize: 10, textTransform: 'uppercase' }}>Unlocks</div>
+          <div style={{ color: '#a8a8b4' }}>
+            {(dependentsOf.get(c.id) ?? []).slice(0, 10).join(', ')}
+            {(dependentsOf.get(c.id) ?? []).length > 10 &&
+              ` +${(dependentsOf.get(c.id) ?? []).length - 10} more`}
+          </div>
+        </div>
+      )}
+    </>
+  );
+
+  const tooltipPanelStyle: React.CSSProperties = {
+    background: 'rgba(22,22,30,0.5)', border: '1px solid #34343e', borderRadius: 8,
+    padding: '8px 12px', color: '#e6e6ee', fontFamily: 'system-ui, sans-serif',
+    fontSize: 12, pointerEvents: 'none', maxWidth: 320, backdropFilter: 'blur(3px)',
+  };
 
   return (
     <div style={{ position: 'relative' }}>
@@ -786,15 +1015,15 @@ export default function Galaxy() {
         onChange={(e) => { setQuery(e.target.value); setSearchSuspended(false); }}
         placeholder="search courses..."
         style={{
+          ...PANEL_STYLE,
           position: 'fixed', top: 14, left: 14, zIndex: 10,
-          background: '#16161e', border: '1px solid #34343e', borderRadius: 8,
           padding: '7px 12px', color: '#e6e6ee', fontSize: 13, width: 220,
           outline: 'none', fontFamily: 'system-ui, sans-serif',
         }}
       />
       <label style={{
+        ...PANEL_STYLE,
         position: 'fixed', top: 56, left: 14, zIndex: 10,
-        background: '#16161e', border: '1px solid #34343e', borderRadius: 8,
         padding: '6px 12px', color: '#e6e6ee', fontSize: 12.5,
         fontFamily: 'system-ui, sans-serif', display: 'flex', alignItems: 'center',
         gap: 6, cursor: 'pointer', userSelect: 'none',
@@ -803,8 +1032,8 @@ export default function Galaxy() {
         show graduate (500+) courses
       </label>
       <div style={{
+        ...PANEL_STYLE,
         position: 'fixed', top: 98, left: 14, zIndex: 10,
-        background: '#16161e', border: '1px solid #34343e', borderRadius: 8,
         padding: '8px 12px', color: '#e6e6ee', fontSize: 12,
         fontFamily: 'system-ui, sans-serif', width: 220,
       }}>
@@ -821,8 +1050,8 @@ export default function Galaxy() {
         />
       </div>
       <div style={{
+        ...PANEL_STYLE,
         position: 'fixed', top: 14, right: 14, zIndex: 10,
-        background: '#16161e', border: '1px solid #34343e', borderRadius: 8,
         padding: '10px 12px', color: '#e6e6ee', fontSize: 12.5,
         fontFamily: 'system-ui, sans-serif', width: 200,
         maxHeight: 'calc(100vh - 28px)', overflowY: 'auto',
@@ -865,10 +1094,49 @@ export default function Galaxy() {
         ))}
       </div>
       <div style={{
-        position: 'fixed', bottom: 14, left: 14, zIndex: 10, color: '#8a8a94',
-        fontSize: 11, fontFamily: 'system-ui, sans-serif', pointerEvents: 'none',
+        ...PANEL_STYLE,
+        position: 'fixed', bottom: 14, left: 14, zIndex: 10,
+        padding: '8px 10px', color: '#e6e6ee', fontSize: 11.5,
+        fontFamily: 'system-ui, sans-serif', display: 'flex', flexDirection: 'column', gap: 5,
       }}>
-        blue = requires (any depth) · amber = unlocks (any depth) · dashed = recommended · fainter = farther away
+        {[
+          {
+            swatch: <span style={{ width: 9, height: 9, borderRadius: '50%', background: '#8a8a94', display: 'inline-block' }} />,
+            label: 'Course', info: 'A single course. Color indicates department.',
+          },
+          {
+            swatch: <span style={{ width: 20, height: 2, background: '#6fb2e0', display: 'inline-block' }} />,
+            label: 'Prerequisite',
+            info: 'This course requires the connected course beforehand, at any depth in the chain.',
+          },
+          {
+            swatch: <span style={{ width: 20, height: 2, background: '#e0a15a', display: 'inline-block' }} />,
+            label: 'Unlocks',
+            info: 'The connected course becomes available once this one is completed, at any depth.',
+          },
+          {
+            swatch: <span style={{ width: 20, borderTop: '2px dashed #9a9aa4', display: 'inline-block' }} />,
+            label: 'Recommended',
+            info: 'Advisory, not required -- suggested background before taking this course.',
+          },
+          {
+            swatch: <span style={{ width: 16, height: 12, border: '1.5px dashed #9a9aa4', borderRadius: 3, display: 'inline-block' }} />,
+            label: 'OR group',
+            info: 'Only one course inside this dashed box is required.',
+          },
+          {
+            swatch: <span style={{ width: 16, height: 12, border: '1.5px solid #9a9aa4', borderRadius: 3, display: 'inline-block' }} />,
+            label: 'AND group',
+            info: 'All courses inside this solid box are required together (shown nested inside an OR group).',
+          },
+        ].map((item, i) => (
+          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+            <span style={{ width: 20, display: 'flex', justifyContent: 'center' }}>{item.swatch}</span>
+            <span style={{ minWidth: 76 }}>{item.label}</span>
+            <InfoDot text={item.info} />
+          </div>
+        ))}
+        <div style={{ color: '#8a8a94', fontSize: 10.5, marginTop: 1 }}>fainter = farther away</div>
       </div>
       <canvas
         ref={ref}
@@ -877,50 +1145,21 @@ export default function Galaxy() {
         onMouseUp={onUp}
         onMouseLeave={() => { setHovered(null); drag.current = null; }}
         onWheel={onWheel}
-        style={{ display: 'block', background: '#0b0b10', cursor: 'grab' }}
+        style={{ display: 'block', background: '#0b0b10', cursor: hovered ? 'pointer' : 'grab' }}
       />
-      {course && (
-        <div ref={tooltipRef} style={{
-          position: 'fixed', left: tipPos.left, top: tipPos.top,
-          background: 'rgba(22,22,30,0.5)', border: '1px solid #34343e', borderRadius: 8,
-          padding: '8px 12px', color: '#e6e6ee', fontFamily: 'system-ui, sans-serif',
-          fontSize: 12, pointerEvents: 'none', maxWidth: 320, backdropFilter: 'blur(3px)',
+      {selectedCourse && selectedPos && (
+        <div ref={selectedTooltipRef} style={{
+          ...tooltipPanelStyle, position: 'fixed', left: selectedPos.left, top: selectedPos.top,
+          transition: selectedPos.animate ? 'left 0.28s ease, top 0.28s ease' : 'none',
         }}>
-          <div style={{ fontWeight: 700 }}>{course.id}</div>
-          {Object.entries(course)
-            .filter(([k, v]) => k !== 'id' && k !== 'prereq'
-              && (typeof v === 'string' || typeof v === 'number'))
-            .map(([k, v]) => (
-              <div key={k} style={{ color: '#a8a8b4', marginTop: 2 }}>
-                {k === 'title' ? String(v) : `${k}: ${v}`}
-              </div>
-            ))}
-          {course.prereq && (
-            <div style={{ marginTop: 6 }}>
-              <div style={{ color: '#7f7f8a', fontSize: 10, textTransform: 'uppercase' }}>Requires</div>
-              {exprLines(course.prereq).map((line, i) => (
-                <div key={i} style={{ marginTop: 1 }}>{line}</div>
-              ))}
-            </div>
-          )}
-          {(recommendedIds.get(course.id) ?? []).length > 0 && (
-            <div style={{ marginTop: 6 }}>
-              <div style={{ color: '#7f7f8a', fontSize: 10, textTransform: 'uppercase' }}>Recommended</div>
-              <div style={{ color: '#a8a8b4' }}>
-                {(recommendedIds.get(course.id) ?? []).join(', ')}
-              </div>
-            </div>
-          )}
-          {(dependentsOf.get(course.id) ?? []).length > 0 && (
-            <div style={{ marginTop: 6 }}>
-              <div style={{ color: '#7f7f8a', fontSize: 10, textTransform: 'uppercase' }}>Unlocks</div>
-              <div style={{ color: '#a8a8b4' }}>
-                {(dependentsOf.get(course.id) ?? []).slice(0, 10).join(', ')}
-                {(dependentsOf.get(course.id) ?? []).length > 10 &&
-                  ` +${(dependentsOf.get(course.id) ?? []).length - 10} more`}
-              </div>
-            </div>
-          )}
+          {tooltipBody(selectedCourse)}
+        </div>
+      )}
+      {hoveredCourse && (
+        <div ref={tooltipRef} style={{
+          ...tooltipPanelStyle, position: 'fixed', left: tipPos.left, top: tipPos.top,
+        }}>
+          {tooltipBody(hoveredCourse)}
         </div>
       )}
     </div>
