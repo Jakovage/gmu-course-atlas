@@ -417,45 +417,64 @@ export function buildFocusLayout(input: FocusLayoutInput): FocusLayout {
     preferredSide = chosenSide === 1 ? -1 : 1;
   }
 
-  // Last-resort viewport guarantee. The focused course must remain exactly at
-  // its global position: hovering should never move the node that was used as
-  // the anchor. If an unusually large closure would leave the canvas, compress
-  // only the surrounding targets toward that fixed anchor. No translation is
-  // applied to the focused node or to the completed layout.
+  // Last-resort viewport fit. Keep the focused course fixed, but fit each
+  // direction independently. A wide or downward corequisite bundle must not
+  // shrink the otherwise well-fitting dependent tree above the focused node.
+  //
+  // Previously one shared scale was applied to x and y in every direction.
+  // One corequisite branch touching an edge therefore compressed the entire
+  // closure, wasting large amounts of usable vertical space.
   if (targets.size > 1) {
-    // The global layout can legitimately place the anchor at PAD, which is a
-    // little outside FOCUS_VIEW_PAD. Expand the safe rectangle just enough to
-    // include the unchanged anchor rather than shifting the whole layout.
     const minXBound = Math.min(FOCUS_VIEW_PAD, anchor.x);
     const maxXBound = Math.max(VW - FOCUS_VIEW_PAD, anchor.x);
     const minYBound = Math.min(FOCUS_VIEW_PAD, anchor.y);
     const maxYBound = Math.max(VH - FOCUS_VIEW_PAD, anchor.y);
 
-    let scale = 1;
+    const MIN_DIRECTION_SCALE = 0.65;
+    let leftScale = 1;
+    let rightScale = 1;
+    let upScale = 1;
+    let downScale = 1;
+
+    const ratio = (available: number, distance: number): number => {
+      if (distance <= 0) return 1;
+      return Math.max(
+        MIN_DIRECTION_SCALE,
+        Math.min(1, Math.max(0, available) / distance),
+      );
+    };
+
     for (const [id, p] of targets) {
       if (id === active) continue;
 
       const dx = p.x - anchor.x;
       const dy = p.y - anchor.y;
 
-      if (dx > 0) scale = Math.min(scale, (maxXBound - anchor.x) / dx);
-      else if (dx < 0) scale = Math.min(scale, (anchor.x - minXBound) / -dx);
+      if (dx > 0) {
+        rightScale = Math.min(rightScale, ratio(maxXBound - anchor.x, dx));
+      } else if (dx < 0) {
+        leftScale = Math.min(leftScale, ratio(anchor.x - minXBound, -dx));
+      }
 
-      if (dy > 0) scale = Math.min(scale, (maxYBound - anchor.y) / dy);
-      else if (dy < 0) scale = Math.min(scale, (anchor.y - minYBound) / -dy);
-    }
-
-    scale = Math.max(0, Math.min(1, scale));
-    if (scale < 1) {
-      for (const [id, p] of targets) {
-        if (id === active) continue;
-        p.x = anchor.x + (p.x - anchor.x) * scale;
-        p.y = anchor.y + (p.y - anchor.y) * scale;
+      if (dy > 0) {
+        downScale = Math.min(downScale, ratio(maxYBound - anchor.y, dy));
+      } else if (dy < 0) {
+        upScale = Math.min(upScale, ratio(anchor.y - minYBound, -dy));
       }
     }
 
-    // Reassert the exact anchor in case future layout changes accidentally
-    // mutate the object stored for the active course.
+    for (const [id, p] of targets) {
+      if (id === active) continue;
+
+      const dx = p.x - anchor.x;
+      const dy = p.y - anchor.y;
+      const xScale = dx < 0 ? leftScale : rightScale;
+      const yScale = dy < 0 ? upScale : downScale;
+
+      p.x = anchor.x + dx * xScale;
+      p.y = anchor.y + dy * yScale;
+    }
+
     targets.set(active, { ...anchor });
   }
 

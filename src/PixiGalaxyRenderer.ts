@@ -118,6 +118,8 @@ interface EdgeCurve {
   arched: boolean;
 }
 
+const SAME_LEVEL_ARCH_DEPTH = 14;
+
 function makeEdgeCurve(
   from: Pos,
   to: Pos,
@@ -127,7 +129,7 @@ function makeEdgeCurve(
 ): EdgeCurve {
   if (arched) {
     const distance = Math.abs(to.x - from.x);
-    const archDepth = Math.max(20, Math.min(80, distance * 0.25));
+    const archDepth = SAME_LEVEL_ARCH_DEPTH;
     const undersideY = Math.max(from.y, to.y) + archDepth;
     const horizontalDirection = Math.sign(to.x - from.x) || 1;
 
@@ -164,7 +166,8 @@ function makeEdgeCurve(
       c1: { x: from.x, y: undersideY },
       c2: {
         x: endpoint.x - entry.x * entryHandle,
-        y: endpoint.y - entry.y * entryHandle,
+        // Keep the entire cubic inside the fixed shallow arch envelope.
+        y: Math.min(undersideY, endpoint.y - entry.y * entryHandle),
       },
       to: endpoint,
       arched: true,
