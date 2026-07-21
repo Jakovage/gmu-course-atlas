@@ -694,7 +694,7 @@ export default function Galaxy() {
             checked={showGrad}
             onChange={(event) => setShowGrad(event.target.checked)}
           />
-          show graduate (500+) courses (hello mother)
+          show graduate (500+) courses
         </label>
       </div>
 
