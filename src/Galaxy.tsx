@@ -17,6 +17,10 @@ import {
   type GalaxySceneData,
 } from './PixiGalaxyRenderer';
 
+const LEFT_PANEL_WIDTH = 240;
+const RIGHT_PANEL_WIDTH = 320;
+const PANEL_GAP = 8;
+
 const PANEL_STYLE: React.CSSProperties = {
   background: 'rgba(22,22,30,0.6)',
   backdropFilter: 'blur(4px)',
@@ -68,6 +72,8 @@ export default function Galaxy() {
   const hostRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<PixiGalaxyRenderer | null>(null);
   const latestSceneRef = useRef<GalaxySceneData | null>(null);
+  const leftControlsRef = useRef<HTMLDivElement>(null);
+  const legendRef = useRef<HTMLDivElement>(null);
 
   const [hovered, setHovered] = useState<string | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
@@ -172,13 +178,11 @@ export default function Galaxy() {
     dependentsOf,
     coreqOf,
     recommendedEdge,
-    recommendedIds,
   } = useMemo(() => {
     const byCourseId = new Map(filteredVisible.map((course) => [course.id, course]));
     const prereqs = new Map<string, string[]>();
     const dependents = new Map<string, string[]>(filteredVisible.map((course) => [course.id, []]));
     const recommendedEdges = new Set<string>();
-    const recommendedByCourse = new Map<string, string[]>();
     const corequisites = new Map<string, Set<string>>(
       filteredVisible.map((course) => [course.id, new Set()]),
     );
@@ -195,7 +199,6 @@ export default function Galaxy() {
         dependents.get(ref)!.push(course.id);
         recommendedEdges.add(`${ref}>${course.id}`);
       }
-      recommendedByCourse.set(course.id, recRefs);
       for (const ref of concurrentRefs(course.prereq)) {
         if (byCourseId.has(ref)) corequisites.get(course.id)!.add(ref);
       }
@@ -210,7 +213,6 @@ export default function Galaxy() {
       dependentsOf: dependents,
       coreqOf: corequisites,
       recommendedEdge: recommendedEdges,
-      recommendedIds: recommendedByCourse,
     };
   }, [filteredVisible]);
 
@@ -265,6 +267,7 @@ export default function Galaxy() {
     matches: effectiveMatches,
     selected,
     hovered,
+    showGlobalLabels: deptFilter.size > 0,
   }), [
     filteredVisible,
     byId,
@@ -277,6 +280,7 @@ export default function Galaxy() {
     effectiveMatches,
     selected,
     hovered,
+    deptFilter,
   ]);
   latestSceneRef.current = sceneData;
 
@@ -353,24 +357,8 @@ export default function Galaxy() {
   const hoveredCourse = hovered && hovered !== selected ? byId.get(hovered) : undefined;
 
   const tooltipRef = useRef<HTMLDivElement>(null);
-  const [tipPos, setTipPos] = useState({ left: 0, top: 0 });
-  useLayoutEffect(() => {
-    if (!hoveredCourse || !tooltipRef.current) {
-      hoverTooltipOriginRef.current = null;
-      return;
-    }
-    const rect = tooltipRef.current.getBoundingClientRect();
-    let left = mouse.x + 14;
-    let top = mouse.y + 14;
-    if (left + rect.width > window.innerWidth - 8) left = mouse.x - 14 - rect.width;
-    if (top + rect.height > window.innerHeight - 8) top = mouse.y - 14 - rect.height;
-    left = Math.max(8, left);
-    top = Math.max(8, top);
-    hoverTooltipOriginRef.current = { left, top };
-    setTipPos({ left, top });
-  }, [hoveredCourse, mouse]);
-
   const selectedTooltipRef = useRef<HTMLDivElement>(null);
+  const [tipPos, setTipPos] = useState({ left: 0, top: 0 });
   const [displayedSelectedCourse, setDisplayedSelectedCourse] = useState<Course | null>(null);
   const [selectedPos, setSelectedPos] = useState<{
     left: number;
@@ -418,12 +406,9 @@ export default function Galaxy() {
 
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        const element = selectedTooltipRef.current;
-        if (!element) return;
-        const rect = element.getBoundingClientRect();
         setSelectedPos({
-          left: window.innerWidth - 14 - rect.width,
-          top: window.innerHeight - 14 - rect.height,
+          left: window.innerWidth - 14 - RIGHT_PANEL_WIDTH,
+          top: 14,
           animate: true,
           opacity: 1,
         });
@@ -431,6 +416,76 @@ export default function Galaxy() {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected]);
+
+  // Continue receiving pointer coordinates while the cursor passes over an
+  // HTML panel. The hover tooltip can then follow the free axis while its x
+  // position remains clamped outside that panel.
+  useEffect(() => {
+    const onPointerMove = (event: PointerEvent) => {
+      if (hoveredStateRef.current) {
+        setMouse({ x: event.clientX, y: event.clientY });
+      }
+    };
+    window.addEventListener('pointermove', onPointerMove);
+    return () => window.removeEventListener('pointermove', onPointerMove);
+  }, []);
+
+  useLayoutEffect(() => {
+    if (!hoveredCourse || !tooltipRef.current) {
+      hoverTooltipOriginRef.current = null;
+      return;
+    }
+
+    const rect = tooltipRef.current.getBoundingClientRect();
+    let left = mouse.x + 14;
+    let top = mouse.y + 14;
+
+    if (left + rect.width > window.innerWidth - 8) {
+      left = mouse.x - 14 - rect.width;
+    }
+    if (top + rect.height > window.innerHeight - 8) {
+      top = mouse.y - 14 - rect.height;
+    }
+
+    const obstacles = [
+      leftControlsRef.current?.getBoundingClientRect(),
+      displayedSelectedCourse && selectedPos?.opacity !== 0
+        ? selectedTooltipRef.current?.getBoundingClientRect()
+        : undefined,
+      legendRef.current?.getBoundingClientRect(),
+    ].filter((value): value is DOMRect => Boolean(value));
+
+    const overlaps = (aLeft: number, aTop: number, obstacle: DOMRect) => (
+      aLeft < obstacle.right
+      && aLeft + rect.width > obstacle.left
+      && aTop < obstacle.bottom
+      && aTop + rect.height > obstacle.top
+    );
+
+    // Two passes handle a tooltip displaced away from one panel and into
+    // another. Left-side panels clamp it to their right edge; right-side
+    // panels clamp it to their left edge. Its vertical position still follows
+    // the cursor, which creates the requested "locked axis" behavior.
+    for (let pass = 0; pass < 2; pass++) {
+      for (const obstacle of obstacles) {
+        const pointerInside = mouse.x >= obstacle.left && mouse.x <= obstacle.right
+          && mouse.y >= obstacle.top && mouse.y <= obstacle.bottom;
+        if (!pointerInside && !overlaps(left, top, obstacle)) continue;
+
+        if ((obstacle.left + obstacle.right) / 2 < window.innerWidth / 2) {
+          left = obstacle.right + PANEL_GAP;
+        } else {
+          left = obstacle.left - PANEL_GAP - rect.width;
+        }
+      }
+    }
+
+    left = Math.min(window.innerWidth - 8 - rect.width, Math.max(8, left));
+    top = Math.min(window.innerHeight - 8 - rect.height, Math.max(8, top));
+
+    hoverTooltipOriginRef.current = { left, top };
+    setTipPos({ left, top });
+  }, [hoveredCourse, mouse, displayedSelectedCourse, selectedPos]);
 
   const tooltipBody = (course: Course) => (
     <>
@@ -451,12 +506,12 @@ export default function Galaxy() {
           ))}
         </div>
       )}
-      {(recommendedIds.get(course.id) ?? []).length > 0 && (
+      {course.recommended && (
         <div style={{ marginTop: 6 }}>
           <div style={{ color: '#7f7f8a', fontSize: 10, textTransform: 'uppercase' }}>Recommended</div>
-          <div style={{ color: '#a8a8b4' }}>
-            {(recommendedIds.get(course.id) ?? []).join(', ')}
-          </div>
+          {exprLines(course.recommended).map((line, index) => (
+            <div key={index} style={{ color: '#a8a8b4', marginTop: 1 }}>{line}</div>
+          ))}
         </div>
       )}
       {(dependentsOf.get(course.id) ?? []).length > 0 && (
@@ -481,7 +536,9 @@ export default function Galaxy() {
     fontFamily: 'system-ui, sans-serif',
     fontSize: 12,
     pointerEvents: 'none',
-    maxWidth: 320,
+    width: RIGHT_PANEL_WIDTH,
+    maxWidth: 'calc(100vw - 28px)',
+    boxSizing: 'border-box',
     backdropFilter: 'blur(3px)',
   };
 
@@ -491,155 +548,175 @@ export default function Galaxy() {
         ref={hostRef}
         style={{ position: 'fixed', inset: 0, background: '#0b0b10' }}
       />
-      <input
-        value={query}
-        onChange={(event) => {
-          setQuery(event.target.value);
-          setSearchSuspended(false);
-        }}
-        placeholder="search courses..."
+
+      <div
+        ref={leftControlsRef}
         style={{
-          ...PANEL_STYLE,
           position: 'fixed',
           top: 14,
           left: 14,
           zIndex: 10,
-          padding: '7px 12px',
-          color: '#e6e6ee',
-          fontSize: 13,
-          width: 220,
-          outline: 'none',
-          fontFamily: 'system-ui, sans-serif',
+          width: LEFT_PANEL_WIDTH,
+          maxHeight: 'calc(100vh - 28px)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: PANEL_GAP,
         }}
-      />
-      <label style={{
-        ...PANEL_STYLE,
-        position: 'fixed',
-        top: 56,
-        left: 14,
-        zIndex: 10,
-        padding: '6px 12px',
-        color: '#e6e6ee',
-        fontSize: 12.5,
-        fontFamily: 'system-ui, sans-serif',
-        display: 'flex',
-        alignItems: 'center',
-        gap: 6,
-        cursor: 'pointer',
-        userSelect: 'none',
-      }}>
+      >
         <input
-          type="checkbox"
-          checked={showGrad}
-          onChange={(event) => setShowGrad(event.target.checked)}
+          value={query}
+          onChange={(event) => {
+            setQuery(event.target.value);
+            setSearchSuspended(false);
+          }}
+          placeholder="search courses..."
+          style={{
+            ...PANEL_STYLE,
+            width: '100%',
+            boxSizing: 'border-box',
+            padding: '7px 12px',
+            color: '#e6e6ee',
+            fontSize: 13,
+            outline: 'none',
+            fontFamily: 'system-ui, sans-serif',
+          }}
         />
-        show graduate (500+) courses
-      </label>
-      <div style={{
-        ...PANEL_STYLE,
-        position: 'fixed',
-        top: 98,
-        left: 14,
-        zIndex: 10,
-        padding: '8px 12px',
-        color: '#e6e6ee',
-        fontSize: 12,
-        fontFamily: 'system-ui, sans-serif',
-        width: 220,
-      }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-          <span>immediate relatives</span>
-          <span style={{ color: '#8a8a94' }}>
-            {relFilter >= 1 ? 'all' : `≤ ${Math.round(relFilter * maxDegree)}`}
-          </span>
-        </div>
-        <input
-          type="range"
-          min={0}
-          max={1}
-          step={0.01}
-          value={relFilter}
-          onChange={(event) => setRelFilter(Number.parseFloat(event.target.value))}
-          style={{ width: '100%' }}
-        />
-      </div>
-      <div style={{
-        ...PANEL_STYLE,
-        position: 'fixed',
-        top: 14,
-        right: 14,
-        zIndex: 10,
-        padding: '10px 12px',
-        color: '#e6e6ee',
-        fontSize: 12.5,
-        fontFamily: 'system-ui, sans-serif',
-        width: 200,
-        maxHeight: 'calc(100vh - 28px)',
-        overflowY: 'auto',
-      }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-          <span style={{ fontWeight: 600 }}>departments</span>
-          {deptFilter.size > 0 && (
-            <button
-              onClick={() => setDeptFilter(new Set())}
+
+        <div style={{
+          ...PANEL_STYLE,
+          width: '100%',
+          boxSizing: 'border-box',
+          minHeight: 80,
+          maxHeight: '50vh',
+          overflowY: 'auto',
+          padding: '10px 12px',
+          color: '#e6e6ee',
+          fontSize: 12.5,
+          fontFamily: 'system-ui, sans-serif',
+        }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: 6,
+          }}>
+            <span style={{ fontWeight: 600 }}>departments</span>
+            {deptFilter.size > 0 && (
+              <button
+                onClick={() => setDeptFilter(new Set())}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: '#7f9fd1',
+                  fontSize: 11,
+                  cursor: 'pointer',
+                  padding: 0,
+                }}
+              >clear</button>
+            )}
+          </div>
+          {departments.map((department) => (
+            <label
+              key={department}
               style={{
-                background: 'transparent',
-                border: 'none',
-                color: '#7f9fd1',
-                fontSize: 11,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 7,
+                padding: '3px 0',
                 cursor: 'pointer',
-                padding: 0,
+                userSelect: 'none',
               }}
-            >clear</button>
-          )}
+            >
+              <input
+                type="checkbox"
+                checked={deptFilter.has(department)}
+                onChange={(event) => {
+                  const next = new Set(deptFilter);
+                  if (event.target.checked) next.add(department);
+                  else next.delete(department);
+                  setDeptFilter(next);
+                }}
+              />
+              <span style={{
+                width: 9,
+                height: 9,
+                borderRadius: '50%',
+                flexShrink: 0,
+                background: DEPT_COLOR[department] ?? '#8a8a94',
+              }} />
+              <span>{department}</span>
+            </label>
+          ))}
         </div>
-        {departments.map((department) => (
-          <label
-            key={department}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 7,
-              padding: '3px 0',
-              cursor: 'pointer',
-              userSelect: 'none',
-            }}
-          >
-            <input
-              type="checkbox"
-              checked={deptFilter.has(department)}
-              onChange={(event) => {
-                const next = new Set(deptFilter);
-                if (event.target.checked) next.add(department);
-                else next.delete(department);
-                setDeptFilter(next);
-              }}
-            />
-            <span style={{
-              width: 9,
-              height: 9,
-              borderRadius: '50%',
-              flexShrink: 0,
-              background: DEPT_COLOR[department] ?? '#8a8a94',
-            }} />
-            <span>{department}</span>
-          </label>
-        ))}
+
+        <div style={{
+          ...PANEL_STYLE,
+          width: '100%',
+          boxSizing: 'border-box',
+          padding: '8px 12px',
+          color: '#e6e6ee',
+          fontSize: 12,
+          fontFamily: 'system-ui, sans-serif',
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+            <span>immediate relatives</span>
+            <span style={{ color: '#8a8a94' }}>
+              {relFilter >= 1 ? 'all' : `≤ ${Math.round(relFilter * maxDegree)}`}
+            </span>
+          </div>
+          <input
+            type="range"
+            min={0}
+            max={1}
+            step={0.01}
+            value={relFilter}
+            onChange={(event) => setRelFilter(Number.parseFloat(event.target.value))}
+            style={{ width: '100%' }}
+          />
+        </div>
+
+        <label style={{
+          ...PANEL_STYLE,
+          width: '100%',
+          boxSizing: 'border-box',
+          padding: '6px 12px',
+          color: '#e6e6ee',
+          fontSize: 12.5,
+          fontFamily: 'system-ui, sans-serif',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 6,
+          cursor: 'pointer',
+          userSelect: 'none',
+        }}>
+          <input
+            type="checkbox"
+            checked={showGrad}
+            onChange={(event) => setShowGrad(event.target.checked)}
+          />
+          show graduate (500+) courses
+        </label>
       </div>
-      <div style={{
-        ...PANEL_STYLE,
-        position: 'fixed',
-        bottom: 14,
-        left: 14,
-        zIndex: 10,
-        padding: '8px 10px',
-        color: '#e6e6ee',
-        fontSize: 11.5,
-        fontFamily: 'system-ui, sans-serif',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 5,
-      }}>
+
+      <div
+        ref={legendRef}
+        style={{
+          ...PANEL_STYLE,
+          position: 'fixed',
+          right: 14,
+          bottom: 14,
+          zIndex: 10,
+          width: RIGHT_PANEL_WIDTH,
+          boxSizing: 'border-box',
+          padding: '8px 10px',
+          color: '#e6e6ee',
+          fontSize: 11.5,
+          fontFamily: 'system-ui, sans-serif',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 5,
+        }}
+      >
         {[
           {
             swatch: <span style={{ width: 9, height: 9, borderRadius: '50%', background: '#8a8a94', display: 'inline-block' }} />,
@@ -647,14 +724,9 @@ export default function Galaxy() {
             info: 'A single course. Color indicates department.',
           },
           {
-            swatch: <span style={{ width: 20, height: 2, background: '#6fb2e0', display: 'inline-block' }} />,
-            label: 'Prerequisite',
-            info: 'This course requires the connected course beforehand, at any depth in the chain.',
-          },
-          {
-            swatch: <span style={{ width: 20, height: 2, background: '#e0a15a', display: 'inline-block' }} />,
-            label: 'Unlocks',
-            info: 'The connected course becomes available once this one is completed, at any depth.',
+            swatch: <span style={{ width: 20, height: 2, background: '#9a9aa4', display: 'inline-block' }} />,
+            label: 'Relationship',
+            info: 'A directional course relationship. Same-tier relationships arch and show an arrow toward the destination.',
           },
           {
             swatch: <span style={{ width: 20, borderTop: '2px dashed #9a9aa4', display: 'inline-block' }} />,
@@ -674,19 +746,23 @@ export default function Galaxy() {
         ].map((item, index) => (
           <div key={index} style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
             <span style={{ width: 20, display: 'flex', justifyContent: 'center' }}>{item.swatch}</span>
-            <span style={{ minWidth: 76 }}>{item.label}</span>
+            <span style={{ minWidth: 84 }}>{item.label}</span>
             <InfoDot text={item.info} />
           </div>
         ))}
         <div style={{ color: '#8a8a94', fontSize: 10.5, marginTop: 1 }}>fainter = farther away</div>
       </div>
+
       {displayedSelectedCourse && selectedPos && (
         <div ref={selectedTooltipRef} style={{
           ...tooltipPanelStyle,
           position: 'fixed',
           left: selectedPos.left,
           top: selectedPos.top,
+          zIndex: 11,
           opacity: selectedPos.opacity,
+          maxHeight: 'calc(100vh - 230px)',
+          overflowY: 'auto',
           transition: selectedPos.animate
             ? 'left 0.28s ease, top 0.28s ease, opacity 0.18s ease'
             : 'none',
@@ -695,12 +771,16 @@ export default function Galaxy() {
           {tooltipBody(displayedSelectedCourse)}
         </div>
       )}
+
       {hoveredCourse && (
         <div ref={tooltipRef} style={{
           ...tooltipPanelStyle,
           position: 'fixed',
           left: tipPos.left,
           top: tipPos.top,
+          zIndex: 12,
+          maxHeight: 'calc(100vh - 16px)',
+          overflowY: 'auto',
         }}>
           {tooltipBody(hoveredCourse)}
         </div>

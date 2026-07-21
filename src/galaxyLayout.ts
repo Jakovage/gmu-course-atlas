@@ -16,6 +16,10 @@ const ROW_CAP = 2 * ROW;
 const BOX_PAD = 14;
 const BOX_PAD_STEP = 10;
 const COREQ_GAP = 56;
+const COREQ_NODE_CLEARANCE_X = 44;
+const COREQ_BAND_HEIGHT = 38;
+const FOCUS_VIEW_PAD = PAD + 18;
+const COREQ_FAN_MAX_SPAN = MAX_SPAN * 0.42;
 
 export interface Pos {
   x: number;
@@ -79,7 +83,11 @@ export function depthOpacity(depth: number): number {
   return 0.3;
 }
 
-export function bfsTree(start: string, adj: Map<string, string[]>): GraphTree {
+export function bfsTree(
+  start: string,
+  adj: Map<string, string[]>,
+  blocked: ReadonlySet<string> = new Set(),
+): GraphTree {
   const dist = new Map<string, number>([[start, 0]]);
   const children = new Map<string, string[]>();
   const queue = [start];
@@ -88,6 +96,7 @@ export function bfsTree(start: string, adj: Map<string, string[]>): GraphTree {
   while (head < queue.length) {
     const cur = queue[head++];
     for (const next of adj.get(cur) ?? []) {
+      if (next !== start && blocked.has(next)) continue;
       if (dist.has(next)) continue;
       dist.set(next, dist.get(cur)! + 1);
       const list = children.get(cur);
@@ -128,9 +137,11 @@ function placeFan(
   tree: GraphTree,
   root: string,
   verticalSign: 1 | -1,
+  options: { maxSpan?: number; clampToCanvas?: boolean } = {},
 ): Map<string, Pos> {
   const layout = treeLayout(root, tree.children);
-  const slot = Math.min(SLOT, MAX_SPAN / (layout.leafCount - 1 || 1));
+  const maxSpan = options.maxSpan ?? MAX_SPAN;
+  const slot = Math.min(SLOT, maxSpan / (layout.leafCount - 1 || 1));
   const maxDist = Math.max(1, ...tree.dist.values());
   const available = verticalSign === 1 ? VH - PAD - anchor.y : anchor.y - PAD;
   const rowScale = Math.min(ROW_CAP, Math.max(24, available / maxDist));
@@ -143,7 +154,7 @@ function placeFan(
       y: anchor.y + verticalSign * tree.dist.get(id)! * rowScale,
     });
   }
-  if (raw.size === 0) return raw;
+  if (raw.size === 0 || options.clampToCanvas === false) return raw;
 
   let minX = Infinity;
   let maxX = -Infinity;
@@ -212,10 +223,21 @@ export function buildFocusLayout(input: FocusLayoutInput): FocusLayout {
   const activeCourse = byId.get(active);
   const seenPartner = new Set<string>();
 
+  // Treat a declared concurrent relationship as reciprocal for focused
+  // placement only. The underlying prerequisite/recommended edge keeps its
+  // original direction; this set only decides which direct relatives sit
+  // beside the active course.
+  const directCoreqPartners = new Set<string>(coreqOf.get(active) ?? []);
+  for (const [owner, refs] of coreqOf) {
+    if (owner !== active && refs.has(active) && byId.has(owner)) {
+      directCoreqPartners.add(owner);
+    }
+  }
+
   function concurrentGroups(e: Expr | null): string[][] {
     if (!e) return [];
     if (e.kind === 'course') {
-      if (!e.concurrent || !coreqOf.get(active)?.has(e.id) || seenPartner.has(e.id)) return [];
+      if (!e.concurrent || !directCoreqPartners.has(e.id) || seenPartner.has(e.id)) return [];
       seenPartner.add(e.id);
       return [[e.id]];
     }
@@ -223,7 +245,7 @@ export function buildFocusLayout(input: FocusLayoutInput): FocusLayout {
     if (e.kind === 'and') return e.of.flatMap(concurrentGroups);
 
     const leaves = concurrentRefs(e).filter((id) => {
-      if (!coreqOf.get(active)?.has(id) || seenPartner.has(id)) return false;
+      if (!directCoreqPartners.has(id) || seenPartner.has(id)) return false;
       seenPartner.add(id);
       return true;
     });
@@ -235,35 +257,206 @@ export function buildFocusLayout(input: FocusLayoutInput): FocusLayout {
     ...concurrentGroups(activeCourse?.recommended ?? null),
   ];
 
-  let side: 1 | -1 = 1;
-  const rankOnSide = { 1: 0, [-1]: 0 } as Record<1 | -1, number>;
+  // Any reciprocal declaration not encountered in the active course's own
+  // expression still belongs beside it. This also guarantees recommended
+  // corequisites are treated identically to required corequisites.
+  for (const id of [...directCoreqPartners].sort()) {
+    if (id === active || seenPartner.has(id) || !byId.has(id)) continue;
+    seenPartner.add(id);
+    groups.push([id]);
+  }
 
-  for (const group of groups) {
-    for (const id of group) {
-      rankOnSide[side]++;
+  function buildGroupCandidate(
+    group: string[],
+    side: 1 | -1,
+    startingRank: number,
+  ): Map<string, Pos> {
+    const candidate = new Map<string, Pos>();
+
+    group.forEach((id, index) => {
       const newPos = {
-        x: anchor.x + side * rankOnSide[side] * COREQ_GAP,
+        x: anchor.x + side * (startingRank + index + 1) * COREQ_GAP,
         y: anchor.y,
       };
-      targets.set(id, newPos);
-      lit.add(id);
+      candidate.set(id, newPos);
 
-      const partnerDown = bfsTree(id, prereqsOf);
-      const partnerUp = bfsTree(id, dependentsOf);
-      for (const [sid, p] of placeFan(newPos, partnerDown, id, 1)) {
-        if (sid !== active && !targets.has(sid)) {
-          targets.set(sid, p);
-          lit.add(sid);
+      // A corequisite's private fan must not walk back through the focused
+      // course (or another parallel corequisite). Doing so recreates the
+      // active course's entire closure inside the partner fan and produces
+      // the long, crossing bundles seen around large prerequisite trees.
+      const blockedRoots = new Set<string>([active, ...directCoreqPartners]);
+      blockedRoots.delete(id);
+      const partnerDown = bfsTree(id, prereqsOf, blockedRoots);
+      const partnerUp = bfsTree(id, dependentsOf, blockedRoots);
+
+      // Keep genuinely shared nodes in the active tree, but let this parallel
+      // root reclaim nodes that are reachable only through it. Previously
+      // every node already present in `targets` was left untouched, which
+      // meant a corequisite moved sideways while its entire private ancestry
+      // remained centered above the active course—the crossing bundles shown
+      // in the screenshots. Blocking this partner from the active searches
+      // tells us which nodes still belong to the main tree without it.
+      const reachableWithoutPartner = new Set<string>();
+      for (const sid of bfsTree(active, prereqsOf, new Set([id])).dist.keys()) {
+        reachableWithoutPartner.add(sid);
+      }
+      for (const sid of bfsTree(active, dependentsOf, new Set([id])).dist.keys()) {
+        reachableWithoutPartner.add(sid);
+      }
+      const belongsToPartner = (sid: string) => (
+        sid !== active
+        && !reachableWithoutPartner.has(sid)
+      );
+
+      const partnerFanOptions = {
+        maxSpan: COREQ_FAN_MAX_SPAN,
+        clampToCanvas: false,
+      };
+      for (const [sid, p] of placeFan(newPos, partnerDown, id, 1, partnerFanOptions)) {
+        if (belongsToPartner(sid) && !candidate.has(sid)) {
+          candidate.set(sid, p);
         }
       }
-      for (const [sid, p] of placeFan(newPos, partnerUp, id, -1)) {
-        if (sid !== active && !targets.has(sid)) {
-          targets.set(sid, p);
-          lit.add(sid);
+      for (const [sid, p] of placeFan(newPos, partnerUp, id, -1, partnerFanOptions)) {
+        if (belongsToPartner(sid) && !candidate.has(sid)) {
+          candidate.set(sid, p);
+        }
+      }
+    });
+
+    return candidate;
+  }
+
+  function separateCandidate(
+    candidate: Map<string, Pos>,
+    side: 1 | -1,
+  ): { positions: Map<string, Pos>; score: number } {
+    const existing = [...targets.entries()]
+      .filter(([id]) => !candidate.has(id))
+      .map(([, p]) => p);
+
+    type Envelope = { minX: number; maxX: number };
+    const envelopeByBand = (points: Iterable<Pos>) => {
+      const bands = new Map<number, Envelope>();
+      for (const p of points) {
+        const band = Math.round(p.y / COREQ_BAND_HEIGHT);
+        const current = bands.get(band);
+        if (current) {
+          current.minX = Math.min(current.minX, p.x);
+          current.maxX = Math.max(current.maxX, p.x);
+        } else {
+          bands.set(band, { minX: p.x, maxX: p.x });
+        }
+      }
+      return bands;
+    };
+
+    const existingBands = envelopeByBand(existing);
+    const candidateBands = envelopeByBand(candidate.values());
+    let shift = 0;
+
+    // Compare the complete horizontal envelope of each nearby row, not just
+    // individual node pairs. This reserves a clean lane for the entire
+    // corequisite bundle—including a tall parent/grandparent tree—so its
+    // branches cannot thread through the already placed focused tree.
+    for (const [band, candidateEnvelope] of candidateBands) {
+      for (let nearby = band - 1; nearby <= band + 1; nearby++) {
+        const existingEnvelope = existingBands.get(nearby);
+        if (!existingEnvelope) continue;
+        if (side === 1) {
+          shift = Math.max(
+            shift,
+            existingEnvelope.maxX + COREQ_NODE_CLEARANCE_X - candidateEnvelope.minX,
+          );
+        } else {
+          shift = Math.min(
+            shift,
+            existingEnvelope.minX - COREQ_NODE_CLEARANCE_X - candidateEnvelope.maxX,
+          );
         }
       }
     }
-    side = side === 1 ? -1 : 1;
+
+    const shifted = new Map<string, Pos>();
+    let minX = Infinity;
+    let maxX = -Infinity;
+    for (const [id, p] of candidate) {
+      const next = { x: p.x + shift, y: p.y };
+      shifted.set(id, next);
+      minX = Math.min(minX, next.x);
+      maxX = Math.max(maxX, next.x);
+    }
+
+    const overflow = Math.max(0, FOCUS_VIEW_PAD - minX)
+      + Math.max(0, maxX - (VW - FOCUS_VIEW_PAD));
+    return { positions: shifted, score: Math.abs(shift) + overflow * 12 };
+  }
+
+  let preferredSide: 1 | -1 = 1;
+  const rankOnSide = { 1: 0, [-1]: 0 } as Record<1 | -1, number>;
+
+  for (const group of groups) {
+    const preferred = separateCandidate(
+      buildGroupCandidate(group, preferredSide, rankOnSide[preferredSide]),
+      preferredSide,
+    );
+    const alternateSide: 1 | -1 = preferredSide === 1 ? -1 : 1;
+    const alternate = separateCandidate(
+      buildGroupCandidate(group, alternateSide, rankOnSide[alternateSide]),
+      alternateSide,
+    );
+
+    const chosenSide = alternate.score + 4 < preferred.score ? alternateSide : preferredSide;
+    const chosen = chosenSide === preferredSide ? preferred : alternate;
+
+    for (const [id, p] of chosen.positions) {
+      targets.set(id, p);
+      lit.add(id);
+    }
+    rankOnSide[chosenSide] += group.length;
+    preferredSide = chosenSide === 1 ? -1 : 1;
+  }
+
+  // Last-resort viewport guarantee. The focused course must remain exactly at
+  // its global position: hovering should never move the node that was used as
+  // the anchor. If an unusually large closure would leave the canvas, compress
+  // only the surrounding targets toward that fixed anchor. No translation is
+  // applied to the focused node or to the completed layout.
+  if (targets.size > 1) {
+    // The global layout can legitimately place the anchor at PAD, which is a
+    // little outside FOCUS_VIEW_PAD. Expand the safe rectangle just enough to
+    // include the unchanged anchor rather than shifting the whole layout.
+    const minXBound = Math.min(FOCUS_VIEW_PAD, anchor.x);
+    const maxXBound = Math.max(VW - FOCUS_VIEW_PAD, anchor.x);
+    const minYBound = Math.min(FOCUS_VIEW_PAD, anchor.y);
+    const maxYBound = Math.max(VH - FOCUS_VIEW_PAD, anchor.y);
+
+    let scale = 1;
+    for (const [id, p] of targets) {
+      if (id === active) continue;
+
+      const dx = p.x - anchor.x;
+      const dy = p.y - anchor.y;
+
+      if (dx > 0) scale = Math.min(scale, (maxXBound - anchor.x) / dx);
+      else if (dx < 0) scale = Math.min(scale, (anchor.x - minXBound) / -dx);
+
+      if (dy > 0) scale = Math.min(scale, (maxYBound - anchor.y) / dy);
+      else if (dy < 0) scale = Math.min(scale, (anchor.y - minYBound) / -dy);
+    }
+
+    scale = Math.max(0, Math.min(1, scale));
+    if (scale < 1) {
+      for (const [id, p] of targets) {
+        if (id === active) continue;
+        p.x = anchor.x + (p.x - anchor.x) * scale;
+        p.y = anchor.y + (p.y - anchor.y) * scale;
+      }
+    }
+
+    // Reassert the exact anchor in case future layout changes accidentally
+    // mutate the object stored for the active course.
+    targets.set(active, { ...anchor });
   }
 
   return { active, down, up, lit, targets, edges };

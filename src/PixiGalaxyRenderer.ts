@@ -1,5 +1,5 @@
 // PIXI GALAXY RENDERER — rounded OR boxes + nearest-node hit testing
-// + universal same-level arches + side-entry joined chevron arrows (v5)
+// + universal same-level arches + node-touching side-entry chevrons (v6)
 import {
   Application,
   Circle,
@@ -28,6 +28,7 @@ import {
   type Pos,
 } from './galaxyLayout';
 
+
 export interface GalaxySceneData {
   courses: Course[];
   byId: Map<string, Course>;
@@ -40,6 +41,7 @@ export interface GalaxySceneData {
   matches: Set<string> | null;
   selected: string | null;
   hovered: string | null;
+  showGlobalLabels: boolean;
 }
 
 export interface GalaxyRendererCallbacks {
@@ -116,7 +118,13 @@ interface EdgeCurve {
   arched: boolean;
 }
 
-function makeEdgeCurve(from: Pos, to: Pos, arched: boolean): EdgeCurve {
+function makeEdgeCurve(
+  from: Pos,
+  to: Pos,
+  arched: boolean,
+  destinationRadius = 4,
+  tipOverlapWorld = 0,
+): EdgeCurve {
   if (arched) {
     const distance = Math.abs(to.x - from.x);
     const archDepth = Math.max(20, Math.min(80, distance * 0.25));
@@ -136,13 +144,15 @@ function makeEdgeCurve(from: Pos, to: Pos, arched: boolean): EdgeCurve {
       y: -riseAmount,
     };
 
-    // Stop at the destination node's lower-side boundary rather than its
-    // center. The final control point is placed back along the same entry
-    // vector, so the curve and arrow share one natural arrival direction.
-    const nodeRadius = 4;
+    // Put the arrow tip slightly INSIDE the destination node's current
+    // rendered radius. The node layer sits above the edge layer, so this tiny
+    // overlap is hidden and guarantees there can never be an antialiased gap.
+    // Using the live radius also stays correct while zooming and when the
+    // destination is hovered/selected and therefore rendered larger.
+    const endpointDistance = Math.max(0, destinationRadius - tipOverlapWorld);
     const endpoint = {
-      x: to.x - entry.x * nodeRadius,
-      y: to.y - entry.y * nodeRadius,
+      x: to.x - entry.x * endpointDistance,
+      y: to.y - entry.y * endpointDistance,
     };
     const entryHandle = Math.max(
       14,
@@ -241,7 +251,7 @@ interface ArcArrowGeometry {
   lowerBack: Pos;
 }
 
-function arcArrowGeometry(curve: EdgeCurve): ArcArrowGeometry {
+function arcArrowGeometry(curve: EdgeCurve, sizeScale: number): ArcArrowGeometry {
   const tip = curve.to;
   const tangent = bezierTangent(curve, 1);
   const magnitude = Math.hypot(tangent.x, tangent.y) || 1;
@@ -250,9 +260,10 @@ function arcArrowGeometry(curve: EdgeCurve): ArcArrowGeometry {
   const nx = -uy;
   const ny = ux;
 
-  // Half the previous arrow size.
-  const length = 5;
-  const halfSpan = 2.75;
+  // Keep the arrow partially screen-scaled: visible when zoomed out, but
+  // without growing linearly with the world at high zoom.
+  const length = 5 * sizeScale;
+  const halfSpan = 2.75 * sizeScale;
   const notchDepth = length * 0.46;
   const backX = tip.x - ux * length;
   const backY = tip.y - uy * length;
@@ -295,9 +306,18 @@ function drawEdgeCurve(
   color: number,
   recommended: boolean,
   arched: boolean,
+  destinationRadius: number,
+  arrowSizeScale: number,
+  tipOverlapWorld: number,
 ): void {
-  const curve = makeEdgeCurve(from, to, arched);
-  const arrow = curve.arched ? arcArrowGeometry(curve) : null;
+  const curve = makeEdgeCurve(
+    from,
+    to,
+    arched,
+    destinationRadius,
+    tipOverlapWorld,
+  );
+  const arrow = curve.arched ? arcArrowGeometry(curve, arrowSizeScale) : null;
 
   // End the visible edge exactly at the chevron notch. The line no longer
   // continues beneath the translucent arrow, eliminating the darker overlap
@@ -519,6 +539,7 @@ export class PixiGalaxyRenderer {
     const previousSelected = this.data?.selected ?? null;
     const previousHovered = this.data?.hovered ?? null;
     const previousMatches = this.data?.matches ?? null;
+    const previousShowGlobalLabels = this.data?.showGlobalLabels ?? false;
 
     this.data = data;
     this.active = data.selected ?? data.hovered;
@@ -530,6 +551,9 @@ export class PixiGalaxyRenderer {
     } else {
       if (previousMatches !== data.matches) {
         this.refreshBaseEdgeOpacity();
+      }
+      if (previousMatches !== data.matches
+          || previousShowGlobalLabels !== data.showGlobalLabels) {
         this.rebuildLabels();
       }
       if (previousSelected !== data.selected || previousHovered !== data.hovered) {
@@ -683,13 +707,11 @@ export class PixiGalaxyRenderer {
     if (!this.focus) return;
 
     for (const edge of this.focus.edges) {
-      let color = 0xe0a15a;
+      const color = colorNumber(pairColor(deptOf(edge.from), deptOf(edge.to)));
       let alpha = 1;
       if (this.focus.down.children.get(edge.to)?.includes(edge.from)) {
-        color = 0x6fb2e0;
         alpha = depthOpacity(this.focus.down.dist.get(edge.from) ?? 1);
       } else if (this.focus.up.children.get(edge.from)?.includes(edge.to)) {
-        color = 0xe0a15a;
         alpha = depthOpacity(this.focus.up.dist.get(edge.to) ?? 1);
       }
 
@@ -718,12 +740,42 @@ export class PixiGalaxyRenderer {
   private refreshNodeScales(): void {
     if (!this.data) return;
     const worldScale = Math.max(this.camera.scale, 0.0001);
+    const changedIds = new Set<string>();
 
     for (const [id, node] of this.nodes) {
       const ratio = id === this.data.selected ? 7 / 4 : id === this.data.hovered ? 6 / 4 : 1;
       const localScale = ratio / Math.sqrt(worldScale);
+      if (Math.abs(node.view.scale.x - localScale) > 0.0001) changedIds.add(id);
       node.view.scale.set(localScale);
       node.view.hitArea = new Circle(0, 0, 12 / (localScale * worldScale));
+    }
+
+    // Arched arrows terminate at the destination node's live visual radius.
+    // Redraw only same-level edges whose endpoint scale actually changed.
+    // Panning does not change scale, so this adds no work to ordinary pans.
+    if (changedIds.size === 0) return;
+
+    const dirtyBaseEdges = new Set<string>();
+    for (const id of changedIds) {
+      for (const key of this.edgesByNode.get(id) ?? []) dirtyBaseEdges.add(key);
+    }
+    for (const key of dirtyBaseEdges) {
+      const record = this.edges.get(key);
+      if (!record) continue;
+      const fromNode = this.nodes.get(record.edge.from);
+      const toNode = this.nodes.get(record.edge.to);
+      if (fromNode && toNode && Math.abs(fromNode.target.y - toNode.target.y) < 1) {
+        this.redrawBaseEdge(record);
+      }
+    }
+
+    for (const record of this.highlights) {
+      if (!changedIds.has(record.edge.from) && !changedIds.has(record.edge.to)) continue;
+      const fromNode = this.nodes.get(record.edge.from);
+      const toNode = this.nodes.get(record.edge.to);
+      if (fromNode && toNode && Math.abs(fromNode.target.y - toNode.target.y) < 1) {
+        this.redrawHighlight(record);
+      }
     }
   }
 
@@ -761,7 +813,9 @@ export class PixiGalaxyRenderer {
       ? [...this.focus.lit]
       : this.data.matches
         ? [...this.data.matches]
-        : [];
+        : this.data.showGlobalLabels
+          ? this.data.courses.map((course) => course.id)
+          : [];
 
     for (const id of ids) {
       if (!this.nodes.has(id)) continue;
@@ -916,13 +970,26 @@ export class PixiGalaxyRenderer {
     if (!fromNode || !toNode) return;
     const from = { x: fromNode.view.x, y: fromNode.view.y };
     const to = { x: toNode.view.x, y: toNode.view.y };
-    const color = colorNumber(pairColor(deptOf(record.edge.from), deptOf(record.edge.to)));
+    const color = colorNumber(
+      pairColor(deptOf(record.edge.from), deptOf(record.edge.to)),
+    );
     // Decide from TARGET rows rather than current animated positions. This
     // makes every same-level relationship arc immediately and consistently,
     // including dashed recommended corequisites while nodes are still moving.
     const arched = Math.abs(fromNode.target.y - toNode.target.y) < 1;
     record.view.clear();
-    drawEdgeCurve(record.view, from, to, color, record.edge.recommended, arched);
+    const destinationRadius = 4 * Math.abs(toNode.view.scale.x);
+    drawEdgeCurve(
+      record.view,
+      from,
+      to,
+      color,
+      record.edge.recommended,
+      arched,
+      destinationRadius,
+      1 / Math.sqrt(Math.max(this.camera.scale, 0.0001)),
+      0.75 / Math.max(this.camera.scale, 0.0001),
+    );
   }
 
   private redrawHighlight(record: HighlightRecord): void {
@@ -934,6 +1001,7 @@ export class PixiGalaxyRenderer {
     const arched = Math.abs(fromNode.target.y - toNode.target.y) < 1;
     record.view.clear();
     record.view.alpha = record.alpha;
+    const destinationRadius = 4 * Math.abs(toNode.view.scale.x);
     drawEdgeCurve(
       record.view,
       from,
@@ -941,6 +1009,9 @@ export class PixiGalaxyRenderer {
       record.color,
       record.edge.recommended,
       arched,
+      destinationRadius,
+      1 / Math.sqrt(Math.max(this.camera.scale, 0.0001)),
+      0.75 / Math.max(this.camera.scale, 0.0001),
     );
   }
 
